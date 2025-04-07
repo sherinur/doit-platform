@@ -1,0 +1,5 @@
+CREATE TABLE orders (
+    id INT PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    price REAL NOT NULL
+);
