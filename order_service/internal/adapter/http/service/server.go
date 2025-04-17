@@ -43,6 +43,7 @@ func (a *API) setupRoutes() {
 		})
 
 		v1.POST("/orders", a.orderHandler.CreateOrder)
+		v1.GET("/orders/:id", a.orderHandler.GetOrder)
 	}
 }
 

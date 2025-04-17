@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package base.frontend.v1;
+
+option go_package = "github.com/sherinur/doit-platform/apis/base/frontend/v1";
+
+import "google/protobuf/timestamp.proto";
+
+message Product {
+    int64 id = 1;
+    string name = 2;
+    string description = 3;
+    float price = 4;
+    string category = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp updated_at = 7;
+}

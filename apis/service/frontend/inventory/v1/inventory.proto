@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package service.frontend.inventory.v1;
+
+option go_package = "github.com/sherinur/doit-platform/apis/service/frontend/inventory/v1";
+
+import "apis/base/frontend/v1/product.proto";
+import "google/protobuf/empty.proto";
+
+
+service InventoryService {
+    rpc CreateProduct(CreateProductRequest) returns (base.frontend.v1.Product);
+    rpc GetProductByID(GetProductRequest) returns (base.frontend.v1.Product);
+    rpc UpdateProduct(UpdateProductRequest) returns (base.frontend.v1.Product);
+    rpc DeleteProduct(DeleteProductRequest) returns (google.protobuf.Empty);
+    rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+}
+
+message CreateProductRequest {
+    string name = 1;
+    string description = 2;
+    float price = 3;
+    string category = 4;
+}
+
+message GetProductRequest {
+    // product id
+    int64 id = 1;
+}
+
+message UpdateProductRequest {
+    // product id
+    int64 id = 1;
+}
+
+message DeleteProductRequest {
+    // product id
+    int64 id = 1;
+}
+
+message ListProductsRequest {
+    // empty
+}
+
+message ListProductsResponse {
+    repeated base.frontend.v1.Product products = 1;
+}
