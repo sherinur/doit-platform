@@ -13,7 +13,19 @@ type (
 	}
 
 	Server struct {
+		GRPCServer GRPCServer
 		HTTPServer HTTPServer
+	}
+
+	Postgres struct {
+		ConnStr string `env:"CONN_STR" envDefault:"user=admin password=root dbname=micro sslmode=disable"`
+	}
+
+	GRPCServer struct {
+		Port                  int16         `env:"GRPC_PORT,notEmpty"`
+		MaxRecvMsgSizeMiB     int           `env:"GRPC_MAX_MESSAGE_SIZE_MIB" envDefault:"12"`
+		MaxConnectionAge      time.Duration `env:"GRPC_MAX_CONNECTION_AGE" envDefault:"30s"`
+		MaxConnectionAgeGrace time.Duration `env:"GRPC_MAX_CONNECTION_AGE_GRACE" envDefault:"10s"`
 	}
 
 	HTTPServer struct {
@@ -23,8 +35,7 @@ type (
 		Mode         string        `env:"GIN_MODE" envDefault:"release"` // release, debug, test
 	}
 
-	Postgres struct {
-		ConnStr string `env:"CONN_STR" envDefault:"user=admin password=root dbname=micro sslmode=disable"`
+	Nats struct {
 	}
 )
 
