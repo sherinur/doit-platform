@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"content-service/config"
+	"content-service/internal/app"
 )
 
 func main() {
@@ -18,19 +19,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("--------CONFIG:--------")
-	fmt.Println("CONN_STR: ", cfg.Postgres.ConnStr)
-	fmt.Println(cfg.Server.GRPCServer.Port)
+	app, err := app.New(ctx, cfg)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
-	// app, err := app.New(ctx, cfg)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	os.Exit(1)
-	// }
-
-	// err = app.Run()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	os.Exit(1)
-	// }
+	err = app.Run()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

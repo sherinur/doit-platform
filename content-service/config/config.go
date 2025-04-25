@@ -4,21 +4,17 @@ import (
 	"time"
 
 	"github.com/caarlos0/env/v7"
+	"github.com/joho/godotenv"
 )
 
 type (
 	Config struct {
-		Server   Server   `envPrefix:"SERVER_"`
-		Postgres Postgres `envPrefix:"POSTGRES_"`
+		Server Server `envPrefix:"SERVER_"`
 	}
 
 	Server struct {
 		GRPCServer GRPCServer
 		HTTPServer HTTPServer `envPrefix:"HTTP_"`
-	}
-
-	Postgres struct {
-		ConnStr string `env:"CONN_STR" envDefault:"user=admin password=root dbname=micro sslmode=disable"`
 	}
 
 	GRPCServer struct {
@@ -35,6 +31,11 @@ type (
 		Mode         string        `env:"GIN_MODE" envDefault:"release"` // release, debug, test
 	}
 
+	S3Storage struct {
+		Port          int    `env:"S3_PORT" envDefault:"4400"`
+		DataDirectory string `env:"S3_DATA_DIRECTORY"`
+	}
+
 	Nats struct{}
 )
 
@@ -42,7 +43,12 @@ func New() (*Config, error) {
 	var cfg Config
 	opts := env.Options{Environment: nil, TagName: "env", Prefix: ""}
 
-	err := env.Parse(&cfg, opts)
+	err := godotenv.Load()
+	if err != nil {
+		return nil, err
+	}
+
+	err = env.Parse(&cfg, opts)
 	if err != nil {
 		return nil, err
 	}
