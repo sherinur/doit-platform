@@ -1,21 +1,30 @@
 package dao
 
 import (
+	"bytes"
 	"content-service/internal/model"
 	"io"
 )
 
 type File struct {
-	objectKey string
-	body      io.Reader
+	ObjectKey string
+	Body      io.Reader
+	Size      int64
 }
 
 func FromFile(file model.File) File {
 	return File{
-		objectKey: "name",
+		ObjectKey: "file",
+		Body:      bytes.NewReader(file.Body),
+		Size:      file.Size,
 	}
 }
 
-func ToFile(file File) model.File {
-	return model.File{}
+func ToFile(data io.Reader) model.File {
+	body, _ := io.ReadAll(data)
+
+	return model.File{
+		Body: body,
+		Size: int64(len(body)),
+	}
 }

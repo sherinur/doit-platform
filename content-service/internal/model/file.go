@@ -1,6 +1,6 @@
 package model
 
 type File struct {
-	body []byte
-	size int64
+	Body []byte
+	Size int64
 }

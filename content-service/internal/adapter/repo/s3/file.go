@@ -1,6 +1,8 @@
 package s3
 
 import (
+	"content-service/internal/adapter/repo/s3/dao"
+	"content-service/internal/model"
 	"content-service/pkg/s3conn"
 	"context"
 	"fmt"
@@ -29,18 +31,63 @@ func NewFile(urlBase string) (*File, error) {
 	}, nil
 }
 
-func (f *File) Create(ctx context.Context, object []byte) (string, error) {
-	// url := f.url + "/" + f.bucket + "/"
+func (f *File) Create(ctx context.Context, file model.File) (string, error) {
+	object := dao.FromFile(file)
 
-	// req, err := http.NewRequest("PUT", url)
+	url := f.url + "/" + f.bucket + "/" + object.ObjectKey
+	req, err := http.NewRequest("PUT", url, object.Body)
+	if err != nil {
+		return "", err
+	}
 
-	return "", nil
+	res, err := f.client.Do(req)
+	if err != nil {
+		return "", err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("file is not uploaded: %s", res.Body)
+	}
+
+	return object.ObjectKey, nil
 }
 
-func (f *File) Get(key string) ([]byte, error) {
-	return nil, nil
+func (f *File) Get(ctx context.Context, key string) (*model.File, error) {
+	url := f.url + "/" + f.bucket + "/" + key
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := f.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("cannot get the file: %s", res.Body)
+	}
+
+	file := dao.ToFile(res.Body)
+
+	return &file, nil
 }
 
-func (f *File) Delete(key string) error {
+func (f *File) Delete(ctx context.Context, key string) error {
+	url := f.url + "/" + f.bucket + "/" + key
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+
+	res, err := f.client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("cannot delete the file: %s", res.Body)
+	}
+
 	return nil
 }

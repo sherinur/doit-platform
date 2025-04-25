@@ -33,7 +33,7 @@ type (
 
 	S3Storage struct {
 		Port          int    `env:"S3_PORT" envDefault:"4400"`
-		DataDirectory string `env:"S3_DATA_DIRECTORY"`
+		DataDirectory string `env:"S3_DATA_DIRECTORY" envDefault:"./data"`
 	}
 
 	Nats struct{}
