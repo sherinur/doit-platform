@@ -11,7 +11,6 @@ import (
 
 func main() {
 	ctx := context.Background()
-	fmt.Println(ctx)
 
 	cfg, err := config.New()
 	if err != nil {

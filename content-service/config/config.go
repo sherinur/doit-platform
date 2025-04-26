@@ -9,7 +9,8 @@ import (
 
 type (
 	Config struct {
-		Server Server `envPrefix:"SERVER_"`
+		Server    Server `envPrefix:"SERVER_"`
+		S3Storage S3Storage
 	}
 
 	Server struct {
@@ -32,7 +33,7 @@ type (
 	}
 
 	S3Storage struct {
-		Port          int    `env:"S3_PORT" envDefault:"4400"`
+		ConnStr       string `env:"S3_CONN_STR" envDefault:"http://127.0.0.1:4400"`
 		DataDirectory string `env:"S3_DATA_DIRECTORY" envDefault:"./data"`
 	}
 

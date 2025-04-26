@@ -1,8 +1,9 @@
 package usecase
 
 import (
-	"content-service/internal/model"
 	"context"
+
+	"content-service/internal/model"
 )
 
 type File struct {

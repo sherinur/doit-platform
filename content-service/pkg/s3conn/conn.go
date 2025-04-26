@@ -25,7 +25,7 @@ func CreateBucket(name string, url string, httpClient *http.Client) error {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusOK {
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusConflict {
 		return fmt.Errorf("bucket with name %s is not created", name)
 	}
 

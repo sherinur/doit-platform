@@ -1,12 +1,13 @@
 package s3
 
 import (
-	"content-service/internal/adapter/repo/s3/dao"
-	"content-service/internal/model"
-	"content-service/pkg/s3conn"
 	"context"
 	"fmt"
 	"net/http"
+
+	"content-service/internal/adapter/repo/s3/dao"
+	"content-service/internal/model"
+	"content-service/pkg/s3conn"
 )
 
 type File struct {
@@ -40,13 +41,15 @@ func (f *File) Create(ctx context.Context, file model.File) (string, error) {
 		return "", err
 	}
 
+	req.Header.Set("Content-Type", object.Type)
+
 	res, err := f.client.Do(req)
 	if err != nil {
 		return "", err
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("file is not uploaded: %s", res.Body)
+		return "", fmt.Errorf("file is not uploaded: %d", res.StatusCode)
 	}
 
 	return object.ObjectKey, nil
@@ -68,7 +71,7 @@ func (f *File) Get(ctx context.Context, key string) (*model.File, error) {
 		return nil, fmt.Errorf("cannot get the file: %s", res.Body)
 	}
 
-	file := dao.ToFile(res.Body)
+	file := dao.ToFile(res.Body, res.Header.Get("Content-Type"))
 
 	return &file, nil
 }

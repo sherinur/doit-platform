@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"content-service/internal/model"
 	"context"
+
+	"content-service/internal/model"
 )
 
 type FileUsecase interface {
