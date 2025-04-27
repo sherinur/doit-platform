@@ -3,8 +3,8 @@ package server
 import (
 	"fmt"
 
-	"content-service/config"
-	"content-service/internal/adapter/controller/http/server/handler"
+	"github.com/sherinur/doit-platform/content-service/config"
+	"github.com/sherinur/doit-platform/content-service/internal/adapter/controller/http/server/handler"
 
 	"github.com/gin-gonic/gin"
 )

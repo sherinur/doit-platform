@@ -1,4 +1,4 @@
-module content-service
+module github.com/sherinur/doit-platform/content-service
 
 go 1.24.2
 
@@ -6,6 +6,7 @@ require (
 	github.com/caarlos0/env/v7 v7.1.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/joho/godotenv v1.5.1
+	github.com/sherinur/doit-platform v0.0.0-20250427164118-5c8322aae90e
 	google.golang.org/grpc v1.72.0
 )
 
@@ -29,8 +30,6 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.33.0 // indirect
 	golang.org/x/net v0.35.0 // indirect

@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"os"
 
-	"content-service/config"
-	"content-service/internal/adapter/controller/http/server"
-	"content-service/internal/adapter/repo/s3"
-	"content-service/internal/usecase"
+	"github.com/sherinur/doit-platform/content-service/config"
+	"github.com/sherinur/doit-platform/content-service/internal/adapter/controller/http/server"
+	"github.com/sherinur/doit-platform/content-service/internal/adapter/repo/s3"
+	"github.com/sherinur/doit-platform/content-service/internal/usecase"
 )
 
 const serviceName = "content-service"

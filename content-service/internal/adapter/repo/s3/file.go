@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"content-service/internal/adapter/repo/s3/dao"
-	"content-service/internal/model"
-	"content-service/pkg/s3conn"
+	"github.com/sherinur/doit-platform/content-service/internal/adapter/repo/s3/dao"
+	"github.com/sherinur/doit-platform/content-service/internal/model"
+	"github.com/sherinur/doit-platform/content-service/pkg/s3conn"
 )
 
 type File struct {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"content-service/internal/adapter/controller/http/server/handler/dto"
+	"github.com/sherinur/doit-platform/content-service/internal/adapter/controller/http/server/handler/dto"
 
 	"github.com/gin-gonic/gin"
 )

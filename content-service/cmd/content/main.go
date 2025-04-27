@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"content-service/config"
-	"content-service/internal/app"
+	"github.com/sherinur/doit-platform/content-service/config"
+	"github.com/sherinur/doit-platform/content-service/internal/app"
 )
 
 func main() {

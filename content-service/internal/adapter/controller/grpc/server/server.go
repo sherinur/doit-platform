@@ -1,10 +1,11 @@
 package grpcserver
 
 import (
-	"content-service/config"
 	"context"
 	"fmt"
 	"net"
+
+	"github.com/sherinur/doit-platform/content-service/config"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

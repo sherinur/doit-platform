@@ -295,9 +295,9 @@ const file_content_service_service_frontend_file_v1_file_proto_rawDesc = "" +
 	"\x04body\x18\x01 \x01(\fR\x04body\x12\x12\n" +
 	"\x04type\x18\x03 \x01(\tR\x04type\"&\n" +
 	"\x12CreateFileResponse\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03url\"<\n" +
-	"\x0eGetFileRequest\x12*\n" +
-	"\x04file\x18\x01 \x01(\v2\x16.base.frontend.v1.FileR\x04file\"%\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\"D\n" +
+	"\x0eGetFileRequest\x122\n" +
+	"\x04file\x18\x01 \x01(\v2\x1e.content.base.frontend.v1.FileR\x04file\"%\n" +
 	"\x0fGetFileResponse\x12\x12\n" +
 	"\x04body\x18\x01 \x01(\fR\x04body\"%\n" +
 	"\x11DeleteFileRequest\x12\x10\n" +
@@ -328,10 +328,10 @@ var file_content_service_service_frontend_file_v1_file_proto_goTypes = []any{
 	(*GetFileResponse)(nil),    // 3: content.service.frontend.file.v1.GetFileResponse
 	(*DeleteFileRequest)(nil),  // 4: content.service.frontend.file.v1.DeleteFileRequest
 	(*DeleteFileResponse)(nil), // 5: content.service.frontend.file.v1.DeleteFileResponse
-	(*v1.File)(nil),            // 6: base.frontend.v1.File
+	(*v1.File)(nil),            // 6: content.base.frontend.v1.File
 }
 var file_content_service_service_frontend_file_v1_file_proto_depIdxs = []int32{
-	6, // 0: content.service.frontend.file.v1.GetFileRequest.file:type_name -> base.frontend.v1.File
+	6, // 0: content.service.frontend.file.v1.GetFileRequest.file:type_name -> content.base.frontend.v1.File
 	0, // 1: content.service.frontend.file.v1.FileService.Create:input_type -> content.service.frontend.file.v1.CreateFileRequest
 	2, // 2: content.service.frontend.file.v1.FileService.Get:input_type -> content.service.frontend.file.v1.GetFileRequest
 	4, // 3: content.service.frontend.file.v1.FileService.Delete:input_type -> content.service.frontend.file.v1.DeleteFileRequest
