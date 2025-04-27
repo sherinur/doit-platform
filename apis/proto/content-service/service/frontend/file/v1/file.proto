@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package content.service.frontend.file.v1;
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1;filev1";
+
+//------------------------
+// ContentFile service:
+//------------------------
+// Format: proto
+// client: frontend (web, native apps)
+// server: content-service
+// Access:
+//   gRPC
+//------------------------
+
+service FileService {
+    //------------------------
+    // Create: upload a file
+    //------------------------
+    rpc Create(CreateFileRequest) returns (CreateFileResponse);
+
+    //------------------------
+    // Get: get a file in bytes
+    //------------------------
+    rpc Get(GetFileRequest) returns (GetFileResponse);
+
+    //------------------------
+    // Delete: delete a file
+    //------------------------
+    rpc Delete(DeleteFileRequest) returns (DeleteFileResponse);
+}
+
+message CreateFileRequest {
+    bytes body = 1;
+    string type = 3;
+}
+
+message CreateFileResponse {
+    string url = 1;
+}
+
+message GetFileRequest {
+    string key = 1;
+}
+
+message GetFileResponse {
+    bytes body = 1;
+}
+
+message DeleteFileRequest {
+    string key = 1;
+}
+
+message DeleteFileResponse {}

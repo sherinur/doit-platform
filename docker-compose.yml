@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  s3-storage:
+    build: ./s3-storage/
+    ports: 
+      - "4400:4400"
