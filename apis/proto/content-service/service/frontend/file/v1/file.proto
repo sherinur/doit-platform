@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package content.service.frontend.file.v1;
 
+import "base/frontend/v1/file.proto";
+
 option go_package = "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1;filev1";
 
 //------------------------
@@ -41,7 +43,7 @@ message CreateFileResponse {
 }
 
 message GetFileRequest {
-    string key = 1;
+    base.frontend.v1.File file = 1;
 }
 
 message GetFileResponse {

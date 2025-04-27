@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package content.base.frontend.v1;
+package base.frontend.v1;
 
 option go_package = "github.com/sherinur/doit-platform/apis/gen/base/frontend/v1;frontendv1";
 

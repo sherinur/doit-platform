@@ -85,7 +85,7 @@ var File_base_frontend_v1_file_proto protoreflect.FileDescriptor
 
 const file_base_frontend_v1_file_proto_rawDesc = "" +
 	"\n" +
-	"\x1bbase/frontend/v1/file.proto\x12\x18content.base.frontend.v1\"B\n" +
+	"\x1bbase/frontend/v1/file.proto\x12\x10base.frontend.v1\"B\n" +
 	"\x04File\x12\x12\n" +
 	"\x04body\x18\x01 \x01(\fR\x04body\x12\x12\n" +
 	"\x04size\x18\x02 \x01(\x03R\x04size\x12\x12\n" +
@@ -105,7 +105,7 @@ func file_base_frontend_v1_file_proto_rawDescGZIP() []byte {
 
 var file_base_frontend_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_base_frontend_v1_file_proto_goTypes = []any{
-	(*File)(nil), // 0: content.base.frontend.v1.File
+	(*File)(nil), // 0: base.frontend.v1.File
 }
 var file_base_frontend_v1_file_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

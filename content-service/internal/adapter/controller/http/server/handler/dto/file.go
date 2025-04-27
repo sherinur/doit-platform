@@ -3,7 +3,7 @@ package dto
 import (
 	"io"
 
-	"content-service/internal/model"
+	"github.com/sherinur/doit-platform/content-service/internal/model"
 
 	"github.com/gin-gonic/gin"
 )

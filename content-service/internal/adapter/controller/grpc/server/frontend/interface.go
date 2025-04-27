@@ -3,7 +3,7 @@ package frontend
 import (
 	"context"
 
-	"content-service/internal/model"
+	"github.com/sherinur/doit-platform/content-service/internal/model"
 )
 
 type FileUsecase interface {
