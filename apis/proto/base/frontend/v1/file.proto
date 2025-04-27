@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package content.base.frontend.v1;
 
+option go_package = "github.com/sherinur/doit-platform/apis/gen/base/frontend/v1;frontendv1";
+
 message File {
   bytes body = 1;
   int64 size = 2;

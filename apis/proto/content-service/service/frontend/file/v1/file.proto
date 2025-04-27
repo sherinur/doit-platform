@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package content.service.frontend.file.v1;
 
+option go_package = "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1;filev1";
+
 //------------------------
 // ContentFile service:
 //------------------------
