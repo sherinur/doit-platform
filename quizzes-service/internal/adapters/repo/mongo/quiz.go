@@ -78,12 +78,11 @@ func (repo *QuizRepository) UpdateQuiz(ctx context.Context, quiz model.Quiz) err
 
 	update := bson.M{
 		"$set": bson.M{
-			"title":        quiz.Title,
-			"description":  quiz.Description,
-			"created_by":   quiz.CreatedBy,
-			"status":       quiz.Status,
-			"question_ids": quiz.QuestionIDs,
-			"updated_at":   time.Now(),
+			"title":       quiz.Title,
+			"description": quiz.Description,
+			"created_by":  quiz.CreatedBy,
+			"status":      quiz.Status,
+			"updated_at":  time.Now(),
 		},
 	}
 

@@ -11,7 +11,6 @@ type Quiz struct {
 	Description string    `bson:"description"`
 	CreatedBy   string    `bson:"created_by"`
 	Status      string    `bson:"status"`
-	QuestionIDs []string  `bson:"question_ids"`
 	CreatedAt   time.Time `bson:"created_at"`
 	UpdatedAt   time.Time `bson:"updated_at"`
 }
@@ -23,7 +22,6 @@ func FromQuiz(quiz model.Quiz) Quiz {
 		Description: quiz.Description,
 		CreatedBy:   quiz.CreatedBy,
 		Status:      quiz.Status,
-		QuestionIDs: quiz.QuestionIDs,
 		CreatedAt:   quiz.CreatedAt,
 		UpdatedAt:   quiz.UpdatedAt,
 	}
@@ -36,7 +34,6 @@ func ToQuiz(quiz Quiz) model.Quiz {
 		Description: quiz.Description,
 		CreatedBy:   quiz.CreatedBy,
 		Status:      quiz.Status,
-		QuestionIDs: quiz.QuestionIDs,
 		CreatedAt:   quiz.CreatedAt,
 		UpdatedAt:   quiz.UpdatedAt,
 	}

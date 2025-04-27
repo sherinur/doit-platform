@@ -8,7 +8,6 @@ type Quiz struct {
 	Description string
 	CreatedBy   string
 	Status      string
-	QuestionIDs []string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

@@ -15,7 +15,7 @@ type QuizRepo interface {
 
 type QuestionRepo interface {
 	CreateQuestion(ctx context.Context, quiz model.Question) (model.Question, error)
-	GetQuestionAll(ctx context.Context) ([]model.Question, error)
+	GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, error)
 	GetQuestionById(ctx context.Context, id string) (model.Question, error)
 	UpdateQuestion(ctx context.Context, quiz model.Question) error
 	DeleteQuestion(ctx context.Context, id string) error
@@ -23,7 +23,8 @@ type QuestionRepo interface {
 
 type AnswerRepo interface {
 	CreateAnswer(ctx context.Context, quiz model.Answer) (model.Answer, error)
-	GetAnswerAll(ctx context.Context) ([]model.Answer, error)
+	GetAnswersByQuestionId(ctx context.Context, id string) ([]model.Answer, error)
+	GetAnswersByQuestionIds(ctx context.Context, id []string) ([]model.Answer, error)
 	GetAnswerById(ctx context.Context, id string) (model.Answer, error)
 	UpdateAnswer(ctx context.Context, quiz model.Answer) error
 	DeleteAnswer(ctx context.Context, id string) error

@@ -6,15 +6,17 @@ import (
 )
 
 type QuizUsecase struct {
-	Repo QuizRepo
+	quizRepo     QuizRepo
+	questionRepo QuestionRepo
+	answerRepo   AnswerRepo
 }
 
-func NewQuizUsecase(repo QuizRepo) *QuizUsecase {
-	return &QuizUsecase{Repo: repo}
+func NewQuizUsecase(qrepo QuizRepo, queRepo QuestionRepo, arepo AnswerRepo) *QuizUsecase {
+	return &QuizUsecase{quizRepo: qrepo, questionRepo: queRepo, answerRepo: arepo}
 }
 
 func (uc QuizUsecase) CreateQuiz(ctx context.Context, request model.Quiz) (model.Quiz, error) {
-	res, err := uc.Repo.CreateQuiz(ctx, request)
+	res, err := uc.quizRepo.CreateQuiz(ctx, request)
 	if err != nil {
 		return model.Quiz{}, err
 	}
@@ -22,26 +24,29 @@ func (uc QuizUsecase) CreateQuiz(ctx context.Context, request model.Quiz) (model
 	return res, nil
 }
 
-func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, error) {
-	res, err := uc.Repo.GetQuizById(ctx, id)
+func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, []model.Question, []model.Answer, error) {
+	quiz, err := uc.quizRepo.GetQuizById(ctx, id)
 	if err != nil {
-		return model.Quiz{}, err
+		return model.Quiz{}, nil, nil, err
 	}
 
-	return res, nil
-}
-
-func (uc QuizUsecase) GetQuizAll(ctx context.Context) ([]model.Quiz, error) {
-	res, err := uc.Repo.GetQuizAll(ctx)
+	questions, err := uc.questionRepo.GetQuestionsByQuizId(ctx, id)
 	if err != nil {
-		return nil, err
+		return model.Quiz{}, nil, nil, err
 	}
 
-	return res, nil
+	questionIds := make([]string, len(questions))
+	for _, question := range questions {
+		questionIds = append(questionIds, question.ID)
+	}
+
+	answers, err := uc.answerRepo.GetAnswersByQuestionIds(ctx, questionIds)
+
+	return quiz, questions, answers, nil
 }
 
 func (uc QuizUsecase) UpdateQuiz(ctx context.Context, request model.Quiz) (model.Quiz, error) {
-	err := uc.Repo.UpdateQuiz(ctx, request)
+	err := uc.quizRepo.UpdateQuiz(ctx, request)
 	if err != nil {
 		return model.Quiz{}, err
 	}
@@ -52,7 +57,7 @@ func (uc QuizUsecase) UpdateQuiz(ctx context.Context, request model.Quiz) (model
 }
 
 func (uc QuizUsecase) DeleteQuiz(ctx context.Context, id string) (model.Quiz, error) {
-	err := uc.Repo.DeleteQuiz(ctx, id)
+	err := uc.quizRepo.DeleteQuiz(ctx, id)
 	if err != nil {
 		return model.Quiz{}, err
 	}

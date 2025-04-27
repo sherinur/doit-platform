@@ -7,12 +7,20 @@ import (
 )
 
 type AnswerRequest struct {
-	Text      string `json:"text"`
-	IsCorrect bool   `json:"is_correct"`
+	Text       string `json:"text"`
+	IsCorrect  bool   `json:"is_correct"`
+	QuestionID string `json:"question_id"`
 }
 
 type AnswerResponse struct {
 	ID string `json:"id"`
+}
+
+type AnswerGetResponse struct {
+	ID         string `json:"id"`
+	Text       string `json:"text"`
+	IsCorrect  bool   `json:"is_correct"`
+	QuestionID string `json:"question_id"`
 }
 
 func FromAnswerCreateRequest(ctx *gin.Context) (model.Answer, error) {
@@ -24,8 +32,9 @@ func FromAnswerCreateRequest(ctx *gin.Context) (model.Answer, error) {
 	}
 
 	return model.Answer{
-		Text:      answer.Text,
-		IsCorrect: answer.IsCorrect,
+		Text:       answer.Text,
+		IsCorrect:  answer.IsCorrect,
+		QuestionID: answer.QuestionID,
 	}, nil
 }
 
@@ -38,8 +47,9 @@ func FromAnswerUpdateRequest(ctx *gin.Context) (model.Answer, error) {
 	}
 
 	return model.Answer{
-		Text:      answer.Text,
-		IsCorrect: answer.IsCorrect,
+		Text:       answer.Text,
+		IsCorrect:  answer.IsCorrect,
+		QuestionID: answer.QuestionID,
 	}, nil
 }
 
@@ -47,4 +57,23 @@ func ToAnswerResponse(answer model.Answer) AnswerResponse {
 	return AnswerResponse{
 		ID: answer.ID,
 	}
+}
+
+func ToAnswerGetResponse(answer model.Answer) AnswerGetResponse {
+	return AnswerGetResponse{
+		ID:         answer.ID,
+		Text:       answer.Text,
+		IsCorrect:  answer.IsCorrect,
+		QuestionID: answer.QuestionID,
+	}
+}
+
+func ToAnswerGetAllResponse(answers []model.Answer) []AnswerGetResponse {
+	answerList := make([]AnswerGetResponse, 0, len(answers))
+
+	for _, answer := range answers {
+		answerList = append(answerList, ToAnswerGetResponse(answer))
+	}
+
+	return answerList
 }

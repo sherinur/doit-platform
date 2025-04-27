@@ -49,8 +49,32 @@ func (repo *AnswerRepository) GetAnswerById(ctx context.Context, id string) (mod
 	return dao.ToAnswer(answer), nil
 }
 
-func (repo *AnswerRepository) GetAnswerAll(ctx context.Context) ([]model.Answer, error) {
-	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, bson.M{})
+func (repo *AnswerRepository) GetAnswersByQuestionId(ctx context.Context, id string) ([]model.Answer, error) {
+	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, bson.M{"question_id": id})
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch Answers: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	var answers []dao.Answer
+	if err = cursor.All(ctx, &answers); err != nil {
+		return nil, fmt.Errorf("failed to decode Answers: %w", err)
+	}
+
+	var result []model.Answer
+	for _, answer := range answers {
+		result = append(result, dao.ToAnswer(answer))
+	}
+
+	return result, nil
+}
+
+func (repo *AnswerRepository) GetAnswersByQuestionIds(ctx context.Context, ids []string) ([]model.Answer, error) {
+	filter := bson.M{
+		"question_id": bson.M{"$in": ids},
+	}
+
+	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, filter)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch Answers: %w", err)
 	}
@@ -79,6 +103,7 @@ func (repo *AnswerRepository) UpdateAnswer(ctx context.Context, answer model.Ans
 		"$set": bson.M{
 			"text":        answer.Text,
 			"description": answer.IsCorrect,
+			"question_id": answer.QuestionID,
 		},
 	}
 

@@ -49,8 +49,8 @@ func (repo *QuestionRepository) GetQuestionById(ctx context.Context, id string) 
 	return dao.ToQuestion(question), nil
 }
 
-func (repo *QuestionRepository) GetQuestionAll(ctx context.Context) ([]model.Question, error) {
-	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, bson.M{})
+func (repo *QuestionRepository) GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, error) {
+	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, bson.M{"quiz_id": id})
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch Questions: %w", err)
 	}
@@ -77,9 +77,9 @@ func (repo *QuestionRepository) UpdateQuestion(ctx context.Context, question mod
 
 	update := bson.M{
 		"$set": bson.M{
-			"text":       question.Text,
-			"type":       question.Type,
-			"answer_ids": question.AnswerIDs,
+			"text":    question.Text,
+			"type":    question.Type,
+			"quiz_id": question.QuizID,
 		},
 	}
 

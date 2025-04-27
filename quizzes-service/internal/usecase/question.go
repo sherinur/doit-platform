@@ -6,15 +6,16 @@ import (
 )
 
 type QuestionUsecase struct {
-	Repo QuestionRepo
+	questionRepo QuestionRepo
+	answerRepo   AnswerRepo
 }
 
-func NewQuestionUsecase(repo QuestionRepo) *QuestionUsecase {
-	return &QuestionUsecase{Repo: repo}
+func NewQuestionUsecase(qrepo QuestionRepo, arepo AnswerRepo) *QuestionUsecase {
+	return &QuestionUsecase{questionRepo: qrepo, answerRepo: arepo}
 }
 
 func (uc QuestionUsecase) CreateQuestion(ctx context.Context, request model.Question) (model.Question, error) {
-	res, err := uc.Repo.CreateQuestion(ctx, request)
+	res, err := uc.questionRepo.CreateQuestion(ctx, request)
 	if err != nil {
 		return model.Question{}, err
 	}
@@ -22,26 +23,38 @@ func (uc QuestionUsecase) CreateQuestion(ctx context.Context, request model.Ques
 	return res, nil
 }
 
-func (uc QuestionUsecase) GetQuestionById(ctx context.Context, id string) (model.Question, error) {
-	res, err := uc.Repo.GetQuestionById(ctx, id)
+func (uc QuestionUsecase) GetQuestionById(ctx context.Context, id string) (model.Question, []model.Answer, error) {
+	question, err := uc.questionRepo.GetQuestionById(ctx, id)
 	if err != nil {
-		return model.Question{}, err
+		return model.Question{}, nil, err
 	}
 
-	return res, nil
+	answers, err := uc.answerRepo.GetAnswersByQuestionId(ctx, id)
+	if err != nil {
+		return model.Question{}, nil, err
+	}
+
+	return question, answers, nil
 }
 
-func (uc QuestionUsecase) GetQuestionAll(ctx context.Context) ([]model.Question, error) {
-	res, err := uc.Repo.GetQuestionAll(ctx)
+func (uc QuestionUsecase) GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, []model.Answer, error) {
+	questions, err := uc.questionRepo.GetQuestionsByQuizId(ctx, id)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return res, nil
+	questionIds := make([]string, len(questions))
+	for _, question := range questions {
+		questionIds = append(questionIds, question.ID)
+	}
+
+	answers, err := uc.answerRepo.GetAnswersByQuestionIds(ctx, questionIds)
+
+	return questions, answers, nil
 }
 
 func (uc QuestionUsecase) UpdateQuestion(ctx context.Context, request model.Question) (model.Question, error) {
-	err := uc.Repo.UpdateQuestion(ctx, request)
+	err := uc.questionRepo.UpdateQuestion(ctx, request)
 	if err != nil {
 		return model.Question{}, err
 	}
@@ -52,7 +65,7 @@ func (uc QuestionUsecase) UpdateQuestion(ctx context.Context, request model.Ques
 }
 
 func (uc QuestionUsecase) DeleteQuestion(ctx context.Context, id string) (model.Question, error) {
-	err := uc.Repo.DeleteQuestion(ctx, id)
+	err := uc.questionRepo.DeleteQuestion(ctx, id)
 	if err != nil {
 		return model.Question{}, err
 	}

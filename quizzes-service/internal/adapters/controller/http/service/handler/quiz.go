@@ -40,23 +40,13 @@ func (h *QuizHandler) GetQuizById(ctx *gin.Context) {
 		return
 	}
 
-	quiz, err := h.UseCase.GetQuizById(ctx, id)
+	quiz, questions, answers, err := h.UseCase.GetQuizById(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, quiz)
-}
-
-func (h *QuizHandler) GetQuizAll(ctx *gin.Context) {
-	quizzes, err := h.UseCase.GetQuizAll(ctx)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, quizzes)
+	ctx.JSON(http.StatusOK, dto.ToQuizGetResponse(quiz, questions, answers))
 }
 
 func (h *QuizHandler) UpdateQuiz(ctx *gin.Context) {

@@ -49,8 +49,14 @@ func (h *AnswerHandler) GetAnswerById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, answer)
 }
 
-func (h *AnswerHandler) GetAnswerAll(ctx *gin.Context) {
-	answers, err := h.UseCase.GetAnswerAll(ctx)
+func (h *AnswerHandler) GetAnswersByQuestionId(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad request"})
+		return
+	}
+	
+	answers, err := h.UseCase.GetAnswersByQuestionId(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

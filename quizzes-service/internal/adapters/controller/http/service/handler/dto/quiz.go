@@ -8,15 +8,25 @@ import (
 )
 
 type QuizRequest struct {
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	CreatedBy   string   `json:"created_by"`
-	Status      string   `json:"status"`
-	QuestionIDs []string `json:"question_ids"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	CreatedBy   string `json:"created_by"`
+	Status      string `json:"status"`
 }
 
 type QuizResponse struct {
 	ID string `json:"id"`
+}
+
+type QuizGetResponse struct {
+	ID          string                `json:"id"`
+	Title       string                `json:"title"`
+	Description string                `json:"description"`
+	CreatedBy   string                `json:"created_by"`
+	Status      string                `json:"status"`
+	Questions   []QuestionGetResponse `json:"questions"`
+	CreatedAt   time.Time             `json:"created_at"`
+	UpdatedAt   time.Time             `json:"updated_at"`
 }
 
 func FromQuizCreateRequest(ctx *gin.Context) (model.Quiz, error) {
@@ -32,7 +42,6 @@ func FromQuizCreateRequest(ctx *gin.Context) (model.Quiz, error) {
 		Description: quiz.Description,
 		CreatedBy:   quiz.CreatedBy,
 		Status:      quiz.Status,
-		QuestionIDs: quiz.QuestionIDs,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
 	}, nil
@@ -51,7 +60,6 @@ func FromQuizUpdateRequest(ctx *gin.Context) (model.Quiz, error) {
 		Description: quiz.Description,
 		CreatedBy:   quiz.CreatedBy,
 		Status:      quiz.Status,
-		QuestionIDs: quiz.QuestionIDs,
 		UpdatedAt:   time.Now(),
 	}, nil
 }
@@ -59,5 +67,18 @@ func FromQuizUpdateRequest(ctx *gin.Context) (model.Quiz, error) {
 func ToQuizResponse(quiz model.Quiz) QuizResponse {
 	return QuizResponse{
 		ID: quiz.ID,
+	}
+}
+
+func ToQuizGetResponse(quiz model.Quiz, question []model.Question, answers []model.Answer) QuizGetResponse {
+	return QuizGetResponse{
+		ID:          quiz.ID,
+		Title:       quiz.Title,
+		Description: quiz.Description,
+		CreatedBy:   quiz.CreatedBy,
+		Status:      quiz.Status,
+		Questions:   ToQuestionGetAllResponse(question, answers),
+		CreatedAt:   quiz.CreatedAt,
+		UpdatedAt:   quiz.UpdatedAt,
 	}
 }

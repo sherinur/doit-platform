@@ -63,7 +63,6 @@ func (a *API) setupRoutes() {
 		{
 			quizzes.POST("/", a.QuizHandler.CreateQuiz)
 			quizzes.GET("/:id", a.QuizHandler.GetQuizById)
-			quizzes.GET("/", a.QuizHandler.GetQuizAll)
 			quizzes.PUT("/:id", a.QuizHandler.UpdateQuiz)
 			quizzes.DELETE("/:id", a.QuizHandler.DeleteQuiz)
 		}
@@ -71,8 +70,8 @@ func (a *API) setupRoutes() {
 		questions := v1.Group("/questions")
 		{
 			questions.POST("/", a.QuestionHandler.CreateQuestion)
-			questions.GET("/:id", a.QuestionHandler.GetQuestionById)
-			questions.GET("/", a.QuestionHandler.GetQuestionAll)
+			questions.GET("/one/:id", a.QuestionHandler.GetQuestionById)
+			questions.GET("/:id", a.QuestionHandler.GetQuestionsByQuizId)
 			questions.PUT("/:id", a.QuestionHandler.UpdateQuestion)
 			questions.DELETE("/:id", a.QuestionHandler.DeleteQuestion)
 		}
@@ -80,8 +79,8 @@ func (a *API) setupRoutes() {
 		answers := v1.Group("/answers")
 		{
 			answers.POST("/", a.AnswerHandler.CreateAnswer)
-			answers.GET("/:id", a.AnswerHandler.GetAnswerById)
-			answers.GET("/", a.AnswerHandler.GetAnswerAll)
+			answers.GET("/one/:id", a.AnswerHandler.GetAnswerById)
+			answers.GET("/:id", a.AnswerHandler.GetAnswersByQuestionId)
 			answers.PUT("/:id", a.AnswerHandler.UpdateAnswer)
 			answers.DELETE("/:id", a.AnswerHandler.DeleteAnswer)
 		}

@@ -31,8 +31,8 @@ func (uc AnswerUsecase) GetAnswerById(ctx context.Context, id string) (model.Ans
 	return res, nil
 }
 
-func (uc AnswerUsecase) GetAnswerAll(ctx context.Context) ([]model.Answer, error) {
-	res, err := uc.Repo.GetAnswerAll(ctx)
+func (uc AnswerUsecase) GetAnswersByQuestionId(ctx context.Context, id string) ([]model.Answer, error) {
+	res, err := uc.Repo.GetAnswersByQuestionId(ctx, id)
 	if err != nil {
 		return nil, err
 	}
