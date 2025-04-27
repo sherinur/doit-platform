@@ -44,7 +44,7 @@ func (repo *QuizRepository) GetQuizById(ctx context.Context, id string) (model.Q
 	var quiz dao.Quiz
 	err = repo.conn.Collection(repo.collection).FindOne(ctx, bson.M{"_id": objID}).Decode(&quiz)
 	if err != nil {
-		return model.Quiz{}, fmt.Errorf("TV with ID %s has not been found: %w", id, err)
+		return model.Quiz{}, fmt.Errorf("quiz with ID %s has not been found: %w", id, err)
 	}
 
 	return dao.ToQuiz(quiz), nil
@@ -53,13 +53,13 @@ func (repo *QuizRepository) GetQuizById(ctx context.Context, id string) (model.Q
 func (repo *QuizRepository) GetQuizAll(ctx context.Context) ([]model.Quiz, error) {
 	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, bson.M{})
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch TVs: %w", err)
+		return nil, fmt.Errorf("failed to fetch Quizzes: %w", err)
 	}
 	defer cursor.Close(ctx)
 
 	var quizzes []dao.Quiz
 	if err = cursor.All(ctx, &quizzes); err != nil {
-		return nil, fmt.Errorf("failed to decode TVs: %w", err)
+		return nil, fmt.Errorf("failed to decode Quizzes: %w", err)
 	}
 
 	var result []model.Quiz
@@ -107,10 +107,10 @@ func (repo *QuizRepository) DeleteQuiz(ctx context.Context, id string) error {
 
 	result, err := repo.conn.Collection(repo.collection).DeleteOne(ctx, bson.M{"_id": objID})
 	if err != nil {
-		return fmt.Errorf("failed to delete TV with ID %d: %w", id, err)
+		return fmt.Errorf("failed to delete Quiz with ID %d: %w", id, err)
 	}
 	if result.DeletedCount == 0 {
-		return fmt.Errorf("TV with ID %d not found", id)
+		return fmt.Errorf("quiz with ID %d not found", id)
 	}
 	return nil
 }

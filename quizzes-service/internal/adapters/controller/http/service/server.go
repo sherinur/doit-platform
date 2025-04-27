@@ -23,10 +23,12 @@ type API struct {
 	cfg    config.HTTPServer
 	addr   string
 
-	QuizHandler *handler.QuizHandler
+	QuizHandler     *handler.QuizHandler
+	QuestionHandler *handler.QuestionHandler
+	AnswerHandler   *handler.AnswerHandler
 }
 
-func New(cfg config.Server, quizUseCase QuizUseCase) *API {
+func New(cfg config.Server, quizUseCase QuizUseCase, questionUseCase QuestionUseCase, answerUseCase AnswerUseCase) *API {
 	// Setting the Gin mode
 	gin.SetMode(cfg.HttpServer.Mode)
 	// Creating a new Gin Engine
@@ -37,12 +39,16 @@ func New(cfg config.Server, quizUseCase QuizUseCase) *API {
 
 	// Binding clients
 	quizHandler := handler.NewQuizHandler(quizUseCase)
+	questionHandler := handler.NewQuestionHandler(questionUseCase)
+	answerHandler := handler.NewAnswerHandler(answerUseCase)
 
 	api := &API{
-		server:      server,
-		cfg:         cfg.HttpServer,
-		addr:        fmt.Sprintf(serverIPAddress, cfg.HttpServer.Port),
-		QuizHandler: quizHandler,
+		server:          server,
+		cfg:             cfg.HttpServer,
+		addr:            fmt.Sprintf(serverIPAddress, cfg.HttpServer.Port),
+		QuizHandler:     quizHandler,
+		QuestionHandler: questionHandler,
+		AnswerHandler:   answerHandler,
 	}
 
 	api.setupRoutes()
@@ -53,13 +59,31 @@ func New(cfg config.Server, quizUseCase QuizUseCase) *API {
 func (a *API) setupRoutes() {
 	v1 := a.server.Group("/api/v1")
 	{
-		tv := v1.Group("/quizzes")
+		quizzes := v1.Group("/quizzes")
 		{
-			tv.POST("/", a.QuizHandler.CreateQuiz)
-			tv.GET("/:id", a.QuizHandler.GetQuizById)
-			tv.GET("/", a.QuizHandler.GetQuizAll)
-			tv.PUT("/:id", a.QuizHandler.UpdateQuiz)
-			tv.DELETE("/:id", a.QuizHandler.DeleteQuiz)
+			quizzes.POST("/", a.QuizHandler.CreateQuiz)
+			quizzes.GET("/:id", a.QuizHandler.GetQuizById)
+			quizzes.GET("/", a.QuizHandler.GetQuizAll)
+			quizzes.PUT("/:id", a.QuizHandler.UpdateQuiz)
+			quizzes.DELETE("/:id", a.QuizHandler.DeleteQuiz)
+		}
+
+		questions := v1.Group("/questions")
+		{
+			questions.POST("/", a.QuestionHandler.CreateQuestion)
+			questions.GET("/:id", a.QuestionHandler.GetQuestionById)
+			questions.GET("/", a.QuestionHandler.GetQuestionAll)
+			questions.PUT("/:id", a.QuestionHandler.UpdateQuestion)
+			questions.DELETE("/:id", a.QuestionHandler.DeleteQuestion)
+		}
+
+		answers := v1.Group("/answers")
+		{
+			answers.POST("/", a.AnswerHandler.CreateAnswer)
+			answers.GET("/:id", a.AnswerHandler.GetAnswerById)
+			answers.GET("/", a.AnswerHandler.GetAnswerAll)
+			answers.PUT("/:id", a.AnswerHandler.UpdateAnswer)
+			answers.DELETE("/:id", a.AnswerHandler.DeleteAnswer)
 		}
 	}
 }

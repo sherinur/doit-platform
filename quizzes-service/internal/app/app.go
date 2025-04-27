@@ -32,12 +32,16 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 
 	// Repository
 	quizRepo := mongorepo.NewQuizRepository(mongoDB.Conn)
+	questionRepo := mongorepo.NewQuestionRepository(mongoDB.Conn)
+	answerRepo := mongorepo.NewAnswerRepository(mongoDB.Conn)
 
 	// UseCase
 	QuizUseCase := usecase.NewQuizUsecase(quizRepo)
+	QuestionUseCase := usecase.NewQuestionUsecase(questionRepo)
+	AnswerUseCase := usecase.NewAnswerUsecase(answerRepo)
 
 	// http server
-	httpServer := httpservice.New(cfg.Server, QuizUseCase)
+	httpServer := httpservice.New(cfg.Server, QuizUseCase, QuestionUseCase, AnswerUseCase)
 
 	app := &App{
 		httpServer: httpServer,

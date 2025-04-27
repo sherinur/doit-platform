@@ -7,3 +7,11 @@ import (
 type QuizUseCase interface {
 	handler.QuizUseCase
 }
+
+type QuestionUseCase interface {
+	handler.QuestionUseCase
+}
+
+type AnswerUseCase interface {
+	handler.AnswerUseCase
+}
