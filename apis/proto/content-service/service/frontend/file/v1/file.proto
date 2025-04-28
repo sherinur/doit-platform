@@ -43,11 +43,11 @@ message CreateFileResponse {
 }
 
 message GetFileRequest {
-    base.frontend.v1.File file = 1;
+    string key = 1;
 }
 
 message GetFileResponse {
-    bytes body = 1;
+    base.frontend.v1.File file = 1;
 }
 
 message DeleteFileRequest {

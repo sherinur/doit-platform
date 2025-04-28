@@ -6,7 +6,7 @@ require (
 	github.com/caarlos0/env/v7 v7.1.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/joho/godotenv v1.5.1
-	github.com/sherinur/doit-platform v0.0.0-20250427164118-5c8322aae90e
+	github.com/sherinur/doit-platform v0.0.0-20250428171651-60f519755543
 	google.golang.org/grpc v1.72.0
 )
 
