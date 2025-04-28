@@ -19,7 +19,7 @@ type (
 	}
 
 	GRPCServer struct {
-		Port                  int16         `env:"GRPC_PORT,notEmpty"`
+		Port                  int32         `env:"GRPC_PORT,notEmpty"`
 		MaxRecvMsgSizeMiB     int           `env:"GRPC_MAX_MESSAGE_SIZE_MIB" envDefault:"12"`
 		MaxConnectionAge      time.Duration `env:"GRPC_MAX_CONNECTION_AGE" envDefault:"30s"`
 		MaxConnectionAgeGrace time.Duration `env:"GRPC_MAX_CONNECTION_AGE_GRACE" envDefault:"10s"`
