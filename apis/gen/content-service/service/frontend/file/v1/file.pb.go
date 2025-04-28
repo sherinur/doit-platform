@@ -4,7 +4,7 @@
 // 	protoc        v3.21.12
 // source: content-service/service/frontend/file/v1/file.proto
 
-package filev1
+package filesvc
 
 import (
 	v1 "github.com/sherinur/doit-platform/apis/gen/base/frontend/v1"
@@ -306,7 +306,7 @@ const file_content_service_service_frontend_file_v1_file_proto_rawDesc = "" +
 	"\vFileService\x12s\n" +
 	"\x06Create\x123.content.service.frontend.file.v1.CreateFileRequest\x1a4.content.service.frontend.file.v1.CreateFileResponse\x12j\n" +
 	"\x03Get\x120.content.service.frontend.file.v1.GetFileRequest\x1a1.content.service.frontend.file.v1.GetFileResponse\x12s\n" +
-	"\x06Delete\x123.content.service.frontend.file.v1.DeleteFileRequest\x1a4.content.service.frontend.file.v1.DeleteFileResponseB\\ZZgithub.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1;filev1b\x06proto3"
+	"\x06Delete\x123.content.service.frontend.file.v1.DeleteFileRequest\x1a4.content.service.frontend.file.v1.DeleteFileResponseB]Z[github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1;filesvcb\x06proto3"
 
 var (
 	file_content_service_service_frontend_file_v1_file_proto_rawDescOnce sync.Once

@@ -35,7 +35,7 @@ func (f *File) Get(ctx context.Context, req *svc.GetFileRequest) (*svc.GetFileRe
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &svc.GetFileResponse{}, nil
+	return &svc.GetFileResponse{Body: file.Body}, nil
 }
 
 func (f *File) Delete(ctx context.Context, req *svc.DeleteFileRequest) (*svc.DeleteFileResponse, error) {

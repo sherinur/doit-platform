@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: content-service/service/frontend/file/v1/file.proto
 
-package filev1
+package filesvc
 
 import (
 	context "context"
