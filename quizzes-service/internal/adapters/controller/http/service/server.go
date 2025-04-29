@@ -23,12 +23,13 @@ type API struct {
 	cfg    config.HTTPServer
 	addr   string
 
+	ResultHandler   *handler.ResultHandler
 	QuizHandler     *handler.QuizHandler
 	QuestionHandler *handler.QuestionHandler
 	AnswerHandler   *handler.AnswerHandler
 }
 
-func New(cfg config.Server, quizUseCase QuizUseCase, questionUseCase QuestionUseCase, answerUseCase AnswerUseCase) *API {
+func New(cfg config.Server, resultUseCase ResultUseCase, quizUseCase QuizUseCase, questionUseCase QuestionUseCase, answerUseCase AnswerUseCase) *API {
 	// Setting the Gin mode
 	gin.SetMode(cfg.HttpServer.Mode)
 	// Creating a new Gin Engine
@@ -38,6 +39,7 @@ func New(cfg config.Server, quizUseCase QuizUseCase, questionUseCase QuestionUse
 	server.Use(gin.Recovery())
 
 	// Binding clients
+	resultHandler := handler.NewResultHandler(resultUseCase)
 	quizHandler := handler.NewQuizHandler(quizUseCase)
 	questionHandler := handler.NewQuestionHandler(questionUseCase)
 	answerHandler := handler.NewAnswerHandler(answerUseCase)
@@ -46,6 +48,7 @@ func New(cfg config.Server, quizUseCase QuizUseCase, questionUseCase QuestionUse
 		server:          server,
 		cfg:             cfg.HttpServer,
 		addr:            fmt.Sprintf(serverIPAddress, cfg.HttpServer.Port),
+		ResultHandler:   resultHandler,
 		QuizHandler:     quizHandler,
 		QuestionHandler: questionHandler,
 		AnswerHandler:   answerHandler,
@@ -83,6 +86,15 @@ func (a *API) setupRoutes() {
 			answers.GET("/question/:id", a.AnswerHandler.GetAnswersByQuestionId)
 			answers.PUT("/:id", a.AnswerHandler.UpdateAnswer)
 			answers.DELETE("/:id", a.AnswerHandler.DeleteAnswer)
+		}
+
+		result := v1.Group("/result")
+		{
+			result.POST("/", a.ResultHandler.CreateResult)
+			result.GET("/:id", a.ResultHandler.GetResultById)
+			result.GET("/quiz/:id", a.ResultHandler.GetResultsByQuizId)
+			result.GET("/user/:id", a.ResultHandler.GetResultsByUserId)
+			result.DELETE("/:id", a.ResultHandler.DeleteResult)
 		}
 	}
 }

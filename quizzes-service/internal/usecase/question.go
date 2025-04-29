@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"quizzes-service/internal/model"
 )
 
@@ -20,11 +19,6 @@ func (uc QuestionUsecase) CreateQuestion(ctx context.Context, request model.Ques
 	res, err := uc.questionRepo.CreateQuestion(ctx, request)
 	if err != nil {
 		return model.Question{}, err
-	}
-
-	err = uc.quizRepo.ChangeTotalPointsQuiz(ctx, request.QuizID, request.Points)
-	if err != nil {
-		return model.Question{}, fmt.Errorf("error updating quiz total points quiz: %w", err)
 	}
 
 	return res, nil
@@ -75,26 +69,9 @@ func (uc QuestionUsecase) GetQuestionsByQuizId(ctx context.Context, id string) (
 }
 
 func (uc QuestionUsecase) UpdateQuestion(ctx context.Context, request model.Question) (model.Question, error) {
-	oldQuestion, err := uc.questionRepo.GetQuestionById(ctx, request.ID)
+	err := uc.questionRepo.UpdateQuestion(ctx, request)
 	if err != nil {
 		return model.Question{}, err
-	}
-
-	err = uc.questionRepo.UpdateQuestion(ctx, request)
-	if err != nil {
-		return model.Question{}, err
-	}
-
-	if oldQuestion.QuizID != request.QuizID {
-		err = uc.quizRepo.ChangeTotalPointsQuiz(ctx, oldQuestion.QuizID, 0-request.Points)
-		if err != nil {
-			return model.Question{}, fmt.Errorf("error updating quiz total points quiz: %w", err)
-		}
-
-		err = uc.quizRepo.ChangeTotalPointsQuiz(ctx, request.QuizID, request.Points)
-		if err != nil {
-			return model.Question{}, fmt.Errorf("error updating quiz total points quiz: %w", err)
-		}
 	}
 
 	return model.Question{
@@ -103,19 +80,9 @@ func (uc QuestionUsecase) UpdateQuestion(ctx context.Context, request model.Ques
 }
 
 func (uc QuestionUsecase) DeleteQuestion(ctx context.Context, id string) (model.Question, error) {
-	question, err := uc.questionRepo.GetQuestionById(ctx, id)
+	err := uc.questionRepo.DeleteQuestion(ctx, id)
 	if err != nil {
 		return model.Question{}, err
-	}
-
-	err = uc.questionRepo.DeleteQuestion(ctx, id)
-	if err != nil {
-		return model.Question{}, err
-	}
-
-	err = uc.quizRepo.ChangeTotalPointsQuiz(ctx, question.QuizID, 0-question.Points)
-	if err != nil {
-		return model.Question{}, fmt.Errorf("error updating quiz total points quiz: %w", err)
 	}
 
 	return model.Question{ID: id}, nil

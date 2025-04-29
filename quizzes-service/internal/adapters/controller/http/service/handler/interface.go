@@ -27,3 +27,11 @@ type AnswerUseCase interface {
 	UpdateAnswer(ctx context.Context, request model.Answer) (model.Answer, error)
 	DeleteAnswer(ctx context.Context, id string) (model.Answer, error)
 }
+
+type ResultUseCase interface {
+	CreateResult(ctx context.Context, request model.Result) (model.Result, error)
+	GetResultById(ctx context.Context, id string) (model.Result, error)
+	GetResultsByQuizId(ctx context.Context, id string) ([]model.Result, error)
+	GetResultsByUserId(ctx context.Context, id string) ([]model.Result, error)
+	DeleteResult(ctx context.Context, id string) (model.Result, error)
+}

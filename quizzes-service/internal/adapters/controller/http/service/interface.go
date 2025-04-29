@@ -15,3 +15,7 @@ type QuestionUseCase interface {
 type AnswerUseCase interface {
 	handler.AnswerUseCase
 }
+
+type ResultUseCase interface {
+	handler.ResultUseCase
+}

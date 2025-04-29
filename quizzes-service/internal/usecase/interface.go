@@ -14,18 +14,26 @@ type QuizRepo interface {
 }
 
 type QuestionRepo interface {
-	CreateQuestion(ctx context.Context, quiz model.Question) (model.Question, error)
+	CreateQuestion(ctx context.Context, question model.Question) (model.Question, error)
 	GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, error)
 	GetQuestionById(ctx context.Context, id string) (model.Question, error)
-	UpdateQuestion(ctx context.Context, quiz model.Question) error
+	UpdateQuestion(ctx context.Context, question model.Question) error
 	DeleteQuestion(ctx context.Context, id string) error
 }
 
 type AnswerRepo interface {
-	CreateAnswer(ctx context.Context, quiz model.Answer) (model.Answer, error)
+	CreateAnswer(ctx context.Context, answer model.Answer) (model.Answer, error)
 	GetAnswersByQuestionId(ctx context.Context, id string) ([]model.Answer, error)
 	GetAnswersByQuestionIds(ctx context.Context, id []string) ([]model.Answer, error)
 	GetAnswerById(ctx context.Context, id string) (model.Answer, error)
-	UpdateAnswer(ctx context.Context, quiz model.Answer) error
+	UpdateAnswer(ctx context.Context, answer model.Answer) error
 	DeleteAnswer(ctx context.Context, id string) error
+}
+
+type ResultRepo interface {
+	CreateResult(ctx context.Context, result model.Result) (model.Result, error)
+	GetResultById(ctx context.Context, id string) (model.Result, error)
+	GetResultsByQuizId(ctx context.Context, id string) ([]model.Result, error)
+	GetResultsByUserId(ctx context.Context, id string) ([]model.Result, error)
+	DeleteResult(ctx context.Context, id string) error
 }

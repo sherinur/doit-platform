@@ -30,6 +30,7 @@ func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, e
 		return model.Quiz{}, err
 	}
 
+	totalPoints := 0.0
 	questions, err := uc.questionRepo.GetQuestionsByQuizId(ctx, id)
 	if err != nil {
 		return model.Quiz{}, err
@@ -38,6 +39,7 @@ func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, e
 	questionIds := make([]string, len(questions))
 	for _, question := range questions {
 		questionIds = append(questionIds, question.ID)
+		totalPoints += question.Points
 	}
 
 	answers, err := uc.answerRepo.GetAnswersByQuestionIds(ctx, questionIds)
@@ -52,6 +54,12 @@ func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, e
 	}
 
 	quiz.Questions = questions
+
+	err = uc.quizRepo.UpdateQuiz(ctx, model.Quiz{ID: id, TotalPoints: totalPoints})
+	if err != nil {
+		return model.Quiz{}, err
+	}
+	quiz.TotalPoints = totalPoints
 
 	return quiz, nil
 }

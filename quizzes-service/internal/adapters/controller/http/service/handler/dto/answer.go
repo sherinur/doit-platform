@@ -19,7 +19,6 @@ type AnswerResponse struct {
 type AnswerGetResponse struct {
 	ID         string `json:"id"`
 	Text       string `json:"text"`
-	IsCorrect  bool   `json:"is_correct"`
 	QuestionID string `json:"question_id"`
 }
 
@@ -63,7 +62,6 @@ func ToAnswerGetResponse(answer model.Answer) AnswerGetResponse {
 	return AnswerGetResponse{
 		ID:         answer.ID,
 		Text:       answer.Text,
-		IsCorrect:  answer.IsCorrect,
 		QuestionID: answer.QuestionID,
 	}
 }
