@@ -7,9 +7,10 @@ import (
 )
 
 type QuestionRequest struct {
-	Text   string `json:"text"`
-	Type   string `json:"type"`
-	QuizID string `json:"quiz_id"`
+	Text   string  `json:"text"`
+	Type   string  `json:"type"`
+	Points float64 `json:"points"`
+	QuizID string  `json:"quiz_id"`
 }
 
 type QuestionResponse struct {
@@ -21,6 +22,7 @@ type QuestionGetResponse struct {
 	Text    string              `json:"text"`
 	Type    string              `json:"type"`
 	QuizID  string              `json:"quiz_id"`
+	Points  float64             `json:"points"`
 	Answers []AnswerGetResponse `json:"answers"`
 }
 
@@ -35,6 +37,7 @@ func FromQuestionCreateRequest(ctx *gin.Context) (model.Question, error) {
 	return model.Question{
 		Text:   question.Text,
 		Type:   question.Type,
+		Points: question.Points,
 		QuizID: question.QuizID,
 	}, nil
 }
@@ -50,6 +53,7 @@ func FromQuestionUpdateRequest(ctx *gin.Context) (model.Question, error) {
 	return model.Question{
 		Text:   question.Text,
 		Type:   question.Type,
+		Points: question.Points,
 		QuizID: question.QuizID,
 	}, nil
 }
@@ -60,28 +64,22 @@ func ToQuestionResponse(question model.Question) QuestionResponse {
 	}
 }
 
-func ToQuestionGetResponse(question model.Question, answers []model.Answer) QuestionGetResponse {
+func ToQuestionGetResponse(question model.Question) QuestionGetResponse {
 	return QuestionGetResponse{
 		ID:      question.ID,
 		Text:    question.Text,
 		Type:    question.Type,
+		Points:  question.Points,
 		QuizID:  question.QuizID,
-		Answers: ToAnswerGetAllResponse(answers),
+		Answers: ToAnswerGetAllResponse(question.Answers),
 	}
 }
 
-func ToQuestionGetAllResponse(questions []model.Question, answers []model.Answer) []QuestionGetResponse {
+func ToQuestionGetAllResponse(questions []model.Question) []QuestionGetResponse {
 	questionList := make([]QuestionGetResponse, 0, len(questions))
 
 	for _, question := range questions {
-		temp := []model.Answer{}
-		for _, answer := range answers {
-			if answer.QuestionID == question.ID {
-				temp = append(temp, answer)
-			}
-		}
-
-		questionList = append(questionList, ToQuestionGetResponse(question, temp))
+		questionList = append(questionList, ToQuestionGetResponse(question))
 	}
 
 	return questionList

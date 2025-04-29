@@ -99,21 +99,29 @@ func (repo *AnswerRepository) UpdateAnswer(ctx context.Context, answer model.Ans
 		return fmt.Errorf("error converting ObjectID: %w", err)
 	}
 
-	update := bson.M{
-		"$set": bson.M{
-			"text":        answer.Text,
-			"description": answer.IsCorrect,
-			"question_id": answer.QuestionID,
-		},
+	updateFields := bson.M{}
+
+	if answer.Text != "" {
+		updateFields["text"] = answer.Text
+	}
+
+	if answer.QuestionID != "" {
+		updateFields["type"] = answer.QuestionID
+	}
+
+	if len(updateFields) == 0 {
+		return fmt.Errorf("no fields provided to update")
 	}
 
 	filter := bson.M{"_id": objID}
+	update := bson.M{"$set": updateFields}
+
 	result, err := repo.conn.Collection(repo.collection).UpdateOne(ctx, filter, update)
 	if err != nil {
-		return fmt.Errorf("failed to update Answer with ID %d: %w", answer.ID, err)
+		return fmt.Errorf("failed to update Quiz with ID %s: %w", answer.ID, err)
 	}
 	if result.MatchedCount == 0 {
-		return fmt.Errorf("answer with ID %d not found", answer.ID)
+		return fmt.Errorf("quiz with ID %s not found", answer.ID)
 	}
 
 	return nil

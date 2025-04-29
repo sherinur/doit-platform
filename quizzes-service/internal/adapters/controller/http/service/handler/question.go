@@ -40,13 +40,13 @@ func (h *QuestionHandler) GetQuestionById(ctx *gin.Context) {
 		return
 	}
 
-	question, answers, err := h.UseCase.GetQuestionById(ctx, id)
+	question, err := h.UseCase.GetQuestionById(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, dto.ToQuestionGetResponse(question, answers))
+	ctx.JSON(http.StatusOK, dto.ToQuestionGetResponse(question))
 }
 
 func (h *QuestionHandler) GetQuestionsByQuizId(ctx *gin.Context) {
@@ -56,13 +56,13 @@ func (h *QuestionHandler) GetQuestionsByQuizId(ctx *gin.Context) {
 		return
 	}
 
-	questions, answers, err := h.UseCase.GetQuestionsByQuizId(ctx, id)
+	questions, err := h.UseCase.GetQuestionsByQuizId(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, dto.ToQuestionGetAllResponse(questions, answers))
+	ctx.JSON(http.StatusOK, dto.ToQuestionGetAllResponse(questions))
 }
 
 func (h *QuestionHandler) UpdateQuestion(ctx *gin.Context) {

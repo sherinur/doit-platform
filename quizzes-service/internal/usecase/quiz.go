@@ -24,15 +24,15 @@ func (uc QuizUsecase) CreateQuiz(ctx context.Context, request model.Quiz) (model
 	return res, nil
 }
 
-func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, []model.Question, []model.Answer, error) {
+func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, error) {
 	quiz, err := uc.quizRepo.GetQuizById(ctx, id)
 	if err != nil {
-		return model.Quiz{}, nil, nil, err
+		return model.Quiz{}, err
 	}
 
 	questions, err := uc.questionRepo.GetQuestionsByQuizId(ctx, id)
 	if err != nil {
-		return model.Quiz{}, nil, nil, err
+		return model.Quiz{}, err
 	}
 
 	questionIds := make([]string, len(questions))
@@ -42,7 +42,18 @@ func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, [
 
 	answers, err := uc.answerRepo.GetAnswersByQuestionIds(ctx, questionIds)
 
-	return quiz, questions, answers, nil
+	answerMap := make(map[string][]model.Answer)
+	for _, answer := range answers {
+		answerMap[answer.QuestionID] = append(answerMap[answer.QuestionID], answer)
+	}
+
+	for i := range questions {
+		questions[i].Answers = answerMap[questions[i].ID]
+	}
+
+	quiz.Questions = questions
+
+	return quiz, nil
 }
 
 func (uc QuizUsecase) UpdateQuiz(ctx context.Context, request model.Quiz) (model.Quiz, error) {

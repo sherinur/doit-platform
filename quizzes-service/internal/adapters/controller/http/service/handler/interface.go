@@ -7,15 +7,15 @@ import (
 
 type QuizUseCase interface {
 	CreateQuiz(ctx context.Context, request model.Quiz) (model.Quiz, error)
-	GetQuizById(ctx context.Context, id string) (model.Quiz, []model.Question, []model.Answer, error)
+	GetQuizById(ctx context.Context, id string) (model.Quiz, error)
 	UpdateQuiz(ctx context.Context, request model.Quiz) (model.Quiz, error)
 	DeleteQuiz(ctx context.Context, id string) (model.Quiz, error)
 }
 
 type QuestionUseCase interface {
 	CreateQuestion(ctx context.Context, request model.Question) (model.Question, error)
-	GetQuestionById(ctx context.Context, id string) (model.Question, []model.Answer, error)
-	GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, []model.Answer, error)
+	GetQuestionById(ctx context.Context, id string) (model.Question, error)
+	GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, error)
 	UpdateQuestion(ctx context.Context, request model.Question) (model.Question, error)
 	DeleteQuestion(ctx context.Context, id string) (model.Question, error)
 }

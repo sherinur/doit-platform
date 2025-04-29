@@ -8,7 +8,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"quizzes-service/internal/adapters/repo/mongo/dao"
 	"quizzes-service/internal/model"
-	"time"
 )
 
 type QuizRepository struct {
@@ -50,54 +49,72 @@ func (repo *QuizRepository) GetQuizById(ctx context.Context, id string) (model.Q
 	return dao.ToQuiz(quiz), nil
 }
 
-func (repo *QuizRepository) GetQuizAll(ctx context.Context) ([]model.Quiz, error) {
-	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, bson.M{})
-	if err != nil {
-		return nil, fmt.Errorf("failed to fetch Quizzes: %w", err)
-	}
-	defer cursor.Close(ctx)
-
-	var quizzes []dao.Quiz
-	if err = cursor.All(ctx, &quizzes); err != nil {
-		return nil, fmt.Errorf("failed to decode Quizzes: %w", err)
-	}
-
-	var result []model.Quiz
-	for _, quiz := range quizzes {
-		result = append(result, dao.ToQuiz(quiz))
-	}
-
-	return result, nil
-}
-
 func (repo *QuizRepository) UpdateQuiz(ctx context.Context, quiz model.Quiz) error {
 	objID, err := primitive.ObjectIDFromHex(quiz.ID)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("invalid quiz ID: %w", err)
 	}
 
-	update := bson.M{
-		"$set": bson.M{
-			"title":       quiz.Title,
-			"description": quiz.Description,
-			"created_by":  quiz.CreatedBy,
-			"status":      quiz.Status,
-			"updated_at":  time.Now(),
-		},
+	updateFields := bson.M{}
+
+	if quiz.Title != "" {
+		updateFields["title"] = quiz.Title
+	}
+	if quiz.Description != "" {
+		updateFields["description"] = quiz.Description
+	}
+	if quiz.CreatedBy != "" {
+		updateFields["created_by"] = quiz.CreatedBy
+	}
+	if quiz.Status != "" {
+		updateFields["status"] = quiz.Status
+	}
+	if quiz.TotalPoints != 0 {
+		updateFields["total_points"] = quiz.TotalPoints
+	}
+
+	// If no fields to update (besides updated_at), optionally return error
+	if len(updateFields) == 0 {
+		return fmt.Errorf("no fields provided to update")
 	}
 
 	filter := bson.M{"_id": objID}
+	update := bson.M{"$set": updateFields}
+
 	result, err := repo.conn.Collection(repo.collection).UpdateOne(ctx, filter, update)
 	if err != nil {
-		return fmt.Errorf("failed to update Quiz with ID %d: %w", quiz.ID, err)
+		return fmt.Errorf("failed to update Quiz with ID %s: %w", quiz.ID, err)
 	}
 	if result.MatchedCount == 0 {
-		return fmt.Errorf("quiz with ID %d not found", quiz.ID)
+		return fmt.Errorf("quiz with ID %s not found", quiz.ID)
 	}
 
 	return nil
 }
 
+func (repo *QuizRepository) ChangeTotalPointsQuiz(ctx context.Context, id string, change float64) error {
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return fmt.Errorf("invalid quiz ID: %w", err)
+	}
+
+	filter := bson.M{"_id": objID}
+	update := bson.M{
+		"$inc": bson.M{
+			"total_points": change,
+		},
+	}
+
+	result, err := repo.conn.Collection(repo.collection).UpdateOne(ctx, filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to update Quiz with ID %s: %w", id, err)
+	}
+	if result.MatchedCount == 0 {
+		return fmt.Errorf("quiz with ID %s not found", id)
+	}
+
+	return nil
+}
 func (repo *QuizRepository) DeleteQuiz(ctx context.Context, id string) error {
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {

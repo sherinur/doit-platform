@@ -37,7 +37,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 
 	// UseCase
 	QuizUseCase := usecase.NewQuizUsecase(quizRepo, questionRepo, answerRepo)
-	QuestionUseCase := usecase.NewQuestionUsecase(questionRepo, answerRepo)
+	QuestionUseCase := usecase.NewQuestionUsecase(quizRepo, questionRepo, answerRepo)
 	AnswerUseCase := usecase.NewAnswerUsecase(answerRepo)
 
 	// http server

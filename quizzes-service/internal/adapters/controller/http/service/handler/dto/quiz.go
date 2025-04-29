@@ -24,6 +24,7 @@ type QuizGetResponse struct {
 	Description string                `json:"description"`
 	CreatedBy   string                `json:"created_by"`
 	Status      string                `json:"status"`
+	TotalPoints float64               `json:"total_points"`
 	Questions   []QuestionGetResponse `json:"questions"`
 	CreatedAt   time.Time             `json:"created_at"`
 	UpdatedAt   time.Time             `json:"updated_at"`
@@ -70,14 +71,15 @@ func ToQuizResponse(quiz model.Quiz) QuizResponse {
 	}
 }
 
-func ToQuizGetResponse(quiz model.Quiz, question []model.Question, answers []model.Answer) QuizGetResponse {
+func ToQuizGetResponse(quiz model.Quiz) QuizGetResponse {
 	return QuizGetResponse{
 		ID:          quiz.ID,
 		Title:       quiz.Title,
 		Description: quiz.Description,
 		CreatedBy:   quiz.CreatedBy,
 		Status:      quiz.Status,
-		Questions:   ToQuestionGetAllResponse(question, answers),
+		TotalPoints: quiz.TotalPoints,
+		Questions:   ToQuestionGetAllResponse(quiz.Questions),
 		CreatedAt:   quiz.CreatedAt,
 		UpdatedAt:   quiz.UpdatedAt,
 	}

@@ -70,8 +70,8 @@ func (a *API) setupRoutes() {
 		questions := v1.Group("/questions")
 		{
 			questions.POST("/", a.QuestionHandler.CreateQuestion)
-			questions.GET("/one/:id", a.QuestionHandler.GetQuestionById)
-			questions.GET("/:id", a.QuestionHandler.GetQuestionsByQuizId)
+			questions.GET("/:id", a.QuestionHandler.GetQuestionById)
+			questions.GET("/quiz/:id", a.QuestionHandler.GetQuestionsByQuizId)
 			questions.PUT("/:id", a.QuestionHandler.UpdateQuestion)
 			questions.DELETE("/:id", a.QuestionHandler.DeleteQuestion)
 		}
@@ -79,8 +79,8 @@ func (a *API) setupRoutes() {
 		answers := v1.Group("/answers")
 		{
 			answers.POST("/", a.AnswerHandler.CreateAnswer)
-			answers.GET("/one/:id", a.AnswerHandler.GetAnswerById)
-			answers.GET("/:id", a.AnswerHandler.GetAnswersByQuestionId)
+			answers.GET("/:id", a.AnswerHandler.GetAnswerById)
+			answers.GET("/question/:id", a.AnswerHandler.GetAnswersByQuestionId)
 			answers.PUT("/:id", a.AnswerHandler.UpdateAnswer)
 			answers.DELETE("/:id", a.AnswerHandler.DeleteAnswer)
 		}
