@@ -13,12 +13,12 @@ type userRepo struct {
 }
 
 const (
-	table_user = "user"
+	tableUser = "users"
 )
 
 func NewUserRepo(db *sql.DB) *userRepo {
 	return &userRepo{
-		table: table_user,
+		table: tableUser,
 		db:    db,
 	}
 }
@@ -26,55 +26,85 @@ func NewUserRepo(db *sql.DB) *userRepo {
 func (r *userRepo) Create(ctx context.Context, user *model.User) error {
 	object := dao.FromDomain(user)
 	query := `
-		INSERT INTO ` + r.table + `(user_id, username, email, password, role)
-		VALUES ($1, $2, $3, $4, $5)
-	`
-	_, err := r.db.ExecContext(ctx, query, object.ID, object.Username, object.Password, object.Role)
+        INSERT INTO users (name, phone, email, password_hash, created_at, updated_at, is_deleted)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `
+	_, err := r.db.ExecContext(ctx, query, object.Name, object.Phone, object.Email, object.PasswordHash, object.CreatedAt, object.UpdatedAt, object.IsDeleted)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *userRepo) GetById(ctx context.Context, user_id int64) (*model.User, error) {
+func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, error) {
 	query := `
-        SELECT user_id, username, email, password, role
-        FROM ` + r.table + `
-        WHERE user_id = $1
+        SELECT id, name, phone, email, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        FROM users
+        WHERE id = $1 AND is_deleted = false
     `
 
-	row := r.db.QueryRowContext(ctx, query, user_id)
+	row := r.db.QueryRowContext(ctx, query, userID)
 
 	user := dao.User{}
-	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role)
+	err := row.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.PasswordHash, &user.NewPasswordHash, &user.CreatedAt, &user.UpdatedAt, &user.IsDeleted)
 	if err != nil {
 		return nil, err
 	}
 
-	return dao.ToDomain(user), err
+	return dao.ToDomain(user), nil
 }
 
-func (r *userRepo) Update(ctx context.Context, user *model.User, user_id int64) error {
+func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
+	query := `
+        SELECT id, name, phone, email, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        FROM users
+        WHERE is_deleted = false
+    `
+
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []*model.User
+	for rows.Next() {
+		user := dao.User{}
+		err := rows.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.PasswordHash, &user.NewPasswordHash, &user.CreatedAt, &user.UpdatedAt, &user.IsDeleted)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, dao.ToDomain(user))
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) error {
 	object := dao.FromDomain(user)
 	query := `
-        UPDATE ` + r.table + `
-        SET username = $1, email = $2, password = $3, role = $4
-        WHERE user_id = $5
+        UPDATE users
+        SET name = $1, phone = $2, email = $3, password_hash = $4, new_password_hash = $5, updated_at = $6
+        WHERE id = $7 AND is_deleted = false
     `
-	_, err := r.db.ExecContext(ctx, query, object.Username, object.Email, object.Password, object.Role, user_id)
+	_, err := r.db.ExecContext(ctx, query, object.Name, object.Phone, object.Email, object.PasswordHash, object.NewPasswordHash, object.UpdatedAt, userID)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
-func (r *userRepo) Delete(ctx context.Context, user_id int64) error {
+func (r *userRepo) Delete(ctx context.Context, userID int64) error {
 	query := `
-        DELETE FROM ` + r.table + `
-        WHERE user_id = $1
+        UPDATE users
+        SET is_deleted = true, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $1
     `
-	_, err := r.db.ExecContext(ctx, query, user_id)
+	_, err := r.db.ExecContext(ctx, query, userID)
 	if err != nil {
 		return err
 	}

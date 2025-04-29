@@ -15,7 +15,7 @@ func NewUserUsecase(repo UserRepo) *userUsecase {
 	}
 }
 
-func (u *userUsecase) CreateUser(ctx context.Context, user *model.User) error {
+func (u *userUsecase) RegisterUser(ctx context.Context, user *model.User) error {
 	return u.repo.Create(ctx, user)
 }
 

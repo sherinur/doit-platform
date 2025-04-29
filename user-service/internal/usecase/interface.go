@@ -7,7 +7,8 @@ import (
 
 type UserRepo interface {
 	Create(ctx context.Context, user *model.User) error
-	GetById(ctx context.Context, user_id int64) (*model.User, error)
-	Update(ctx context.Context, user *model.User, user_id int64) error
-	Delete(ctx context.Context, user_id int64) error
+	GetById(ctx context.Context, userID int64) (*model.User, error)
+	GetAll(ctx context.Context) ([]*model.User, error)
+	Update(ctx context.Context, user *model.User, userID int64) error
+	Delete(ctx context.Context, userID int64) error
 }
