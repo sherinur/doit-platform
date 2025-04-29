@@ -6,12 +6,12 @@ import (
 )
 
 type PostgresConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DBName   string
-	SSLMode  string
+	Host     string `env:"POSTGRES_HOST,required"`
+	Port     string `env:"POSTGRES_PORT,required"`
+	User     string `env:"POSTGRES_USER,required"`
+	Password string `env:"POSTGRES_PASSWORD,required"`
+	DBName   string `env:"POSTGRES_DB,required"`
+	SSLMode  string `env:"POSTGRES_SSLMODE" envDefault:"disable"`
 }
 
 func NewPostgreConnection(cfg PostgresConfig) (*sql.DB, error) {
