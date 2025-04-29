@@ -15,3 +15,9 @@ clean:
 	rm -rf $(BIN_NAME)
 	go mod tidy
 	gofumpt -l -w .
+
+upgrade:
+	@echo "Cleaning the go mod cache..."
+	go clean -modcache
+	@echo "Upgrading the dependencies..."
+	go get -u ./...

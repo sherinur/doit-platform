@@ -17,7 +17,7 @@ Used clean architecture.
 ## Dependencies:
 
 ##### Used packages:
-- s3conn in pkg (for setup of local s3 storage)
+- s3conn in pkg (to setup local s3 storage)
 
 - google.golang.org/grpc v1.72.0 (for grpc controller)
 

@@ -2,26 +2,30 @@ package app
 
 import (
 	"context"
-	"log/slog"
-	"os"
 
 	"github.com/sherinur/doit-platform/content-service/config"
+	grpcserver "github.com/sherinur/doit-platform/content-service/internal/adapter/controller/grpc/server"
 	"github.com/sherinur/doit-platform/content-service/internal/adapter/controller/http/server"
 	"github.com/sherinur/doit-platform/content-service/internal/adapter/repo/s3"
 	"github.com/sherinur/doit-platform/content-service/internal/usecase"
+	"go.uber.org/zap"
 )
 
 const serviceName = "content-service"
 
 type App struct {
 	cfg *config.Config
-	log *slog.Logger
+	log *zap.Logger
 
+	grpcServer *grpcserver.API
 	httpServer *server.API
 }
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
+	logger, err := NewLogger(cfg)
+	if err != nil {
+		return nil, err
+	}
 
 	fileRepo, err := s3.NewFile(cfg.S3Storage.ConnStr)
 	if err != nil {
@@ -30,10 +34,12 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 
 	fileUsecase := usecase.NewFile(fileRepo)
 	httpServer := server.New(*cfg, fileUsecase)
+	grpcServer := grpcserver.New(*cfg, fileUsecase)
 
 	app := &App{
 		log:        logger,
 		httpServer: httpServer,
+		grpcServer: grpcServer,
 	}
 
 	return app, nil
@@ -41,7 +47,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 
 func (a *App) Run() error {
 	a.log.Info("Starting the application")
-	return a.httpServer.Run()
+	return a.grpcServer.Run(context.Background())
 }
 
 func (a *App) Stop() error {

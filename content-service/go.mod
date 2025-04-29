@@ -6,7 +6,8 @@ require (
 	github.com/caarlos0/env/v7 v7.1.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/joho/godotenv v1.5.1
-	github.com/sherinur/doit-platform v0.0.0-20250428171651-60f519755543
+	github.com/sherinur/doit-platform v0.0.0-20250428173055-6f9a44b0b1b6
+	go.uber.org/zap v1.27.0
 	google.golang.org/grpc v1.72.0
 )
 
@@ -29,12 +30,13 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/arch v0.16.0 // indirect
 	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250425173222-7b384671a197 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250428153025-10db94c68c34 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

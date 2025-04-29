@@ -39,6 +39,7 @@ func (a *API) run(ctx context.Context) error {
 
 	reflection.Register(a.server)
 
+	fmt.Println("Listening on tcp:", a.addr)
 	listener, err := net.Listen("tcp", a.addr)
 	if err != nil {
 		return fmt.Errorf("failed to create listener: %w", err)
