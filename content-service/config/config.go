@@ -11,6 +11,7 @@ type (
 	Config struct {
 		Server    Server `envPrefix:"SERVER_"`
 		S3Storage S3Storage
+		ZapLogger ZapLogger
 	}
 
 	Server struct {
@@ -38,6 +39,11 @@ type (
 	}
 
 	Nats struct{}
+
+	ZapLogger struct {
+		Directory string `env:"ZAP_LOGGING_DIRECTORY" envDefault:"./logs"`
+		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"./logs"` // release, debug, test
+	}
 )
 
 func New() (*Config, error) {
