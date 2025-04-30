@@ -14,6 +14,7 @@ type QuizUseCase interface {
 
 type QuestionUseCase interface {
 	CreateQuestion(ctx context.Context, request model.Question) (model.Question, error)
+	CreateQuestions(ctx context.Context, request []model.Question) ([]model.Question, error)
 	GetQuestionById(ctx context.Context, id string) (model.Question, error)
 	GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, error)
 	UpdateQuestion(ctx context.Context, request model.Question) (model.Question, error)
@@ -22,6 +23,7 @@ type QuestionUseCase interface {
 
 type AnswerUseCase interface {
 	CreateAnswer(ctx context.Context, request model.Answer) (model.Answer, error)
+	CreateAnswers(ctx context.Context, request []model.Answer) ([]model.Answer, error)
 	GetAnswerById(ctx context.Context, id string) (model.Answer, error)
 	GetAnswersByQuestionId(ctx context.Context, id string) ([]model.Answer, error)
 	UpdateAnswer(ctx context.Context, request model.Answer) (model.Answer, error)

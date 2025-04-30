@@ -73,6 +73,7 @@ func (a *API) setupRoutes() {
 		questions := v1.Group("/questions")
 		{
 			questions.POST("/", a.QuestionHandler.CreateQuestion)
+			questions.POST("/many", a.QuestionHandler.CreateQuestions)
 			questions.GET("/:id", a.QuestionHandler.GetQuestionById)
 			questions.GET("/quiz/:id", a.QuestionHandler.GetQuestionsByQuizId)
 			questions.PUT("/:id", a.QuestionHandler.UpdateQuestion)
@@ -82,6 +83,7 @@ func (a *API) setupRoutes() {
 		answers := v1.Group("/answers")
 		{
 			answers.POST("/", a.AnswerHandler.CreateAnswer)
+			answers.POST("/many", a.AnswerHandler.CreateAnswers)
 			answers.GET("/:id", a.AnswerHandler.GetAnswerById)
 			answers.GET("/question/:id", a.AnswerHandler.GetAnswersByQuestionId)
 			answers.PUT("/:id", a.AnswerHandler.UpdateAnswer)

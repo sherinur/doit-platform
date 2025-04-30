@@ -49,6 +49,32 @@ func (repo *AnswerRepository) GetAnswerById(ctx context.Context, id string) (mod
 	return dao.ToAnswer(answer), nil
 }
 
+func (repo *AnswerRepository) CreateAnswers(ctx context.Context, answers []model.Answer) ([]model.Answer, error) {
+	var daoAnswers []interface{}
+	for _, answer := range answers {
+		daoAnswers = append(daoAnswers, dao.FromAnswer(answer))
+	}
+
+	res, err := repo.conn.Collection(repo.collection).InsertMany(ctx, daoAnswers)
+	if err != nil {
+		return nil, fmt.Errorf("questions have not been created: %w", err)
+	}
+
+	if len(res.InsertedIDs) != len(answers) {
+		return nil, fmt.Errorf("number of inserted IDs does not match number of questions")
+	}
+
+	for i, id := range res.InsertedIDs {
+		objectID, ok := id.(primitive.ObjectID)
+		if !ok {
+			return nil, fmt.Errorf("failed to cast inserted ID to ObjectID")
+		}
+		answers[i].ID = objectID.Hex()
+	}
+
+	return answers, nil
+}
+
 func (repo *AnswerRepository) GetAnswersByQuestionId(ctx context.Context, id string) ([]model.Answer, error) {
 	cursor, err := repo.conn.Collection(repo.collection).Find(ctx, bson.M{"question_id": id})
 	if err != nil {

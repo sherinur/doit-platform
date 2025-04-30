@@ -37,6 +37,27 @@ func FromAnswerCreateRequest(ctx *gin.Context) (model.Answer, error) {
 	}, nil
 }
 
+func FromAnswerCreateRequests(ctx *gin.Context) ([]model.Answer, error) {
+	var requests []AnswerRequest
+	err := ctx.ShouldBindJSON(&requests)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil, err
+	}
+
+	var answers = []model.Answer{}
+	for _, request := range requests {
+		answer := model.Answer{
+			Text:       request.Text,
+			IsCorrect:  request.IsCorrect,
+			QuestionID: request.QuestionID,
+		}
+		answers = append(answers, answer)
+	}
+
+	return answers, nil
+}
+
 func FromAnswerUpdateRequest(ctx *gin.Context) (model.Answer, error) {
 	var answer AnswerRequest
 	err := ctx.ShouldBindJSON(&answer)
@@ -56,6 +77,15 @@ func ToAnswerResponse(answer model.Answer) AnswerResponse {
 	return AnswerResponse{
 		ID: answer.ID,
 	}
+}
+
+func ToAnswerResponses(answers []model.Answer) []AnswerResponse {
+	response := []AnswerResponse{}
+	for _, answer := range answers {
+		response = append(response, ToAnswerResponse(answer))
+	}
+
+	return response
 }
 
 func ToAnswerGetResponse(answer model.Answer) AnswerGetResponse {

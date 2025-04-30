@@ -33,6 +33,23 @@ func (h *AnswerHandler) CreateAnswer(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, dto.ToAnswerResponse(newAnswer))
 }
 
+func (h *AnswerHandler) CreateAnswers(ctx *gin.Context) {
+	answers, err := dto.FromAnswerCreateRequests(ctx)
+	if err != nil {
+		errCtx := dto.FromError(err)
+		ctx.JSON(errCtx.Code, gin.H{"error": errCtx.Message})
+		return
+	}
+
+	newAnswers, err := h.UseCase.CreateAnswers(ctx, answers)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, dto.ToAnswerResponses(newAnswers))
+}
+
 func (h *AnswerHandler) GetAnswerById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
@@ -55,7 +72,7 @@ func (h *AnswerHandler) GetAnswersByQuestionId(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad request"})
 		return
 	}
-	
+
 	answers, err := h.UseCase.GetAnswersByQuestionId(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

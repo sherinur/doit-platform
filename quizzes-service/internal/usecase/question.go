@@ -30,6 +30,21 @@ func (uc QuestionUsecase) CreateQuestion(ctx context.Context, request model.Ques
 	return res, nil
 }
 
+func (uc QuestionUsecase) CreateQuestions(ctx context.Context, request []model.Question) ([]model.Question, error) {
+	for _, question := range request {
+		if question.Text == "" || question.Type == "" || question.QuizID == "" || question.Points <= 0 {
+			return nil, errors.New("invalid input data")
+		}
+	}
+
+	res, err := uc.questionRepo.CreateQuestions(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 func (uc QuestionUsecase) GetQuestionById(ctx context.Context, id string) (model.Question, error) {
 	question, err := uc.questionRepo.GetQuestionById(ctx, id)
 	if err != nil {

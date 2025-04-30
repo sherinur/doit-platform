@@ -27,6 +27,21 @@ func (uc AnswerUsecase) CreateAnswer(ctx context.Context, request model.Answer) 
 	return res, nil
 }
 
+func (uc AnswerUsecase) CreateAnswers(ctx context.Context, request []model.Answer) ([]model.Answer, error) {
+	for _, answer := range request {
+		if answer.Text == "" || answer.QuestionID == "" {
+			return nil, errors.New("invalid input data")
+		}
+	}
+
+	res, err := uc.Repo.CreateAnswers(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 func (uc AnswerUsecase) GetAnswerById(ctx context.Context, id string) (model.Answer, error) {
 	res, err := uc.Repo.GetAnswerById(ctx, id)
 	if err != nil {

@@ -33,6 +33,23 @@ func (h *QuestionHandler) CreateQuestion(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, dto.ToQuestionResponse(newQuestion))
 }
 
+func (h *QuestionHandler) CreateQuestions(ctx *gin.Context) {
+	questions, err := dto.FromQuestionCreateRequests(ctx)
+	if err != nil {
+		errCtx := dto.FromError(err)
+		ctx.JSON(errCtx.Code, gin.H{"error": errCtx.Message})
+		return
+	}
+
+	newQuestions, err := h.UseCase.CreateQuestions(ctx, questions)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, dto.ToQuestionResponses(newQuestions))
+}
+
 func (h *QuestionHandler) GetQuestionById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
