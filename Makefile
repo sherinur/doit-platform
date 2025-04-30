@@ -50,4 +50,4 @@ clean-gen:
 	@rm -rf $(GEN_DIR)
 	@echo "Cleaned generated proto files"
 
-.PHONY: gen clean-gen
+.PHONY: gen clean-gen deploy

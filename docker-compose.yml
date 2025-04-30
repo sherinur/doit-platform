@@ -2,6 +2,50 @@ version: '3.8'
 
 services:
   s3-storage:
-    build: ./s3-storage/
+    build:
+      context: ./s3-storage
+      dockerfile: Dockerfile
     ports: 
       - "4400:4400"
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:4400/health"]
+    #   interval: 5s
+    #   timeout: 3s
+    #   retries: 5
+    networks:
+      - monitoring
+
+  content-service:
+    build:
+      context: .
+      dockerfile: content-service/Dockerfile
+    ports:
+      - "50054:50054"
+    expose:
+      - "3003"
+    # depends_on:
+    #   s3-storage:
+    #     condition: service_healthy
+    environment:
+      - S3_CONN_STR=http://s3-storage:4400
+      - S3_DATA_DIRECTORY=./data
+      - SERVER_GRPC_PORT=50054
+      - SERVER_GRPC_MAX_MESSAGE_SIZE_MIB=64
+      - SERVER_HTTP_PORT=2003
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./deploy/monitoring/prometheus/base:/etc/prometheus/base
+      - ./deploy/monitoring/prometheus/alerts:/etc/prometheus/alerts
+      - ./deploy/monitoring/prometheus/env/dev.yml:/etc/prometheus/env.yml
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
