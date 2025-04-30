@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"quizzes-service/internal/model"
 )
 
@@ -16,6 +18,10 @@ func NewQuizUsecase(qrepo QuizRepo, queRepo QuestionRepo, arepo AnswerRepo) *Qui
 }
 
 func (uc QuizUsecase) CreateQuiz(ctx context.Context, request model.Quiz) (model.Quiz, error) {
+	if request.Title == "" || request.Description == "" || request.CreatedBy == "" || request.Status == "" {
+		return model.Quiz{}, errors.New("invalid input data")
+	}
+
 	res, err := uc.quizRepo.CreateQuiz(ctx, request)
 	if err != nil {
 		return model.Quiz{}, err
@@ -57,7 +63,7 @@ func (uc QuizUsecase) GetQuizById(ctx context.Context, id string) (model.Quiz, e
 
 	err = uc.quizRepo.UpdateQuiz(ctx, model.Quiz{ID: id, TotalPoints: totalPoints})
 	if err != nil {
-		return model.Quiz{}, err
+		return model.Quiz{}, fmt.Errorf("failed to re-count total points od quiz: %w", err)
 	}
 	quiz.TotalPoints = totalPoints
 

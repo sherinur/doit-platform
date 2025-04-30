@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"quizzes-service/internal/model"
 )
 
@@ -16,6 +18,10 @@ func NewQuestionUsecase(qrepo QuizRepo, querepo QuestionRepo, arepo AnswerRepo) 
 }
 
 func (uc QuestionUsecase) CreateQuestion(ctx context.Context, request model.Question) (model.Question, error) {
+	if request.Text == "" || request.Type == "" || request.QuizID == "" || request.Points <= 0 {
+		return model.Question{}, errors.New("invalid input data")
+	}
+
 	res, err := uc.questionRepo.CreateQuestion(ctx, request)
 	if err != nil {
 		return model.Question{}, err
@@ -32,7 +38,7 @@ func (uc QuestionUsecase) GetQuestionById(ctx context.Context, id string) (model
 
 	answers, err := uc.answerRepo.GetAnswersByQuestionId(ctx, id)
 	if err != nil {
-		return model.Question{}, err
+		return model.Question{}, fmt.Errorf("failed to get answers for the question: %w", err)
 	}
 
 	question.Answers = answers
@@ -43,7 +49,7 @@ func (uc QuestionUsecase) GetQuestionById(ctx context.Context, id string) (model
 func (uc QuestionUsecase) GetQuestionsByQuizId(ctx context.Context, id string) ([]model.Question, error) {
 	questions, err := uc.questionRepo.GetQuestionsByQuizId(ctx, id)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("wrong QuizID or quiz does not exist: %w", err)
 	}
 
 	questionIds := make([]string, len(questions))
@@ -53,7 +59,7 @@ func (uc QuestionUsecase) GetQuestionsByQuizId(ctx context.Context, id string) (
 
 	answers, err := uc.answerRepo.GetAnswersByQuestionIds(ctx, questionIds)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get answers for questions: %w", err)
 	}
 
 	answerMap := make(map[string][]model.Answer)

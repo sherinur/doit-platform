@@ -18,7 +18,14 @@ func NewResultUsecase(rrepo ResultRepo, qrepo QuizRepo, querepo QuestionRepo, ar
 }
 
 func (uc ResultUsecase) CreateResult(ctx context.Context, request model.Result) (model.Result, error) {
-	quiz, _ := uc.quizRepo.GetQuizById(ctx, request.QuizID)
+	if request.UserID == "" || request.Status == "" || request.Questions == nil {
+		return model.Result{}, fmt.Errorf("invalid request")
+	}
+
+	quiz, err := uc.quizRepo.GetQuizById(ctx, request.QuizID)
+	if err != nil {
+		return model.Result{}, fmt.Errorf("wrong QuizID format or Quiz with this ID does no exist")
+	}
 
 	totalPoints := 0.0
 	score := 0.0
@@ -37,7 +44,6 @@ func (uc ResultUsecase) CreateResult(ctx context.Context, request model.Result) 
 	}
 
 	request.Score = score / totalPoints
-	fmt.Println(request.Score, score, totalPoints)
 
 	if totalPoints != quiz.TotalPoints {
 		return model.Result{}, fmt.Errorf("totalPoints does not match")
@@ -57,31 +63,19 @@ func (uc ResultUsecase) GetResultById(ctx context.Context, id string) (model.Res
 		return model.Result{}, err
 	}
 
-	questions, err := uc.questionRepo.GetQuestionsByQuizId(ctx, result.QuizID)
-	if err != nil {
-		return model.Result{}, err
-	}
+	for i := range result.Questions {
+		question, _ := uc.questionRepo.GetQuestionById(ctx, result.Questions[i].ID)
+		result.Questions[i].Text = question.Text
+		result.Questions[i].Type = question.Type
+		result.Questions[i].Points = question.Points
+		result.Questions[i].QuizID = question.QuizID
 
-	questionIds := make([]string, len(questions))
-	for _, question := range questions {
-		questionIds = append(questionIds, question.ID)
+		for j := range result.Questions[i].Answers {
+			answer, _ := uc.answerRepo.GetAnswerById(ctx, result.Questions[i].Answers[j].ID)
+			result.Questions[i].Answers[j].QuestionID = answer.QuestionID
+			result.Questions[i].Answers[j].Text = answer.Text
+		}
 	}
-
-	answers, err := uc.answerRepo.GetAnswersByQuestionIds(ctx, questionIds)
-	if err != nil {
-		return model.Result{}, err
-	}
-
-	answerMap := make(map[string][]model.Answer)
-	for _, answer := range answers {
-		answerMap[answer.QuestionID] = append(answerMap[answer.QuestionID], answer)
-	}
-
-	for i := range questions {
-		questions[i].Answers = answerMap[questions[i].ID]
-	}
-
-	result.Questions = questions
 
 	return result, nil
 }
@@ -92,32 +86,20 @@ func (uc ResultUsecase) GetResultsByQuizId(ctx context.Context, id string) ([]mo
 		return nil, err
 	}
 
-	for i := 0; i < len(results); i++ {
-		questions, err := uc.questionRepo.GetQuestionsByQuizId(ctx, results[i].QuizID)
-		if err != nil {
-			return nil, err
-		}
+	for k := 0; k < len(results); k++ {
+		for i := range results[k].Questions {
+			question, _ := uc.questionRepo.GetQuestionById(ctx, results[k].Questions[i].ID)
+			results[k].Questions[i].Text = question.Text
+			results[k].Questions[i].Type = question.Type
+			results[k].Questions[i].Points = question.Points
+			results[k].Questions[i].QuizID = question.QuizID
 
-		questionIds := make([]string, len(questions))
-		for _, question := range questions {
-			questionIds = append(questionIds, question.ID)
+			for j := range results[k].Questions[i].Answers {
+				answer, _ := uc.answerRepo.GetAnswerById(ctx, results[k].Questions[i].Answers[j].ID)
+				results[k].Questions[i].Answers[j].QuestionID = answer.QuestionID
+				results[k].Questions[i].Answers[j].Text = answer.Text
+			}
 		}
-
-		answers, err := uc.answerRepo.GetAnswersByQuestionIds(ctx, questionIds)
-		if err != nil {
-			return nil, err
-		}
-
-		answerMap := make(map[string][]model.Answer)
-		for _, answer := range answers {
-			answerMap[answer.QuestionID] = append(answerMap[answer.QuestionID], answer)
-		}
-
-		for i := range questions {
-			questions[i].Answers = answerMap[questions[i].ID]
-		}
-
-		results[i].Questions = questions
 	}
 
 	return results, nil

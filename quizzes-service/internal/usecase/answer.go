@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"quizzes-service/internal/model"
 )
 
@@ -14,6 +15,10 @@ func NewAnswerUsecase(repo AnswerRepo) *AnswerUsecase {
 }
 
 func (uc AnswerUsecase) CreateAnswer(ctx context.Context, request model.Answer) (model.Answer, error) {
+	if request.Text == "" || request.QuestionID == "" {
+		return model.Answer{}, errors.New("invalid input data")
+	}
+
 	res, err := uc.Repo.CreateAnswer(ctx, request)
 	if err != nil {
 		return model.Answer{}, err
