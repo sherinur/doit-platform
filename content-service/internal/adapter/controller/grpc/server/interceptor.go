@@ -27,7 +27,6 @@ func loggingInterceptor(log *zap.Logger) grpc.UnaryServerInterceptor {
 func errorInterceptor(log *zap.Logger) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		resp, err := handler(ctx, req)
-
 		if err != nil {
 			log.Error("gRPC request error",
 				zap.Error(err),

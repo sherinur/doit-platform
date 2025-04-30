@@ -19,9 +19,12 @@ type App struct {
 
 	grpcServer *grpcserver.API
 	httpServer *server.API
+
+	telemetry *Telemetry
 }
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
+	// logger
 	logger, err := NewLogger(cfg)
 	if err != nil {
 		return nil, err
@@ -38,10 +41,17 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	httpServer := server.New(*cfg, fileUsecase)
 	grpcServer := grpcserver.New(*cfg, fileUsecase, logger)
 
+	// telemetry
+	telemetry, err := InitTelemetry(ctx, cfg.Telemetry, logger)
+	if err != nil {
+		return nil, err
+	}
+
 	app := &App{
 		log:        logger,
 		httpServer: httpServer,
 		grpcServer: grpcServer,
+		telemetry:  telemetry,
 	}
 
 	return app, nil

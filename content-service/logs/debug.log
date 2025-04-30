@@ -10,3 +10,12 @@
 2025-04-30 19:29:21	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
 2025-04-30 19:29:25	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/content.service.frontend.file.v1.FileService/Get", "duration": "1.226769ms"}
 2025-04-30 19:29:25	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": ""}
+2025-05-01 03:26:04	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 03:26:04	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 03:26:04	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "http://localhost:3003/metrics"}
+2025-05-01 03:26:04	[31mERROR[0m	app/otel.go:82	Metrics server error	{"error": "listen tcp: address http://localhost:3003: too many colons in address"}
+github.com/sherinur/doit-platform/content-service/internal/app.serveMetrics
+	/home/sherinur/git/doit-platform/content-service/internal/app/otel.go:82
+2025-05-01 03:26:35	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 03:26:35	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 03:26:35	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3003/metrics"}
