@@ -33,8 +33,10 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	}
 
 	fileUsecase := usecase.NewFile(fileRepo)
+
+	// controllers
 	httpServer := server.New(*cfg, fileUsecase)
-	grpcServer := grpcserver.New(*cfg, fileUsecase)
+	grpcServer := grpcserver.New(*cfg, fileUsecase, logger)
 
 	app := &App{
 		log:        logger,
@@ -46,7 +48,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 }
 
 func (a *App) Run() error {
-	a.log.Info("Starting the application")
+	a.log.Info("Starting the service")
 	return a.grpcServer.Run(context.Background())
 }
 

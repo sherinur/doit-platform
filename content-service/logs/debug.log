@@ -1,0 +1,12 @@
+2025-04-30 19:21:54	[34mINFO[0m	app/app.go:51	Starting the service
+2025-04-30 19:22:50	[34mINFO[0m	app/app.go:51	Starting the service
+2025-04-30 19:22:50	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-04-30 19:23:48	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "1.192909ms"}
+2025-04-30 19:24:08	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "979.557µs"}
+2025-04-30 19:24:08	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "929.725µs"}
+2025-04-30 19:24:38	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Create", "request": "body:\"p\\x05\\xeb\\xa0\\xd3\\x14\\xa5\\xbf\\xc1\\xf6\\xc6rW?)A1\\x96|\\x17ʋ\\x91U\\xddj\\x83[\\x8c4Z\\x00\"  type:\"reprehenderit ea ipsum et dolore\"", "duration": "5.140857ms"}
+2025-04-30 19:24:51	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "1.255295ms"}
+2025-04-30 19:29:21	[34mINFO[0m	app/app.go:51	Starting the service
+2025-04-30 19:29:21	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-04-30 19:29:25	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/content.service.frontend.file.v1.FileService/Get", "duration": "1.226769ms"}
+2025-04-30 19:29:25	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": ""}

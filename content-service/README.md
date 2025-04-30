@@ -3,22 +3,24 @@
 ## Implementation
 
 Used clean architecture.
+Logging with zap.
+Scraping of tracers, metrics and logs via otel.
+Local file storage via local S3 (https://github.com/sherinur/triple-s)
+gRPC server contains interceptors: logging, error, recovery
 
 ## Adapters:
 
-##### Used controllers:
+##### Controllers:
 - grpc
 
 - http (gin)
 
-##### Used repos:
-- local s3 storage (written in go)
+##### Repositories:
+- local s3 storage (https://github.com/sherinur/triple-s)
 
 ## Dependencies:
 
 ##### Used packages:
-- s3conn in pkg (to setup local s3 storage)
-
 - google.golang.org/grpc v1.72.0 (for grpc controller)
 
 - github.com/gin-gonic/gin v1.10.0 (for http controller)
@@ -30,3 +32,5 @@ Used clean architecture.
 - github.com/joho/godotenv v1.5.1 (for .env loading)
 
 - github.com/caarlos0/env/v7 v7.1.0 (for config .env parsing)
+
+- s3conn in pkg (to setup local s3 storage)

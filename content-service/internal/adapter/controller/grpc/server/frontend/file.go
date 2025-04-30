@@ -5,6 +5,7 @@ import (
 
 	svc "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1"
 	"github.com/sherinur/doit-platform/content-service/internal/adapter/controller/grpc/server/frontend/dto"
+	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -12,7 +13,15 @@ import (
 type File struct {
 	svc.UnimplementedFileServiceServer
 
-	uc FileUsecase
+	log *zap.Logger
+	uc  FileUsecase
+}
+
+func NewFile(uc FileUsecase, logger *zap.Logger) *File {
+	return &File{
+		log: logger,
+		uc:  uc,
+	}
 }
 
 func (f *File) Create(ctx context.Context, req *svc.CreateFileRequest) (*svc.CreateFileResponse, error) {

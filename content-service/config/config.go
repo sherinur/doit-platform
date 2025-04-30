@@ -42,7 +42,7 @@ type (
 
 	ZapLogger struct {
 		Directory string `env:"ZAP_LOGGING_DIRECTORY" envDefault:"./logs"`
-		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"./logs"` // release, debug, test
+		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"debug"` // release, debug, test
 	}
 )
 
