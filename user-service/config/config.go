@@ -2,9 +2,11 @@ package config
 
 import (
 	"time"
+
 	postgresconn "user-services/pkg/postgres"
 
-	"github.com/caarlos0/env/v10"
+	"github.com/caarlos0/env/v7"
+	"github.com/joho/godotenv"
 )
 
 type (
@@ -17,7 +19,7 @@ type (
 
 	Server struct {
 		HTTPServer HTTPServer
-		GRPCServer GRPCServer
+		// GRPCServer GRPCServer
 	}
 
 	HTTPServer struct {
@@ -30,17 +32,27 @@ type (
 		Mode           string        `env:"GIN_MODE" envDefault:"release"` // Can be: release, debug, test
 	}
 
-	GRPCServer struct {
-		Port                  int16         `env:"GRPC_PORT,notEmpty"`
-		MaxRecvMsgSizeMiB     int           `env:"GRPC_MAX_MESSAGE_SIZE_MIB" envDefault:"12"`
-		MaxConnectionAge      time.Duration `env:"GRPC_MAX_CONNECTION_AGE" envDefault:"30s"`
-		MaxConnectionAgeGrace time.Duration `env:"GRPC_MAX_CONNECTION_AGE_GRACE" envDefault:"10s"`
-	}
+	// GRPCServer struct {
+	// 	Port                  int16         `env:"GRPC_PORT,notEmpty"`
+	// 	MaxRecvMsgSizeMiB     int           `env:"GRPC_MAX_MESSAGE_SIZE_MIB" envDefault:"12"`
+	// 	MaxConnectionAge      time.Duration `env:"GRPC_MAX_CONNECTION_AGE" envDefault:"30s"`
+	// 	MaxConnectionAgeGrace time.Duration `env:"GRPC_MAX_CONNECTION_AGE_GRACE" envDefault:"10s"`
+	// }
 )
 
 func New() (*Config, error) {
 	var cfg Config
-	err := env.Parse(&cfg)
+	opts := env.Options{Environment: nil, TagName: "env", Prefix: ""}
+
+	err := godotenv.Load()
+	if err != nil {
+		return nil, err
+	}
+
+	err = env.Parse(&cfg, opts)
+	if err != nil {
+		return nil, err
+	}
 
 	return &cfg, err
 }

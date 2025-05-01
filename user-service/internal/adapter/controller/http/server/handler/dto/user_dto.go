@@ -2,6 +2,7 @@ package dto
 
 import (
 	"net/http"
+
 	"user-services/internal/domain/model"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +40,6 @@ func ToUserFromRegisterRequest(ctx *gin.Context) (model.User, error) {
 		Email:           req.Email,
 		CurrentPassword: req.Password,
 	}, nil
-
 }
 
 func FromUserToCreateResponse(user model.User) RegisterResponse {
@@ -50,11 +50,9 @@ func FromUserToCreateResponse(user model.User) RegisterResponse {
 	}
 }
 
-type LoginUserRequset struct {
-}
+type LoginUserRequset struct{}
 
-type LoginUserResponse struct {
-}
+type LoginUserResponse struct{}
 
 func hashPassword(password string) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

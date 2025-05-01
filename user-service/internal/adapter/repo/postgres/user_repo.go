@@ -3,6 +3,7 @@ package userrepo
 import (
 	"context"
 	"database/sql"
+
 	"user-services/internal/adapter/repo/postgres/dao"
 	"user-services/internal/domain/model"
 )
@@ -40,7 +41,6 @@ func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, e
 		newuser.UpdatedAt,
 		newuser.IsDeleted,
 	).Scan(newuser.ID)
-
 	if err != nil {
 		return &model.User{}, err
 	}
@@ -114,6 +114,7 @@ func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 
 	return users, nil
 }
+
 func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) error {
 	object := dao.FromDomain(user)
 	query := `

@@ -2,6 +2,7 @@ package dto
 
 import (
 	"regexp"
+
 	"user-services/internal/domain/model"
 )
 

@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
 	"user-services/config"
 	"user-services/internal/adapter/controller/http/server/handler"
 

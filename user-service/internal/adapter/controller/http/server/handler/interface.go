@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+
 	"user-services/internal/domain/model"
 )
 

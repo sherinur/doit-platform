@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
 	"user-services/config"
 	httpserver "user-services/internal/adapter/controller/http/server"
 	userrepo "user-services/internal/adapter/repo/postgres"

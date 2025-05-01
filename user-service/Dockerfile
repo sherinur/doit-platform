@@ -2,7 +2,9 @@ FROM golang:1.24
 
 WORKDIR /app
 
-COPY user-service/ . 
+COPY . . 
+
+RUN go build -o user-service ./cmd/user/main.go
 
 EXPOSE 2000
 

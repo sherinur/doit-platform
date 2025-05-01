@@ -3,6 +3,7 @@ package dto
 import (
 	"errors"
 	"net/http"
+
 	"user-services/internal/domain/model"
 )
 

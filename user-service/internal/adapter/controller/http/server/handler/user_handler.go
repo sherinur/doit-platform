@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+
 	"user-services/internal/adapter/controller/http/server/handler/dto"
 
 	"github.com/gin-gonic/gin"

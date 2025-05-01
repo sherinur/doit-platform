@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+
 	"user-services/internal/domain/model"
 )
 

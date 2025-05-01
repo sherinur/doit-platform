@@ -2,6 +2,7 @@ package dao
 
 import (
 	"time"
+
 	"user-services/internal/domain/model"
 )
 

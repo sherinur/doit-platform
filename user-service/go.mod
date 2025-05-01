@@ -3,8 +3,9 @@ module user-services
 go 1.23.5
 
 require (
-	github.com/caarlos0/env/v10 v10.0.0
+	github.com/caarlos0/env/v7 v7.1.0
 	github.com/gin-gonic/gin v1.10.0
+	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.23.0
 )
 

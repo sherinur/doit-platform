@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"time"
+
 	"user-services/internal/domain/model"
 
 	"golang.org/x/crypto/bcrypt"
@@ -42,7 +43,6 @@ func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*
 	request.ID = newuser.ID
 
 	return request, nil
-
 }
 
 func (uc *userUsecase) GetUserById(ctx context.Context, userID int64) (*model.User, error) {
