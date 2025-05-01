@@ -57,7 +57,7 @@ func InitTelemetry(ctx context.Context, cfg config.Telemetry, log *zap.Logger) (
 		metric.WithReader(metricExp),
 		metric.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceName("content-service"),
+			semconv.ServiceName(serviceName),
 		)),
 	)
 

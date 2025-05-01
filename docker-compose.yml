@@ -35,20 +35,21 @@ services:
       - ZAP_LOGGING_DIRECTORY=./logs
       - ZAP_LOGGING_MODE=debug
       - OTEL_EXPORTER_PROM_PORT=3003
-      
     networks:
       - monitoring
 
   prometheus:
     image: prom/prometheus:latest
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=24h'
+    volumes:
+      - ./deploy/monitoring/prometheus/base:/etc/prometheus
     ports:
       - "9090:9090"
-    volumes:
-      - ./deploy/monitoring/prometheus/base:/etc/prometheus/base
-      - ./deploy/monitoring/prometheus/alerts:/etc/prometheus/alerts
-      - ./deploy/monitoring/prometheus/env/dev.yml:/etc/prometheus/env.yml
     networks:
       - monitoring
+
 
 networks:
   monitoring:

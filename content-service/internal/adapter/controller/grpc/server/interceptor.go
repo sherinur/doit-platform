@@ -53,11 +53,7 @@ func recoveryInterceptor(log *zap.Logger) grpc.UnaryServerInterceptor {
 	}
 }
 
-// TODO: Implement the tracing and metrics scraping via interceptor
-// func otelInterceptor(log *zap.Logger) grpc.UnaryServerInterceptor {
-// 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-// 		resp, err := handler(ctx, req)
-
-// 		return resp, err
-// 	}
-// }
+// Deprecated
+// // func otelInterceptor(log *zap.Logger) grpc.UnaryServerInterceptor {
+// // 	return otelgrpc.UnaryServerInterceptor()
+// // }
