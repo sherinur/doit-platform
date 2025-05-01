@@ -25,3 +25,12 @@ github.com/sherinur/doit-platform/content-service/internal/app.serveMetrics
 2025-05-01 04:07:06	[34mINFO[0m	app/app.go:61	Starting the service
 2025-05-01 04:07:06	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
 2025-05-01 04:07:06	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3003/metrics"}
+2025-05-01 16:41:34	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 16:41:34	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 16:41:34	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3003/metrics"}
+2025-05-01 16:43:33	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 16:43:33	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 16:43:33	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3004/metrics"}
+2025-05-01 17:04:15	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 17:04:15	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 17:04:15	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3003/metrics"}

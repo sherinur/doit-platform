@@ -6,4 +6,7 @@ COPY . .
 
 EXPOSE 50054 3003
 
-CMD ["/content-service/content"]
+CMD ["./content"]
+
+# # Uncomment for a diagnostic debug (container-config-error.md shared runbook)
+# CMD ["sleep", "infinity"]

@@ -50,7 +50,7 @@ type (
 		Mode                 string `env:"OTEL_MODE" envDefault:"debug"` // release, debug, test
 		ExporterOTLPEndpoint string `env:"OTEL_EXPORTER_OTLP_ENDPOINT" envDefault:"http://localhost:4318"`
 		ExporterOTLPInsecure bool   `env:"OTEL_EXPORTER_OTLP_INSECURE" envDefault:"true"`
-		ExporterPromAddr     string `env:"OTEL_EXPORTER_PROM_ADDR" envDefault:"localhost:3003"`
+		ExporterPromPort     int    `env:"OTEL_EXPORTER_PROM_PORT" envDefault:"3003"`
 	}
 )
 

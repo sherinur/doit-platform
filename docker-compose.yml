@@ -17,21 +17,25 @@ services:
 
   content-service:
     build:
-      context: .
-      dockerfile: content-service/Dockerfile
+      context: ./content-service
+      dockerfile: Dockerfile
+    # image: content-service:latest
     ports:
+      - "3003:3003"
       - "50054:50054"
-    expose:
-      - "3003"
     # depends_on:
     #   s3-storage:
     #     condition: service_healthy
     environment:
       - S3_CONN_STR=http://s3-storage:4400
       - S3_DATA_DIRECTORY=./data
-      - SERVER_GRPC_PORT=50054
       - SERVER_GRPC_MAX_MESSAGE_SIZE_MIB=64
       - SERVER_HTTP_PORT=2003
+      - SERVER_GRPC_PORT=50054
+      - ZAP_LOGGING_DIRECTORY=./logs
+      - ZAP_LOGGING_MODE=debug
+      - OTEL_EXPORTER_PROM_PORT=3003
+      
     networks:
       - monitoring
 

@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -15,6 +16,8 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
 	"go.uber.org/zap"
 )
+
+const telemetryIPAddress = "0.0.0.0:%d"
 
 type Telemetry struct {
 	TracerProvider *sdktrace.TracerProvider
@@ -59,7 +62,7 @@ func InitTelemetry(ctx context.Context, cfg config.Telemetry, log *zap.Logger) (
 	)
 
 	// metric exporter endpoint
-	go serveMetrics(cfg.ExporterPromAddr, log)
+	go serveMetrics(cfg.ExporterPromPort, log)
 
 	otel.SetTracerProvider(tp)
 	otel.SetMeterProvider(mp)
@@ -71,8 +74,10 @@ func InitTelemetry(ctx context.Context, cfg config.Telemetry, log *zap.Logger) (
 	}, nil
 }
 
-func serveMetrics(addr string, log *zap.Logger) {
+func serveMetrics(port int, log *zap.Logger) {
 	mux := http.NewServeMux()
+
+	addr := fmt.Sprintf(telemetryIPAddress, port)
 
 	mux.Handle("/metrics", promhttp.Handler())
 
