@@ -1,7 +1,6 @@
 package model
 
 import (
-	"strings"
 	"time"
 )
 
@@ -20,20 +19,20 @@ type User struct {
 	IsDeleted bool
 }
 
-func (u *User) Validate() error {
-	switch {
-	case u.Name == "" || len(u.Name) < 2:
-		return ErrInvalidName
-	case u.Phone == "":
-		return ErrInvalidPhone
-	case !isValidEmail(u.Email):
-		return ErrInvalidEmail
-	case u.PasswordHash == "":
-		return ErrInvalidPassword
-	default:
-		return nil
-	}
-}
+// func (u *User) Validate() error {
+// 	switch {
+// 	case u.Name == "" || len(u.Name) < 2:
+// 		return ErrInvalidName
+// 	case u.Phone == "":
+// 		return ErrInvalidPhone
+// 	case !utils.ValidateEmail(u.Email):
+// 		return ErrInvalidEmail
+// 	case !utils.ValidatePassword(u.CurrentPassword):
+// 		return ErrInvalidPassword
+// 	default:
+// 		return nil
+// 	}
+// }
 
 type UserUpdateData struct {
 	ID           *uint64
@@ -46,21 +45,17 @@ type UserUpdateData struct {
 	IsDeleted *bool
 }
 
-func (u *UserUpdateData) Validate() error {
-	switch {
-	case *u.Name == "" || len(*u.Name) < 2:
-		return ErrInvalidName
-	case *u.Phone == "":
-		return ErrInvalidPhone
-	case !isValidEmail(*u.Email):
-		return ErrInvalidEmail
-	case *u.PasswordHash == "":
-		return ErrInvalidPassword
-	default:
-		return nil
-	}
-}
-
-func isValidEmail(email string) bool {
-	return strings.Contains(email, "@") && strings.Contains(email, ".")
-}
+// func (u *UserUpdateData) Validate() error {
+// 	switch {
+// 	case *u.Name == "" || len(*u.Name) < 2:
+// 		return ErrInvalidName
+// 	case *u.Phone == "":
+// 		return ErrInvalidPhone
+// 	case !utils.ValidateEmail(*u.Email):
+// 		return ErrInvalidEmail
+// 	case *u.PasswordHash == "":
+// 		return ErrInvalidPassword
+// 	default:
+// 		return nil
+// 	}
+// }

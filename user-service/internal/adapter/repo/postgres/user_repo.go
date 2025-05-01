@@ -23,17 +23,29 @@ func NewUserRepo(db *sql.DB) *userRepo {
 	}
 }
 
-func (r *userRepo) Create(ctx context.Context, user *model.User) error {
-	object := dao.FromDomain(user)
+func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, error) {
+	newuser := dao.FromDomain(user)
 	query := `
         INSERT INTO users (name, phone, email, password_hash, created_at, updated_at, is_deleted)
         VALUES ($1, $2, $3, $4, $5, $6, $7)
+		RETURNING id
     `
-	_, err := r.db.ExecContext(ctx, query, object.Name, object.Phone, object.Email, object.PasswordHash, object.CreatedAt, object.UpdatedAt, object.IsDeleted)
+
+	err := r.db.QueryRowContext(ctx, query,
+		newuser.Name,
+		newuser.Phone,
+		newuser.Email,
+		newuser.PasswordHash,
+		newuser.CreatedAt,
+		newuser.UpdatedAt,
+		newuser.IsDeleted,
+	).Scan(newuser.ID)
+
 	if err != nil {
-		return err
+		return &model.User{}, err
 	}
-	return nil
+
+	return user, err
 }
 
 func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, error) {
@@ -44,6 +56,24 @@ func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, erro
     `
 
 	row := r.db.QueryRowContext(ctx, query, userID)
+
+	user := dao.User{}
+	err := row.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.PasswordHash, &user.NewPasswordHash, &user.CreatedAt, &user.UpdatedAt, &user.IsDeleted)
+	if err != nil {
+		return nil, err
+	}
+
+	return dao.ToDomain(user), nil
+}
+
+func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, error) {
+	query := `
+        SELECT id, name, phone, email, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        FROM users
+        WHERE email = $1 AND is_deleted = false
+    `
+
+	row := r.db.QueryRowContext(ctx, query, email)
 
 	user := dao.User{}
 	err := row.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.PasswordHash, &user.NewPasswordHash, &user.CreatedAt, &user.UpdatedAt, &user.IsDeleted)
