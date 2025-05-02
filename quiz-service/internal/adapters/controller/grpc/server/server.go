@@ -1,0 +1,91 @@
+package server
+
+import (
+	"context"
+	"fmt"
+
+	"log"
+	"net"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
+	svc "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/answer/v1"
+	"github.com/sherinur/doit-platform/quiz-service/config"
+	"github.com/sherinur/doit-platform/quiz-service/internal/adapters/controller/grpc/server/frontend"
+)
+
+type API struct {
+	server *grpc.Server
+	cfg    config.GRPCServer
+	addr   string
+
+	AnswerUseCase AnswerUseCase
+}
+
+func New(
+	cfg config.Server,
+	AnswerUseCase AnswerUseCase,
+) *API {
+	return &API{
+		cfg:           cfg.GRPCServer,
+		addr:          fmt.Sprintf("0.0.0.0:%d", cfg.GRPCServer.Port),
+		AnswerUseCase: AnswerUseCase,
+	}
+}
+
+func (a *API) Run(errCh chan<- error) {
+	go func() {
+		log.Println("gRPC server starting listen", fmt.Sprintf("addr: %s", a.addr))
+
+		if err := a.run(); err != nil {
+			errCh <- fmt.Errorf("can't start grpc server: %w", err)
+
+			return
+		}
+	}()
+}
+
+// Stop method gracefully stops grpc API server. Provide context to force stop on timeout.
+func (a *API) Stop(ctx context.Context) error {
+	if a.server == nil {
+		return nil
+	}
+
+	stopped := make(chan struct{})
+	go func() {
+		a.server.GracefulStop()
+		close(stopped)
+	}()
+
+	select {
+	case <-ctx.Done(): // Stop immediately if the context is terminated
+		a.server.Stop()
+	case <-stopped:
+	}
+
+	return nil
+}
+
+// run starts and runs GRPCServer server.
+func (a *API) run() error {
+	a.server = grpc.NewServer()
+
+	// Register services
+	svc.RegisterAnswerServiceServer(a.server, frontend.NewAnswer(a.AnswerUseCase))
+
+	// Register reflection service
+	reflection.Register(a.server)
+
+	listener, err := net.Listen("tcp", a.addr)
+	if err != nil {
+		return fmt.Errorf("failed to create listener: %w", err)
+	}
+
+	err = a.server.Serve(listener)
+	if err != nil {
+		return fmt.Errorf("failed to serve grpc: %w", err)
+	}
+
+	return nil
+}
