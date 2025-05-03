@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"go.uber.org/zap"
 	"log"
 	"os"
 	"os/signal"
@@ -19,12 +20,18 @@ import (
 const serviceName = "quiz-service"
 
 type App struct {
+	log *zap.Logger
+
 	httpServer *httpservice.API
 	grpcServer *grpcserver.API
 }
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	log.Println(fmt.Sprintf("starting %v server", serviceName))
+	logger, err := NewLogger(cfg)
+	if err != nil {
+		return nil, err
+	}
 
 	log.Println("connecting to mongo", "database", cfg.Mongo.Database)
 	mongoDB, err := mongocon.NewDB(ctx, cfg.Mongo)
@@ -47,6 +54,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	grpcServer := grpcserver.New(cfg.Server, ResultUseCase, QuizUseCase, QuestionUseCase)
 
 	app := &App{
+		log:        logger,
 		httpServer: httpServer,
 		grpcServer: grpcServer,
 	}

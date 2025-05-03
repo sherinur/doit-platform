@@ -7,8 +7,9 @@ import (
 
 type (
 	Config struct {
-		Mongo  mongo.Config
-		Server Server
+		Mongo     mongo.Config
+		Server    Server
+		ZapLogger ZapLogger
 	}
 
 	Server struct {
@@ -17,12 +18,17 @@ type (
 	}
 
 	HTTPServer struct {
-		Mode string `env:"GIN_MODE" envDefault:"release"`
+		Mode string `env:"GIN_MODE" envDefault:"release"` // release, debug, test
 		Port string `env:"HTTP_PORT"`
 	}
 
 	GRPCServer struct {
 		Port int32 `env:"GRPC_PORT"`
+	}
+
+	ZapLogger struct {
+		Directory string `env:"ZAP_LOGGING_DIRECTORY" envDefault:"./logs"`
+		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"./logs"` // release, debug, test
 	}
 )
 
