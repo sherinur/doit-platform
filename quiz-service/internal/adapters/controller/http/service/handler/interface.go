@@ -21,15 +21,6 @@ type QuestionUseCase interface {
 	DeleteQuestion(ctx context.Context, id string) (model.Question, error)
 }
 
-type AnswerUseCase interface {
-	CreateAnswer(ctx context.Context, request model.Answer) (model.Answer, error)
-	CreateAnswers(ctx context.Context, request []model.Answer) ([]model.Answer, error)
-	GetAnswerById(ctx context.Context, id string) (model.Answer, error)
-	GetAnswersByQuestionId(ctx context.Context, id string) ([]model.Answer, error)
-	UpdateAnswer(ctx context.Context, request model.Answer) (model.Answer, error)
-	DeleteAnswer(ctx context.Context, id string) (model.Answer, error)
-}
-
 type ResultUseCase interface {
 	CreateResult(ctx context.Context, request model.Result) (model.Result, error)
 	GetResultById(ctx context.Context, id string) (model.Result, error)

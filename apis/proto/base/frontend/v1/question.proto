@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package base.frontend.v1;
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/base/frontend/v1;frontendv1";
+
+message Question {
+  string id = 1;
+  string text = 2;
+  string type = 3;
+  double points = 4;
+  string quiz_id = 5;
+  repeated Answer answers = 6;
+}
+
+message Answer {
+  string answer_id = 1;
+  string text = 2;
+  bool is_correct = 3;
+}

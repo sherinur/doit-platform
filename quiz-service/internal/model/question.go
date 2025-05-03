@@ -10,7 +10,7 @@ type Question struct {
 }
 
 type Answer struct {
-	ID        string
+	AnswerID  string
 	Text      string
 	IsCorrect bool
 }

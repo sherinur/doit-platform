@@ -10,7 +10,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	svc "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/answer/v1"
+	quesvc "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/question/v1"
+	quizsvc "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/quiz/v1"
+	ressvc "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/result/v1"
 	"github.com/sherinur/doit-platform/quiz-service/config"
 	"github.com/sherinur/doit-platform/quiz-service/internal/adapters/controller/grpc/server/frontend"
 )
@@ -20,17 +22,23 @@ type API struct {
 	cfg    config.GRPCServer
 	addr   string
 
-	AnswerUseCase AnswerUseCase
+	ResultUseCase   ResultUseCase
+	QuestionUseCase QuestionUseCase
+	QuizUseCase     QuizUseCase
 }
 
 func New(
 	cfg config.Server,
-	AnswerUseCase AnswerUseCase,
+	ResultUseCase ResultUseCase,
+	QuizUseCase QuizUseCase,
+	QuestionUseCase QuestionUseCase,
 ) *API {
 	return &API{
-		cfg:           cfg.GRPCServer,
-		addr:          fmt.Sprintf("0.0.0.0:%d", cfg.GRPCServer.Port),
-		AnswerUseCase: AnswerUseCase,
+		cfg:             cfg.GRPCServer,
+		addr:            fmt.Sprintf("0.0.0.0:%d", cfg.GRPCServer.Port),
+		ResultUseCase:   ResultUseCase,
+		QuestionUseCase: QuestionUseCase,
+		QuizUseCase:     QuizUseCase,
 	}
 }
 
@@ -72,7 +80,9 @@ func (a *API) run() error {
 	a.server = grpc.NewServer()
 
 	// Register services
-	svc.RegisterAnswerServiceServer(a.server, frontend.NewAnswer(a.AnswerUseCase))
+	quesvc.RegisterQuestionServiceServer(a.server, frontend.NewQuestion(a.QuestionUseCase))
+	quizsvc.RegisterQuizServiceServer(a.server, frontend.NewQuiz(a.QuizUseCase))
+	ressvc.RegisterResultServiceServer(a.server, frontend.NewResult(a.ResultUseCase))
 
 	// Register reflection service
 	reflection.Register(a.server)

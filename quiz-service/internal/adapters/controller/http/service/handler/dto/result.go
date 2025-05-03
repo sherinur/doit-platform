@@ -54,7 +54,7 @@ func FromResultCreateRequest(ctx *gin.Context) (model.Result, error) {
 		question := model.Question{}
 		question.ID = q.ID
 		for _, answer := range q.Answers {
-			question.Answers = append(question.Answers, model.Answer{ID: answer.ID})
+			question.Answers = append(question.Answers, model.Answer{AnswerID: answer.ID})
 		}
 		result.Questions = append(result.Questions, question)
 	}

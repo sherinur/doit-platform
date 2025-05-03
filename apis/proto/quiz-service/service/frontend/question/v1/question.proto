@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package quiz.service.frontend.question.v1;
+
+import "base/frontend/v1/question.proto";
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/question/v1;quesvc";
+
+service QuestionService {
+  rpc CreateQuestion(CreateQuestionRequest) returns (CreateQuestionResponse);
+  rpc CreateQuestions(CreateQuestionRequests) returns (CreateQuestionResponses);
+  rpc GetQuestionById(GetQuestionRequest) returns (GetQuestionResponse);
+  rpc GetQuestionsByQuizId(GetQuestionRequest) returns (GetQuestionResponses);
+  rpc UpdateQuestion(UpdateQuestionRequest) returns (UpdateQuestionResponse);
+  rpc DeleteQuestion(DeleteQuestionRequest) returns (DeleteQuestionResponse);
+}
+
+message CreateQuestionRequest {
+  string text = 1;
+  string type = 2;
+  double points = 3;
+  string quiz_id = 4;
+  repeated base.frontend.v1.Answer answers = 5;
+}
+
+message CreateQuestionResponse {
+  string created_id = 1;
+}
+
+message CreateQuestionRequests {
+  repeated CreateQuestionRequest questions = 1;
+}
+
+message CreateQuestionResponses {
+  repeated CreateQuestionResponse questions = 1;
+}
+
+message GetQuestionRequest {
+  string id = 1;
+}
+
+message GetAnswerResponse {
+  string answer_id = 1;
+  string text = 2;
+}
+
+message GetQuestionResponse {
+  string id = 1;
+  string text = 2;
+  string type = 3;
+  double points = 4;
+  string quiz_id = 5;
+  repeated GetAnswerResponse answers = 6;
+}
+
+message GetQuestionResponses {
+  repeated GetQuestionResponse questions = 1;
+}
+
+message UpdateQuestionRequest {
+  base.frontend.v1.Question question = 1;
+}
+
+message UpdateQuestionResponse {
+  string updated_id = 1;
+}
+
+message DeleteQuestionRequest {
+  string id = 1;
+}
+
+message DeleteQuestionResponse {
+  string deleted_id = 1;
+}

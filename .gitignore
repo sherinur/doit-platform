@@ -21,7 +21,6 @@
 go.work
 go.work.sum
 
-# env file
-quiz-service/.env
-
 .idea/
+Makefile
+docker-compose.yml

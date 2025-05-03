@@ -29,7 +29,23 @@ gen:
 		--go_opt=paths=source_relative \
 		--go-grpc_out=$(GEN_DIR) \
 		--go-grpc_opt=paths=source_relative \
-		$(PROTO_ROOT)/base/frontend/v1/answer.proto
+		$(PROTO_ROOT)/base/frontend/v1/question.proto
+
+	@protoc \
+		--proto_path=$(PROTO_ROOT) \
+		--go_out=$(GEN_DIR) \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=$(GEN_DIR) \
+		--go-grpc_opt=paths=source_relative \
+		$(PROTO_ROOT)/base/frontend/v1/quiz.proto
+
+	@protoc \
+		--proto_path=$(PROTO_ROOT) \
+		--go_out=$(GEN_DIR) \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=$(GEN_DIR) \
+		--go-grpc_opt=paths=source_relative \
+		$(PROTO_ROOT)/base/frontend/v1/result.proto
 
 # Then generate for service proto files
 	@protoc \
@@ -38,7 +54,23 @@ gen:
 		--go_opt=paths=source_relative \
 		--go-grpc_out=$(GEN_DIR) \
 		--go-grpc_opt=paths=source_relative \
-		$(PROTO_ROOT)/quiz-service/service/frontend/answer/v1/answer.proto
+		$(PROTO_ROOT)/quiz-service/service/frontend/question/v1/question.proto
+
+	@protoc \
+    		--proto_path=$(PROTO_ROOT) \
+    		--go_out=$(GEN_DIR) \
+    		--go_opt=paths=source_relative \
+    		--go-grpc_out=$(GEN_DIR) \
+    		--go-grpc_opt=paths=source_relative \
+    		$(PROTO_ROOT)/quiz-service/service/frontend/quiz/v1/quiz.proto
+
+	@protoc \
+		--proto_path=$(PROTO_ROOT) \
+		--go_out=$(GEN_DIR) \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=$(GEN_DIR) \
+		--go-grpc_opt=paths=source_relative \
+		$(PROTO_ROOT)/quiz-service/service/frontend/result/v1/result.proto
 
 	@echo "Successfully generated all proto files"
 

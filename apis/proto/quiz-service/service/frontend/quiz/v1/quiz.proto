@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package quiz.service.frontend.quiz.v1;
+
+import "base/frontend/v1/quiz.proto";
+import "quiz-service/service/frontend/question/v1/question.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/quiz/v1;quizsvc";
+
+service QuizService {
+  rpc CreateQuiz(CreateQuizRequest) returns (CreateQuizResponse);
+  rpc GetQuizById(GetQuizRequest) returns (GetQuizResponse);
+  rpc UpdateQuiz(UpdateQuizRequest) returns (UpdateQuizResponse);
+  rpc DeleteQuiz(DeleteQuizRequest) returns (DeleteQuizResponse);
+}
+
+message CreateQuizRequest {
+  string title = 1;
+  string description = 2;
+  string created_by = 3;
+  string status = 4;
+}
+
+message CreateQuizResponse {
+  string created_id = 1;
+}
+
+message GetQuizRequest {
+  string id = 1;
+}
+
+message GetQuizResponse {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string created_by = 4;
+  string status = 5;
+  double total_points = 6;
+  repeated question.v1.GetQuestionResponse questions = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+message UpdateQuizRequest {
+  base.frontend.v1.Quiz quiz = 1;
+}
+
+message UpdateQuizResponse {
+  string updated_id = 1;
+}
+
+message DeleteQuizRequest {
+  string id = 1;
+}
+
+message DeleteQuizResponse {
+  string deleted_id = 1;
+}

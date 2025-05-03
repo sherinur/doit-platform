@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package quiz.service.frontend.result.v1;
+
+import "base/frontend/v1/result.proto";
+import "google/protobuf/timestamp.proto";
+import "quiz-service/service/frontend/question/v1/question.proto";
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/result/v1;ressvc";
+
+service ResultService {
+  rpc CreateResult(CreateResultRequest) returns (CreateResultResponse);
+  rpc GetResultById(GetResultRequest) returns (GetResultResponse);
+  rpc GetResultsByQuizId(GetResultRequest) returns (GetResultResponses);
+  rpc GetResultsByUserId(GetResultRequest) returns (GetResultResponses);
+  rpc DeleteResult(DeleteResultRequest) returns (DeleteResultResponse);
+}
+
+message CreateResultRequest {
+  string user_id = 1;
+  string quiz_id = 2;
+  string status = 3;
+  repeated base.frontend.v1.ResultQuestion questions = 4;
+}
+
+message CreateResultResponse {
+  string created_id = 1;
+}
+
+message GetResultRequest {
+  string id = 1;
+}
+
+message GetResultResponse {
+  string id = 1;
+  string user_id = 2;
+  string quiz_id = 3;
+  double score = 4;
+  string status = 5;
+  repeated question.v1.GetQuestionResponse questions = 6;
+  google.protobuf.Timestamp passed_at = 7;
+}
+
+message GetResultResponses {
+  repeated GetResultResponse results = 1;
+}
+
+message DeleteResultRequest {
+  string id = 1;
+}
+
+message DeleteResultResponse {
+  string deleted_id = 1;
+}

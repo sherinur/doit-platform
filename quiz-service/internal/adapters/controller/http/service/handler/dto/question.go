@@ -7,10 +7,16 @@ import (
 )
 
 type QuestionRequest struct {
-	Text   string  `json:"text"`
-	Type   string  `json:"type"`
-	Points float64 `json:"points"`
-	QuizID string  `json:"quiz_id"`
+	Text    string          `json:"text"`
+	Type    string          `json:"type"`
+	Points  float64         `json:"points"`
+	QuizID  string          `json:"quiz_id"`
+	Answers []AnswerRequest `json:"answers"`
+}
+
+type AnswerRequest struct {
+	Text      string `json:"text"`
+	IsCorrect bool   `json:"is_correct"`
 }
 
 type QuestionResponse struct {
@@ -24,6 +30,11 @@ type QuestionGetResponse struct {
 	QuizID  string              `json:"quiz_id"`
 	Points  float64             `json:"points"`
 	Answers []AnswerGetResponse `json:"answers"`
+}
+
+type AnswerGetResponse struct {
+	ID   string `json:"id"`
+	Text string `json:"text"`
 }
 
 func FromQuestionCreateRequest(ctx *gin.Context) (model.Question, error) {
@@ -114,4 +125,21 @@ func ToQuestionGetAllResponse(questions []model.Question) []QuestionGetResponse 
 	}
 
 	return questionList
+}
+
+func ToAnswerGetResponse(answer model.Answer) AnswerGetResponse {
+	return AnswerGetResponse{
+		ID:   answer.AnswerID,
+		Text: answer.Text,
+	}
+}
+
+func ToAnswerGetAllResponse(answers []model.Answer) []AnswerGetResponse {
+	answerList := make([]AnswerGetResponse, 0, len(answers))
+
+	for _, answer := range answers {
+		answerList = append(answerList, ToAnswerGetResponse(answer))
+	}
+
+	return answerList
 }

@@ -14,7 +14,7 @@ type Question struct {
 }
 
 type Answer struct {
-	ID        string `bson:"_id,omitempty"`
+	AnswerID  string `bson:"answer_id"`
 	Text      string `bson:"text"`
 	IsCorrect bool   `bson:"is_correct"`
 }
@@ -28,7 +28,7 @@ func FromQuestion(question model.Question) Question {
 	result.QuizID = question.QuizID
 
 	for _, answer := range question.Answers {
-		result.Answers = append(result.Answers, Answer{ID: answer.ID, Text: answer.Text, IsCorrect: answer.IsCorrect})
+		result.Answers = append(result.Answers, Answer{AnswerID: answer.AnswerID, Text: answer.Text, IsCorrect: answer.IsCorrect})
 	}
 
 	return result
@@ -43,7 +43,7 @@ func ToQuestion(question Question) model.Question {
 	result.QuizID = question.QuizID
 
 	for _, answer := range question.Answers {
-		result.Answers = append(result.Answers, model.Answer{ID: answer.ID, Text: answer.Text, IsCorrect: answer.IsCorrect})
+		result.Answers = append(result.Answers, model.Answer{AnswerID: answer.AnswerID, Text: answer.Text, IsCorrect: answer.IsCorrect})
 	}
 
 	return result

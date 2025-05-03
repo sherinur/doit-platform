@@ -115,9 +115,6 @@ func (repo *QuestionRepository) UpdateQuestion(ctx context.Context, question mod
 	if question.QuizID != "" {
 		updateFields["quiz_id"] = question.QuizID
 	}
-	if question.Answers != nil {
-		updateFields["answers"] = question.Answers
-	}
 
 	if len(updateFields) == 0 {
 		return fmt.Errorf("no fields provided to update")

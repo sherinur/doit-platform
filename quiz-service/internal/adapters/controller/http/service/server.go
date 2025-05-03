@@ -26,10 +26,9 @@ type API struct {
 	ResultHandler   *handler.ResultHandler
 	QuizHandler     *handler.QuizHandler
 	QuestionHandler *handler.QuestionHandler
-	AnswerHandler   *handler.AnswerHandler
 }
 
-func New(cfg config.Server, resultUseCase ResultUseCase, quizUseCase QuizUseCase, questionUseCase QuestionUseCase, answerUseCase AnswerUseCase) *API {
+func New(cfg config.Server, resultUseCase ResultUseCase, quizUseCase QuizUseCase, questionUseCase QuestionUseCase) *API {
 	// Setting the Gin mode
 	gin.SetMode(cfg.HttpServer.Mode)
 	// Creating a new Gin Engine
@@ -42,7 +41,6 @@ func New(cfg config.Server, resultUseCase ResultUseCase, quizUseCase QuizUseCase
 	resultHandler := handler.NewResultHandler(resultUseCase)
 	quizHandler := handler.NewQuizHandler(quizUseCase)
 	questionHandler := handler.NewQuestionHandler(questionUseCase)
-	answerHandler := handler.NewAnswerHandler(answerUseCase)
 
 	api := &API{
 		server:          server,
@@ -51,7 +49,6 @@ func New(cfg config.Server, resultUseCase ResultUseCase, quizUseCase QuizUseCase
 		ResultHandler:   resultHandler,
 		QuizHandler:     quizHandler,
 		QuestionHandler: questionHandler,
-		AnswerHandler:   answerHandler,
 	}
 
 	api.setupRoutes()
@@ -78,16 +75,6 @@ func (a *API) setupRoutes() {
 			questions.GET("/quiz/:id", a.QuestionHandler.GetQuestionsByQuizId)
 			questions.PUT("/:id", a.QuestionHandler.UpdateQuestion)
 			questions.DELETE("/:id", a.QuestionHandler.DeleteQuestion)
-		}
-
-		answers := v1.Group("/answers")
-		{
-			answers.POST("/", a.AnswerHandler.CreateAnswer)
-			answers.POST("/many", a.AnswerHandler.CreateAnswers)
-			answers.GET("/:id", a.AnswerHandler.GetAnswerById)
-			answers.GET("/question/:id", a.AnswerHandler.GetAnswersByQuestionId)
-			answers.PUT("/:id", a.AnswerHandler.UpdateAnswer)
-			answers.DELETE("/:id", a.AnswerHandler.DeleteAnswer)
 		}
 
 		result := v1.Group("/result")

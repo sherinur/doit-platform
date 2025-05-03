@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package base.frontend.v1;
+
+import "google/protobuf/timestamp.proto";
+import "base/frontend/v1/question.proto";
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/base/frontend/v1;frontendv1";
+
+message Result {
+  string id = 1;
+  string User_id = 2;
+  string quiz_id = 3;
+  double score = 4;
+  repeated base.frontend.v1.Question question = 5;
+  string status = 6;
+  google.protobuf.Timestamp passed_at = 7;
+}
+
+message ResultQuestion {
+  string id = 1;
+  repeated ResultAnswer answers = 2;
+}
+
+message ResultAnswer {
+  string id = 1;
+}

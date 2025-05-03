@@ -35,8 +35,10 @@ func (uc ResultUsecase) CreateResult(ctx context.Context, request model.Result) 
 		totalPoints += question.Points
 
 		for _, answer := range request.Questions[i].Answers {
-			if answer.IsCorrect {
-				score++
+			for _, dbAnswer := range question.Answers {
+				if answer.AnswerID == dbAnswer.AnswerID && dbAnswer.IsCorrect {
+					score++
+				}
 			}
 		}
 	}
@@ -70,7 +72,7 @@ func (uc ResultUsecase) GetResultById(ctx context.Context, id string) (model.Res
 
 		for j := range result.Questions[i].Answers {
 			for _, answer := range question.Answers {
-				if result.Questions[i].Answers[j].ID == answer.ID {
+				if result.Questions[i].Answers[j].AnswerID == answer.AnswerID {
 					result.Questions[i].Answers[j].Text = answer.Text
 				}
 			}
@@ -96,7 +98,7 @@ func (uc ResultUsecase) GetResultsByQuizId(ctx context.Context, id string) ([]mo
 
 			for j := range results[k].Questions[i].Answers {
 				for _, answer := range question.Answers {
-					if results[k].Questions[i].Answers[j].ID == answer.ID {
+					if results[k].Questions[i].Answers[j].AnswerID == answer.AnswerID {
 						results[k].Questions[i].Answers[j].Text = answer.Text
 					}
 				}
@@ -123,7 +125,7 @@ func (uc ResultUsecase) GetResultsByUserId(ctx context.Context, id string) ([]mo
 
 			for j := range results[k].Questions[i].Answers {
 				for _, answer := range question.Answers {
-					if results[k].Questions[i].Answers[j].ID == answer.ID {
+					if results[k].Questions[i].Answers[j].AnswerID == answer.AnswerID {
 						results[k].Questions[i].Answers[j].Text = answer.Text
 					}
 				}
