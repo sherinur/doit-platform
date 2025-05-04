@@ -7,6 +7,8 @@ import (
 	"github.com/sherinur/doit-platform/api-gateway/config"
 	"github.com/sherinur/doit-platform/api-gateway/internal/adapter/grpc/file"
 	"github.com/sherinur/doit-platform/api-gateway/internal/adapter/http/server"
+	"github.com/sherinur/doit-platform/api-gateway/internal/usecase"
+	"github.com/sherinur/doit-platform/api-gateway/pkg/grpcconn"
 	filesvc "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1"
 	"go.uber.org/zap"
 )
@@ -22,17 +24,25 @@ type App struct {
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	// logger
-	logger, err := NewLogger(cfg)
+	log, err := NewLogger(cfg)
 	if err != nil {
 		return nil, err
 	}
+	log.Debug("Zap logger is initialized", zap.String("mode", cfg.ZapLogger.Mode), zap.String("directory", cfg.ZapLogger.Directory))
 
-	filePresenter := file.NewFile(filesvc.NewFileServiceClient())
+	fileServiceGRPCConn, err := grpcconn.New(cfg.GRPC.GRPCClient.ContentServiceURL)
+	if err != nil {
+		return nil, err
+	}
+	log.Debug("Connected to the file service grpc client", zap.String("url", cfg.GRPC.GRPCClient.ContentServiceURL))
 
-	httpServer := server.New(cfg.Server.HTTPServer, logger)
+	filePresenter := file.NewFile(filesvc.NewFileServiceClient(fileServiceGRPCConn))
+	fileUsecase := usecase.NewFile(filePresenter)
+
+	httpServer := server.New(cfg.Server.HTTPServer, log, fileUsecase)
 
 	app := &App{
-		log:        logger,
+		log:        log,
 		httpServer: httpServer,
 	}
 

@@ -22,7 +22,7 @@ type API struct {
 	fileHandler *handler.File
 }
 
-func New(cfg config.HTTPServer, logger *zap.Logger) *API {
+func New(cfg config.HTTPServer, logger *zap.Logger, fileUsecase FileUsecase) *API {
 	gin.SetMode(cfg.Mode)
 	server := gin.New()
 	server.Use(gin.Recovery())
@@ -57,6 +57,6 @@ func (a *API) setupRoutes() {
 }
 
 func (a *API) Run() error {
-	a.log.Info("Running http server", zap.String("addr", a.addr))
+	a.log.Info("Running http server", zap.String("addr", a.addr), zap.String("gin mode", a.cfg.Mode))
 	return a.server.Run(a.addr)
 }
