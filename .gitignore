@@ -21,6 +21,5 @@
 go.work
 go.work.sum
 
-.idea/
-Makefile
-docker-compose.yml
+# env file (AVAILABE BECAUSE OF THE PET PROJECT)
+# .env
