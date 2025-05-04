@@ -3,7 +3,7 @@ package dto
 import (
 	"regexp"
 
-	"user-services/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 )
 
 const (

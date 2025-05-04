@@ -1,9 +1,9 @@
-package handler
+package frontend
 
 import (
 	"context"
 
-	"user-services/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 )
 
 type UserUsecase interface {

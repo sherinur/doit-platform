@@ -1,6 +1,6 @@
 package httpserver
 
-import "user-services/internal/adapter/controller/http/server/handler"
+import "github.com/sherinur/doit-platform/user-service/internal/adapter/controller/http/server/handler"
 
 type UserUsecase interface {
 	handler.UserUsecase

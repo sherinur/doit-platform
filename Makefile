@@ -47,3 +47,11 @@ help:
 	@echo "  make help    - Display this help message"
 
 .PHONY: build deploy down logs clean help
+
+generate-proto:
+	protoc -I apis/proto \
+	    	apis/proto/user-service/service/frontend/user/v1/user.proto \
+	    	--go_out=./apis/gen/ \
+			--go_opt=paths=source_relative \
+	    	--go-grpc_out=./apis/gen/ \
+			--go-grpc_opt=paths=source_relative

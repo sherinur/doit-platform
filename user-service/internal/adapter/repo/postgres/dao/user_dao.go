@@ -3,7 +3,7 @@ package dao
 import (
 	"time"
 
-	"user-services/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 )
 
 type User struct {

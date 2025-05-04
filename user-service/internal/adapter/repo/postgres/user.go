@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	"user-services/internal/adapter/repo/postgres/dao"
-	"user-services/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/internal/adapter/repo/postgres/dao"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 )
 
 type userRepo struct {
@@ -58,7 +58,17 @@ func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, erro
 	row := r.db.QueryRowContext(ctx, query, userID)
 
 	user := dao.User{}
-	err := row.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.PasswordHash, &user.NewPasswordHash, &user.CreatedAt, &user.UpdatedAt, &user.IsDeleted)
+	err := row.Scan(
+		&user.ID,
+		&user.Name,
+		&user.Phone,
+		&user.Email,
+		&user.PasswordHash,
+		&user.NewPasswordHash,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+		&user.IsDeleted,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +86,17 @@ func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, e
 	row := r.db.QueryRowContext(ctx, query, email)
 
 	user := dao.User{}
-	err := row.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.PasswordHash, &user.NewPasswordHash, &user.CreatedAt, &user.UpdatedAt, &user.IsDeleted)
+	err := row.Scan(
+		&user.ID,
+		&user.Name,
+		&user.Phone,
+		&user.Email,
+		&user.PasswordHash,
+		&user.NewPasswordHash,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+		&user.IsDeleted,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -100,10 +120,21 @@ func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 	var users []*model.User
 	for rows.Next() {
 		user := dao.User{}
-		err := rows.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.PasswordHash, &user.NewPasswordHash, &user.CreatedAt, &user.UpdatedAt, &user.IsDeleted)
+		err := rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Phone,
+			&user.Email,
+			&user.PasswordHash,
+			&user.NewPasswordHash,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			&user.IsDeleted,
+		)
 		if err != nil {
 			return nil, err
 		}
+
 		users = append(users, dao.ToDomain(user))
 	}
 
@@ -122,7 +153,15 @@ func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) e
         SET name = $1, phone = $2, email = $3, password_hash = $4, new_password_hash = $5, updated_at = $6
         WHERE id = $7 AND is_deleted = false
     `
-	_, err := r.db.ExecContext(ctx, query, object.Name, object.Phone, object.Email, object.PasswordHash, object.NewPasswordHash, object.UpdatedAt, userID)
+	_, err := r.db.ExecContext(ctx, query,
+		object.Name,
+		object.Phone,
+		object.Email,
+		object.PasswordHash,
+		object.NewPasswordHash,
+		object.UpdatedAt,
+		userID,
+	)
 	if err != nil {
 		return err
 	}

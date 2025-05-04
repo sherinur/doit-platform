@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"user-services/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 )
 
 type HTTPError struct {

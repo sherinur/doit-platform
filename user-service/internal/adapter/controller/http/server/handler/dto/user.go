@@ -3,7 +3,7 @@ package dto
 import (
 	"net/http"
 
-	"user-services/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -50,9 +50,14 @@ func FromUserToCreateResponse(user model.User) RegisterResponse {
 	}
 }
 
-type LoginUserRequset struct{}
+type LoginUserRequset struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=8"`
+}
 
-type LoginUserResponse struct{}
+type LoginUserResponse struct {
+	AccessToken string `json:"access_token"`
+}
 
 func hashPassword(password string) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

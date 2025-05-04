@@ -8,11 +8,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	"user-services/config"
-	httpserver "user-services/internal/adapter/controller/http/server"
 	userrepo "user-services/internal/adapter/repo/postgres"
 	"user-services/internal/usecase"
 	"user-services/pkg/postgres"
+
+	"github.com/sherinur/doit-platform/user-service/config"
+	httpserver "github.com/sherinur/doit-platform/user-service/internal/adapter/controller/http/server"
 )
 
 const serviceName = "user-service"

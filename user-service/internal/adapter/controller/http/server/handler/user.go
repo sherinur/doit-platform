@@ -36,3 +36,7 @@ func (h *UserHandler) RegisterUser(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, dto.FromUserToCreateResponse(*newuser))
 }
+
+func (h *UserHandler) Authorize(ctx *gin.Context) {
+
+}

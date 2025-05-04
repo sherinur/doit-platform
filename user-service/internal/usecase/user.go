@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"user-services/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -43,6 +43,23 @@ func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*
 	request.ID = newuser.ID
 
 	return request, nil
+}
+
+func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (string, error) {
+	user, err := uc.repo.GetByEmail(ctx, request.Email)
+	if err != nil {
+		return "", err
+	}
+
+	if err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.PasswordHash)); err != nil {
+		switch err {
+		case bcrypt.ErrMismatchedHashAndPassword:
+			return "", ErrWrongPassword
+		}
+		return "", err
+	}
+
+	return "", nil
 }
 
 func (uc *userUsecase) GetUserById(ctx context.Context, userID int64) (*model.User, error) {
