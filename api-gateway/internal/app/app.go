@@ -2,8 +2,12 @@ package app
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/sherinur/doit-platform/api-gateway/config"
+	"github.com/sherinur/doit-platform/api-gateway/internal/adapter/grpc/file"
+	"github.com/sherinur/doit-platform/api-gateway/internal/adapter/http/server"
+	filesvc "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1"
 	"go.uber.org/zap"
 )
 
@@ -13,7 +17,7 @@ type App struct {
 	cfg *config.Config
 	log *zap.Logger
 
-	// telemetry *Telemetry
+	httpServer *server.API
 }
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
@@ -22,26 +26,22 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	if err != nil {
 		return nil, err
 	}
-	// // telemetry
-	// telemetry, err := InitTelemetry(ctx, cfg.Telemetry, logger)
-	// if err != nil {
-	// 	return nil, err
-	// }
+
+	filePresenter := file.NewFile(filesvc.NewFileServiceClient())
+
+	httpServer := server.New(cfg.Server.HTTPServer, logger)
 
 	app := &App{
-		log: logger,
-		// httpServer: httpServer,
-		// grpcServer: grpcServer,
-		// telemetry:  telemetry,
+		log:        logger,
+		httpServer: httpServer,
 	}
 
 	return app, nil
 }
 
 func (a *App) Run() error {
-	a.log.Info("Starting the service")
-	// return a.grpcServer.Run(context.Background())
-	return nil
+	a.log.Info(fmt.Sprintf("Starting the %s service", serviceName))
+	return a.httpServer.Run()
 }
 
 func (a *App) Stop() error {
