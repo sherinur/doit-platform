@@ -1,0 +1,35 @@
+# Prometheus dev environment configuration
+# Path: deploy/monitoring/prometheus/env/dev.yml
+
+global:
+  scrape_interval: 30s     
+  evaluation_interval: 30s
+
+scrape_configs:
+  - job_name: 'content-service-dev'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['content-service:3003']
+        labels:
+          env: 'dev'
+          service: 'content-service'
+          version: 'local'
+
+  # - job_name: 's3-storage-dev'
+  #   static_configs:
+  #     - targets: ['s3-storage:4400']
+  #       labels:
+  #         env: 'dev'
+  #         service: 's3-storage'
+
+  - job_name: 'prometheus-self'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          env: 'dev'
+
+
+alerting:
+  alertmanagers: []
+
+rule_files: []

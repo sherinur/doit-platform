@@ -1,0 +1,36 @@
+2025-04-30 19:21:54	[34mINFO[0m	app/app.go:51	Starting the service
+2025-04-30 19:22:50	[34mINFO[0m	app/app.go:51	Starting the service
+2025-04-30 19:22:50	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-04-30 19:23:48	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "1.192909ms"}
+2025-04-30 19:24:08	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "979.557µs"}
+2025-04-30 19:24:08	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "929.725µs"}
+2025-04-30 19:24:38	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Create", "request": "body:\"p\\x05\\xeb\\xa0\\xd3\\x14\\xa5\\xbf\\xc1\\xf6\\xc6rW?)A1\\x96|\\x17ʋ\\x91U\\xddj\\x83[\\x8c4Z\\x00\"  type:\"reprehenderit ea ipsum et dolore\"", "duration": "5.140857ms"}
+2025-04-30 19:24:51	[34mINFO[0m	server/interceptor.go:16	gRPC request result	{"method": "/content.service.frontend.file.v1.FileService/Get", "request": "", "duration": "1.255295ms"}
+2025-04-30 19:29:21	[34mINFO[0m	app/app.go:51	Starting the service
+2025-04-30 19:29:21	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-04-30 19:29:25	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/content.service.frontend.file.v1.FileService/Get", "duration": "1.226769ms"}
+2025-04-30 19:29:25	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": ""}
+2025-05-01 03:26:04	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 03:26:04	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 03:26:04	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "http://localhost:3003/metrics"}
+2025-05-01 03:26:04	[31mERROR[0m	app/otel.go:82	Metrics server error	{"error": "listen tcp: address http://localhost:3003: too many colons in address"}
+github.com/sherinur/doit-platform/content-service/internal/app.serveMetrics
+	/home/sherinur/git/doit-platform/content-service/internal/app/otel.go:82
+2025-05-01 03:26:35	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 03:26:35	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 03:26:35	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3003/metrics"}
+2025-05-01 04:04:29	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 04:04:29	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3003/metrics"}
+2025-05-01 04:04:29	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 04:07:06	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 04:07:06	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 04:07:06	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3003/metrics"}
+2025-05-01 16:41:34	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 16:41:34	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 16:41:34	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3003/metrics"}
+2025-05-01 16:43:33	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 16:43:33	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 16:43:33	[34mINFO[0m	app/otel.go:79	Starting serving metrics on http	{"addr": "localhost:3004/metrics"}
+2025-05-01 17:04:15	[34mINFO[0m	app/app.go:61	Starting the service
+2025-05-01 17:04:15	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
+2025-05-01 17:04:15	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3003/metrics"}

@@ -1,0 +1,14 @@
+2025-05-04 15:31:17	[34mINFO[0m	app/app.go:38	Starting the service
+2025-05-04 15:31:17	[34mINFO[0m	server/server.go:53	Running http server	{"addr": "0.0.0.0:8000"}
+2025-05-04 15:32:43	[34mINFO[0m	app/app.go:38	Starting the service
+2025-05-04 15:32:43	[34mINFO[0m	server/server.go:53	Running http server	{"addr": "0.0.0.0:1000"}
+2025-05-04 15:32:57	[34mINFO[0m	app/app.go:38	Starting the service
+2025-05-04 15:32:57	[34mINFO[0m	server/server.go:53	Running http server	{"addr": "0.0.0.0:1001"}
+2025-05-04 15:33:07	[34mINFO[0m	app/app.go:38	Starting the service
+2025-05-04 15:33:07	[34mINFO[0m	server/server.go:53	Running http server	{"addr": "0.0.0.0:1024"}
+2025-05-04 15:33:13	[34mINFO[0m	app/app.go:38	Starting the service
+2025-05-04 15:33:13	[34mINFO[0m	server/server.go:53	Running http server	{"addr": "0.0.0.0:1023"}
+2025-05-04 15:33:37	[34mINFO[0m	app/app.go:38	Starting the service
+2025-05-04 15:33:37	[34mINFO[0m	server/server.go:53	Running http server	{"addr": "0.0.0.0:1024"}
+2025-05-04 15:37:13	[34mINFO[0m	app/app.go:38	Starting the service
+2025-05-04 15:37:13	[34mINFO[0m	server/server.go:58	Running http server	{"addr": "0.0.0.0:1024"}

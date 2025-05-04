@@ -1,6 +1,6 @@
 module github.com/sherinur/doit-platform
 
-go 1.23.7
+go 1.24.2
 
 require (
 	google.golang.org/grpc v1.72.0

@@ -2,6 +2,7 @@
 S3_STORAGE_BIN_NAME := "s3-storage/storage-bin"
 S3_STORAGE_PATH := "s3-storage/"
 
+# DOCKER
 build:
 	docker-compose build
 
@@ -16,6 +17,10 @@ ps:
 
 logs:
 	docker-compose logs
+
+docker-clean:
+	docker-compose down --volumes --remove-orphans
+	docker system prune -af --volumes
 
 # PROTOC GENERATION
 PROTO_ROOT := apis/proto
@@ -50,4 +55,4 @@ clean-gen:
 	@rm -rf $(GEN_DIR)
 	@echo "Cleaned generated proto files"
 
-.PHONY: gen clean-gen
+.PHONY: gen clean-gen deploy down docker-clean

@@ -12,6 +12,7 @@ type (
 		Server    Server `envPrefix:"SERVER_"`
 		S3Storage S3Storage
 		ZapLogger ZapLogger
+		Telemetry Telemetry
 	}
 
 	Server struct {
@@ -42,7 +43,14 @@ type (
 
 	ZapLogger struct {
 		Directory string `env:"ZAP_LOGGING_DIRECTORY" envDefault:"./logs"`
-		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"./logs"` // release, debug, test
+		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"debug"` // release, debug, test
+	}
+
+	Telemetry struct {
+		Mode                 string `env:"OTEL_MODE" envDefault:"debug"` // release, debug, test
+		ExporterOTLPEndpoint string `env:"OTEL_EXPORTER_OTLP_ENDPOINT" envDefault:"http://localhost:4318"`
+		ExporterOTLPInsecure bool   `env:"OTEL_EXPORTER_OTLP_INSECURE" envDefault:"true"`
+		ExporterPromPort     int    `env:"OTEL_EXPORTER_PROM_PORT" envDefault:"3003"`
 	}
 )
 
