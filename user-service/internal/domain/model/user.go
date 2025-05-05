@@ -2,6 +2,8 @@ package model
 
 import (
 	"time"
+
+	"github.com/sherinur/doit-platform/user-service/pkg/utils"
 )
 
 type User struct {
@@ -9,6 +11,7 @@ type User struct {
 	Name            string
 	Phone           string
 	Email           string
+	Role            string
 	CurrentPassword string
 	NewPassword     string
 	PasswordHash    string
@@ -19,20 +22,16 @@ type User struct {
 	IsDeleted bool
 }
 
-// func (u *User) Validate() error {
-// 	switch {
-// 	case u.Name == "" || len(u.Name) < 2:
-// 		return ErrInvalidName
-// 	case u.Phone == "":
-// 		return ErrInvalidPhone
-// 	case !utils.ValidateEmail(u.Email):
-// 		return ErrInvalidEmail
-// 	case !utils.ValidatePassword(u.CurrentPassword):
-// 		return ErrInvalidPassword
-// 	default:
-// 		return nil
-// 	}
-// }
+func (u *User) Validate() error {
+	switch {
+	case !utils.ValidateEmail(u.Email):
+		return ErrInvalidEmail
+	case !utils.ValidatePassword(u.CurrentPassword):
+		return ErrInvalidPassword
+	default:
+		return nil
+	}
+}
 
 type UserUpdateData struct {
 	ID           *uint64

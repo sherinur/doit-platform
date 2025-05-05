@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"user-services/internal/adapter/controller/http/server/handler/dto"
+	"github.com/sherinur/doit-platform/user-service/internal/adapter/controller/http/server/handler/dto"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,8 +35,4 @@ func (h *UserHandler) RegisterUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, dto.FromUserToCreateResponse(*newuser))
-}
-
-func (h *UserHandler) Authorize(ctx *gin.Context) {
-
 }

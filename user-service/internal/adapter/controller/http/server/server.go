@@ -11,8 +11,8 @@ import (
 	"syscall"
 	"time"
 
-	"user-services/config"
-	"user-services/internal/adapter/controller/http/server/handler"
+	"github.com/sherinur/doit-platform/user-service/config"
+	"github.com/sherinur/doit-platform/user-service/internal/adapter/controller/http/server/handler"
 
 	"github.com/gin-gonic/gin"
 )

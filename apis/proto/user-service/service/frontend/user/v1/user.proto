@@ -2,11 +2,14 @@ syntax = "proto3";
 
 package user.service.frontend.user.v1;
 
-option go_package =  "github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvc";
+option go_package = "github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvc";
 
 service UserService {
     rpc Register (RegisterRequest) returns (RegisterResponse);
     rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Profile (ProfileRequest) returns (ProfileResponse);
+    rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse);
+    rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse);
 }
 
 message RegisterRequest {
@@ -24,5 +27,36 @@ message LoginRequest {
 }
 
 message LoginResponse {
-    string token = 1;
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message ProfileRequest {
+}
+
+message ProfileResponse {
+    int64 id = 1;
+    string name = 2;
+    string phone = 3;
+    string email = 4;
+    string role = 5;
+}
+
+message UpdateProfileRequest {
+    string name = 1;
+    string phone = 2;
+    string role = 3;
+}
+
+message UpdateProfileResponse {
+    string status = 1;
+}
+
+message UpdatePasswordRequest {
+    string current_password = 1;
+    string new_password = 2;
+}
+
+message UpdatePasswordResponse {
+    string status = 1;
 }

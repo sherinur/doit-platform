@@ -21,7 +21,7 @@
 go.work
 go.work.sum
 
-# env file
 .DS_STORE
 Makefile
 docker-compose.yml
+

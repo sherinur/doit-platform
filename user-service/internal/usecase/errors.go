@@ -2,6 +2,4 @@ package usecase
 
 import "errors"
 
-var (
-	ErrWrongPassword = errors.New("wrong password")
-)
+var ErrWrongPassword = errors.New("wrong password")

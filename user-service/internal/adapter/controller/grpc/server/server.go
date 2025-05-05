@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-
 	"log"
 	"net"
 
@@ -11,6 +10,9 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"github.com/sherinur/doit-platform/user-service/config"
+	"github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server/frontend"
+
+	svc "github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1"
 )
 
 type API struct {
@@ -70,9 +72,7 @@ func (a *API) run() error {
 	a.server = grpc.NewServer()
 
 	// Register services
-	// quesvc.RegisterQuestionServiceServer(a.server, frontend.NewQuestion(a.QuestionUseCase))
-	// quizsvc.RegisterQuizServiceServer(a.server, frontend.NewQuiz(a.QuizUseCase))
-	// ressvc.RegisterResultServiceServer(a.server, frontend.NewResult(a.ResultUseCase))
+	svc.RegisterUserServiceServer(a.server, frontend.NewUser(a.UserUseCase))
 
 	// Register reflection service
 	reflection.Register(a.server)

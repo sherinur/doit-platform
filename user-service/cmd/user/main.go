@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"user-services/config"
-	"user-services/internal/app"
+	"github.com/sherinur/doit-platform/user-service/config"
+	"github.com/sherinur/doit-platform/user-service/internal/app"
 )
 
 func main() {

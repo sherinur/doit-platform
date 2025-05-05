@@ -10,16 +10,23 @@ import (
 )
 
 type userUsecase struct {
-	repo UserRepo
+	repo         UserRepo
+	tokenService TokenService
 }
 
-func NewUserUsecase(repo UserRepo) *userUsecase {
+func NewUserUsecase(repo UserRepo, tokenService TokenService) *userUsecase {
 	return &userUsecase{
-		repo: repo,
+		repo:         repo,
+		tokenService: tokenService,
 	}
 }
 
 func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*model.User, error) {
+	err := request.Validate()
+	if err != nil {
+		return &model.User{}, err
+	}
+
 	// check for uniqueness
 	existingUser, err := uc.repo.GetByEmail(ctx, request.Email)
 	if err != nil {
@@ -45,21 +52,34 @@ func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*
 	return request, nil
 }
 
-func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (string, error) {
+func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (string, string, error) {
+	err := request.Validate()
+	if err != nil {
+		return "", "", err
+	}
+
 	user, err := uc.repo.GetByEmail(ctx, request.Email)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	if err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.PasswordHash)); err != nil {
 		switch err {
 		case bcrypt.ErrMismatchedHashAndPassword:
-			return "", ErrWrongPassword
+			return "", "", ErrWrongPassword
 		}
-		return "", err
+		return "", "", err
 	}
 
-	return "", nil
+	accessPayload := uc.tokenService.CreateAccessPayload(user)
+	refreshPayload := uc.tokenService.CreateRefreshPayload(user)
+
+	accessToken, refreshToken, err := uc.tokenService.GenerateTokens(accessPayload, refreshPayload)
+	if err != nil {
+		return "", "", err
+	}
+
+	return accessToken, refreshToken, nil
 }
 
 func (uc *userUsecase) GetUserById(ctx context.Context, userID int64) (*model.User, error) {

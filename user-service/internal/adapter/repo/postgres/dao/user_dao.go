@@ -11,6 +11,7 @@ type User struct {
 	Name            string    `db:"name"`
 	Phone           string    `db:"phone"`
 	Email           string    `db:"email"`
+	Role            string    `db:"role"`
 	PasswordHash    string    `db:"password_hash"`
 	NewPasswordHash string    `db:"new_password_hash"`
 	CreatedAt       time.Time `db:"created_at"`
@@ -24,6 +25,7 @@ func FromDomain(user *model.User) User {
 		Name:            user.Name,
 		Phone:           user.Phone,
 		Email:           user.Email,
+		Role:            user.Role,
 		PasswordHash:    user.PasswordHash,
 		NewPasswordHash: user.NewPasswordHash,
 		CreatedAt:       user.CreatedAt,
@@ -38,6 +40,7 @@ func ToDomain(user User) *model.User {
 		Name:            user.Name,
 		Phone:           user.Phone,
 		Email:           user.Email,
+		Role:            user.Role,
 		PasswordHash:    user.PasswordHash,
 		NewPasswordHash: user.NewPasswordHash,
 		CreatedAt:       user.CreatedAt,

@@ -11,8 +11,10 @@ import (
 
 type (
 	Config struct {
-		Postgres postgresconn.PostgresConfig
-		Server   Server
+		Postgres  postgresconn.PostgresConfig
+		Server    Server
+		ZapLogger ZapLogger
+		Jwt       Jwt
 
 		Version string `env:"VERSION"`
 	}
@@ -33,10 +35,22 @@ type (
 	}
 
 	GRPCServer struct {
-		Port                  int16         `env:"GRPC_PORT,notEmpty"`
+		Port                  int32         `env:"GRPC_PORT,notEmpty"`
 		MaxRecvMsgSizeMiB     int           `env:"GRPC_MAX_MESSAGE_SIZE_MIB" envDefault:"12"`
 		MaxConnectionAge      time.Duration `env:"GRPC_MAX_CONNECTION_AGE" envDefault:"30s"`
 		MaxConnectionAgeGrace time.Duration `env:"GRPC_MAX_CONNECTION_AGE_GRACE" envDefault:"10s"`
+	}
+
+	ZapLogger struct {
+		Directory string `env:"ZAP_LOGGING_DIRECTORY" envDefault:"./logs"`
+		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"debug"` // release, debug, test
+	}
+
+	Jwt struct {
+		JwtAccessSecret      string `env:"JWT_ACCESS_SECRET"`
+		JwtRefreshSecret     string `env:"JWT_REFRESH_SECRET"`
+		JwtAccessExpiration  int    `env:"JWT_ACCESS_EXPIRATION"`
+		JwtRefreshExpiration int    `env:"JWT_REFRESH_EXPIRATION"`
 	}
 )
 

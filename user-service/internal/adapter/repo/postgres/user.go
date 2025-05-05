@@ -27,7 +27,7 @@ func NewUserRepo(db *sql.DB) *userRepo {
 func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, error) {
 	newuser := dao.FromDomain(user)
 	query := `
-        INSERT INTO users (name, phone, email, password_hash, created_at, updated_at, is_deleted)
+        INSERT INTO users (name, phone, email, role, password_hash, created_at, updated_at, is_deleted)
         VALUES ($1, $2, $3, $4, $5, $6, $7)
 		RETURNING id
     `
@@ -36,6 +36,7 @@ func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, e
 		newuser.Name,
 		newuser.Phone,
 		newuser.Email,
+		newuser.Role,
 		newuser.PasswordHash,
 		newuser.CreatedAt,
 		newuser.UpdatedAt,
@@ -50,7 +51,7 @@ func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, e
 
 func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, error) {
 	query := `
-        SELECT id, name, phone, email, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        SELECT id, name, phone, email, role, password_hash, new_password_hash, created_at, updated_at, is_deleted
         FROM users
         WHERE id = $1 AND is_deleted = false
     `
@@ -63,6 +64,7 @@ func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, erro
 		&user.Name,
 		&user.Phone,
 		&user.Email,
+		&user.Role,
 		&user.PasswordHash,
 		&user.NewPasswordHash,
 		&user.CreatedAt,
@@ -78,7 +80,7 @@ func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, erro
 
 func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, error) {
 	query := `
-        SELECT id, name, phone, email, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        SELECT id, name, phone, email, role, password_hash, new_password_hash, created_at, updated_at, is_deleted
         FROM users
         WHERE email = $1 AND is_deleted = false
     `
@@ -91,6 +93,7 @@ func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, e
 		&user.Name,
 		&user.Phone,
 		&user.Email,
+		&user.Role,
 		&user.PasswordHash,
 		&user.NewPasswordHash,
 		&user.CreatedAt,
@@ -106,7 +109,7 @@ func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, e
 
 func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 	query := `
-        SELECT id, name, phone, email, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        SELECT id, name, phone, email, role, password_hash, new_password_hash, created_at, updated_at, is_deleted
         FROM users
         WHERE is_deleted = false
     `
@@ -125,6 +128,7 @@ func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 			&user.Name,
 			&user.Phone,
 			&user.Email,
+			&user.Role,
 			&user.PasswordHash,
 			&user.NewPasswordHash,
 			&user.CreatedAt,
