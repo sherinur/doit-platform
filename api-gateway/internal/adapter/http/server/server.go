@@ -27,12 +27,15 @@ func New(cfg config.HTTPServer, logger *zap.Logger, fileUsecase FileUsecase) *AP
 	server := gin.New()
 	server.Use(gin.Recovery())
 
+	fileHandler := handler.NewFile(fileUsecase)
+
 	api := &API{
 		server: server,
 		cfg:    cfg,
 		addr:   fmt.Sprintf(serverIPAddress, cfg.Port),
+		log:    logger,
 
-		log: logger,
+		fileHandler: fileHandler,
 	}
 
 	api.setupRoutes()

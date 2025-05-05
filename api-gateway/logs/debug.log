@@ -12,3 +12,11 @@
 2025-05-04 15:33:37	[34mINFO[0m	server/server.go:53	Running http server	{"addr": "0.0.0.0:1024"}
 2025-05-04 15:37:13	[34mINFO[0m	app/app.go:38	Starting the service
 2025-05-04 15:37:13	[34mINFO[0m	server/server.go:58	Running http server	{"addr": "0.0.0.0:1024"}
+2025-05-05 01:18:17	[35mDEBUG[0m	app/app.go:31	Zap logger is initialized	{"mode": "debug", "directory": "./logs"}
+2025-05-05 01:18:17	[35mDEBUG[0m	app/app.go:37	Connected to the file service grpc client	{"url": "0.0.0.0:2003"}
+2025-05-05 01:18:17	[34mINFO[0m	app/app.go:53	Starting the api-gateway service
+2025-05-05 01:18:17	[34mINFO[0m	server/server.go:60	Running http server	{"addr": "0.0.0.0:1024", "gin mode": "release"}
+2025-05-05 01:23:53	[35mDEBUG[0m	app/app.go:31	Zap logger is initialized	{"mode": "debug", "directory": "./logs"}
+2025-05-05 01:23:53	[35mDEBUG[0m	app/app.go:37	Connected to the file service grpc client	{"url": "0.0.0.0:2003"}
+2025-05-05 01:23:53	[34mINFO[0m	app/app.go:53	Starting the api-gateway service
+2025-05-05 01:23:53	[34mINFO[0m	server/server.go:63	Running http server	{"addr": "0.0.0.0:1024", "gin mode": "release"}

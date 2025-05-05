@@ -6,9 +6,11 @@ require (
 	github.com/caarlos0/env/v7 v7.1.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/joho/godotenv v1.5.1
-	github.com/sherinur/doit-platform v0.0.0-20250429144742-0a5e72b9f33a
+	github.com/sherinur/doit-platform v0.0.0-20250504124306-0e8b1fa53aba
 	go.uber.org/zap v1.27.0
 )
+
+replace github.com/sherinur/doit-platform => ../
 
 require (
 	github.com/bytedance/sonic v1.13.2 // indirect
