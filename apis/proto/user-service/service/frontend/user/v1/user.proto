@@ -10,6 +10,7 @@ service UserService {
     rpc Profile (ProfileRequest) returns (ProfileResponse);
     rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse);
     rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse);
+    rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
 }
 
 message RegisterRequest {
@@ -59,4 +60,13 @@ message UpdatePasswordRequest {
 
 message UpdatePasswordResponse {
     string status = 1;
+}
+
+message RefreshTokenRequest {
+    string refreshToken = 1; 
+}
+
+message RefreshTokenResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
 }

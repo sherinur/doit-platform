@@ -14,3 +14,10 @@ type UserRepo interface {
 	Update(ctx context.Context, user *model.User, userID int64) error
 	Delete(ctx context.Context, userID int64) error
 }
+
+type RefreshTokenRepo interface {
+	Create(ctx context.Context, session *model.Session) error
+	GetByRefreshToken(ctx context.Context, refreshToken string) (*model.Session, error)
+	DeleteByRefreshToken(ctx context.Context, refreshToken string) error
+	DeleteByUserID(ctx context.Context, userID uint64) error
+}

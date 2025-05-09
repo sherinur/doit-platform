@@ -533,6 +533,102 @@ func (x *UpdatePasswordResponse) GetStatus() string {
 	return ""
 }
 
+type RefreshTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RefreshTokenRequest) Reset() {
+	*x = RefreshTokenRequest{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshTokenRequest) ProtoMessage() {}
+
+func (x *RefreshTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshTokenRequest.ProtoReflect.Descriptor instead.
+func (*RefreshTokenRequest) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *RefreshTokenRequest) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+type RefreshTokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AccessToken   string                 `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
+	RefreshToken  string                 `protobuf:"bytes,2,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RefreshTokenResponse) Reset() {
+	*x = RefreshTokenResponse{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshTokenResponse) ProtoMessage() {}
+
+func (x *RefreshTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshTokenResponse.ProtoReflect.Descriptor instead.
+func (*RefreshTokenResponse) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *RefreshTokenResponse) GetAccessToken() string {
+	if x != nil {
+		return x.AccessToken
+	}
+	return ""
+}
+
+func (x *RefreshTokenResponse) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
 var File_user_service_service_frontend_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
@@ -566,13 +662,19 @@ const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
 	"\x10current_password\x18\x01 \x01(\tR\x0fcurrentPassword\x12!\n" +
 	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"0\n" +
 	"\x16UpdatePasswordResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\tR\x06status2\xc3\x04\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\"9\n" +
+	"\x13RefreshTokenRequest\x12\"\n" +
+	"\frefreshToken\x18\x01 \x01(\tR\frefreshToken\"\\\n" +
+	"\x14RefreshTokenResponse\x12 \n" +
+	"\vaccessToken\x18\x01 \x01(\tR\vaccessToken\x12\"\n" +
+	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken2\xbc\x05\n" +
 	"\vUserService\x12k\n" +
 	"\bRegister\x12..user.service.frontend.user.v1.RegisterRequest\x1a/.user.service.frontend.user.v1.RegisterResponse\x12b\n" +
 	"\x05Login\x12+.user.service.frontend.user.v1.LoginRequest\x1a,.user.service.frontend.user.v1.LoginResponse\x12h\n" +
 	"\aProfile\x12-.user.service.frontend.user.v1.ProfileRequest\x1a..user.service.frontend.user.v1.ProfileResponse\x12z\n" +
 	"\rUpdateProfile\x123.user.service.frontend.user.v1.UpdateProfileRequest\x1a4.user.service.frontend.user.v1.UpdateProfileResponse\x12}\n" +
-	"\x0eUpdatePassword\x124.user.service.frontend.user.v1.UpdatePasswordRequest\x1a5.user.service.frontend.user.v1.UpdatePasswordResponseBZZXgithub.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvcb\x06proto3"
+	"\x0eUpdatePassword\x124.user.service.frontend.user.v1.UpdatePasswordRequest\x1a5.user.service.frontend.user.v1.UpdatePasswordResponse\x12w\n" +
+	"\fRefreshToken\x122.user.service.frontend.user.v1.RefreshTokenRequest\x1a3.user.service.frontend.user.v1.RefreshTokenResponseBZZXgithub.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvcb\x06proto3"
 
 var (
 	file_user_service_service_frontend_user_v1_user_proto_rawDescOnce sync.Once
@@ -586,7 +688,7 @@ func file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP() []byte 
 	return file_user_service_service_frontend_user_v1_user_proto_rawDescData
 }
 
-var file_user_service_service_frontend_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_user_service_service_frontend_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_user_service_service_frontend_user_v1_user_proto_goTypes = []any{
 	(*RegisterRequest)(nil),        // 0: user.service.frontend.user.v1.RegisterRequest
 	(*RegisterResponse)(nil),       // 1: user.service.frontend.user.v1.RegisterResponse
@@ -598,23 +700,27 @@ var file_user_service_service_frontend_user_v1_user_proto_goTypes = []any{
 	(*UpdateProfileResponse)(nil),  // 7: user.service.frontend.user.v1.UpdateProfileResponse
 	(*UpdatePasswordRequest)(nil),  // 8: user.service.frontend.user.v1.UpdatePasswordRequest
 	(*UpdatePasswordResponse)(nil), // 9: user.service.frontend.user.v1.UpdatePasswordResponse
+	(*RefreshTokenRequest)(nil),    // 10: user.service.frontend.user.v1.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil),   // 11: user.service.frontend.user.v1.RefreshTokenResponse
 }
 var file_user_service_service_frontend_user_v1_user_proto_depIdxs = []int32{
-	0, // 0: user.service.frontend.user.v1.UserService.Register:input_type -> user.service.frontend.user.v1.RegisterRequest
-	2, // 1: user.service.frontend.user.v1.UserService.Login:input_type -> user.service.frontend.user.v1.LoginRequest
-	4, // 2: user.service.frontend.user.v1.UserService.Profile:input_type -> user.service.frontend.user.v1.ProfileRequest
-	6, // 3: user.service.frontend.user.v1.UserService.UpdateProfile:input_type -> user.service.frontend.user.v1.UpdateProfileRequest
-	8, // 4: user.service.frontend.user.v1.UserService.UpdatePassword:input_type -> user.service.frontend.user.v1.UpdatePasswordRequest
-	1, // 5: user.service.frontend.user.v1.UserService.Register:output_type -> user.service.frontend.user.v1.RegisterResponse
-	3, // 6: user.service.frontend.user.v1.UserService.Login:output_type -> user.service.frontend.user.v1.LoginResponse
-	5, // 7: user.service.frontend.user.v1.UserService.Profile:output_type -> user.service.frontend.user.v1.ProfileResponse
-	7, // 8: user.service.frontend.user.v1.UserService.UpdateProfile:output_type -> user.service.frontend.user.v1.UpdateProfileResponse
-	9, // 9: user.service.frontend.user.v1.UserService.UpdatePassword:output_type -> user.service.frontend.user.v1.UpdatePasswordResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: user.service.frontend.user.v1.UserService.Register:input_type -> user.service.frontend.user.v1.RegisterRequest
+	2,  // 1: user.service.frontend.user.v1.UserService.Login:input_type -> user.service.frontend.user.v1.LoginRequest
+	4,  // 2: user.service.frontend.user.v1.UserService.Profile:input_type -> user.service.frontend.user.v1.ProfileRequest
+	6,  // 3: user.service.frontend.user.v1.UserService.UpdateProfile:input_type -> user.service.frontend.user.v1.UpdateProfileRequest
+	8,  // 4: user.service.frontend.user.v1.UserService.UpdatePassword:input_type -> user.service.frontend.user.v1.UpdatePasswordRequest
+	10, // 5: user.service.frontend.user.v1.UserService.RefreshToken:input_type -> user.service.frontend.user.v1.RefreshTokenRequest
+	1,  // 6: user.service.frontend.user.v1.UserService.Register:output_type -> user.service.frontend.user.v1.RegisterResponse
+	3,  // 7: user.service.frontend.user.v1.UserService.Login:output_type -> user.service.frontend.user.v1.LoginResponse
+	5,  // 8: user.service.frontend.user.v1.UserService.Profile:output_type -> user.service.frontend.user.v1.ProfileResponse
+	7,  // 9: user.service.frontend.user.v1.UserService.UpdateProfile:output_type -> user.service.frontend.user.v1.UpdateProfileResponse
+	9,  // 10: user.service.frontend.user.v1.UserService.UpdatePassword:output_type -> user.service.frontend.user.v1.UpdatePasswordResponse
+	11, // 11: user.service.frontend.user.v1.UserService.RefreshToken:output_type -> user.service.frontend.user.v1.RefreshTokenResponse
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_user_service_service_frontend_user_v1_user_proto_init() }
@@ -628,7 +734,7 @@ func file_user_service_service_frontend_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_service_service_frontend_user_v1_user_proto_rawDesc), len(file_user_service_service_frontend_user_v1_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

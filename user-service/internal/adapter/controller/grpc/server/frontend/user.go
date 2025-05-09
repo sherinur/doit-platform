@@ -41,10 +41,28 @@ func (u *User) Login(ctx context.Context, req *svc.LoginRequest) (*svc.LoginResp
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	accessToken, refreshToken, err := u.uc.LoginUser(ctx, &user)
+	token, err := u.uc.LoginUser(ctx, &user)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return dto.FromUserToLoginResponse(accessToken, refreshToken)
+	return dto.FromTokenToLoginResponse(token)
+}
+
+func (u *User) RefreshToken(
+	ctx context.Context, req *svc.RefreshTokenRequest,
+) (*svc.RefreshTokenResponse, error) {
+	if req.RefreshToken == "" {
+		return nil, status.Error(codes.InvalidArgument, "invalid refresh token")
+	}
+
+	token, err := u.uc.RefreshToken(ctx, req.RefreshToken)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &svc.RefreshTokenResponse{
+		AccessToken:  token.AccessToken,
+		RefreshToken: token.RefreshToken,
+	}, nil
 }

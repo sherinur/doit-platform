@@ -5,100 +5,160 @@ import (
 	"time"
 
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
-
-	"golang.org/x/crypto/bcrypt"
+	"github.com/sherinur/doit-platform/user-service/pkg/security"
 )
 
 type userUsecase struct {
-	repo         UserRepo
-	tokenService TokenService
+	userRepo        UserRepo
+	tokenRepo       RefreshTokenRepo
+	jwtManager      *security.JWTManager
+	passwordManager *security.PasswordManager
 }
 
-func NewUserUsecase(repo UserRepo, tokenService TokenService) *userUsecase {
+func NewUserUsecase(
+	userRepo UserRepo,
+	tokenRepo RefreshTokenRepo,
+	jwtManager *security.JWTManager,
+	passwordManager *security.PasswordManager,
+) *userUsecase {
 	return &userUsecase{
-		repo:         repo,
-		tokenService: tokenService,
+		userRepo:        userRepo,
+		tokenRepo:       tokenRepo,
+		jwtManager:      jwtManager,
+		passwordManager: passwordManager,
 	}
 }
 
 func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*model.User, error) {
-	err := request.Validate()
-	if err != nil {
-		return &model.User{}, err
+	// Validate the user input
+	if err := request.Validate(); err != nil {
+		return nil, err
 	}
 
-	// check for uniqueness
-	existingUser, err := uc.repo.GetByEmail(ctx, request.Email)
+	// Check if the user already exists
+	existingUser, err := uc.userRepo.GetByEmail(ctx, request.Email)
 	if err != nil {
-		return &model.User{}, err
-	} else if existingUser != nil {
-		return &model.User{}, model.ErrUserExists
+		return nil, err
+	}
+	if existingUser != nil {
+		return nil, model.ErrUserExists
 	}
 
-	request.PasswordHash, err = uc.hashPassword(request.CurrentPassword)
+	// Hash the password
+	request.PasswordHash, err = uc.passwordManager.HashPassword(request.CurrentPassword)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
+	// Set timestamps
 	request.CreatedAt = time.Now().UTC()
 	request.UpdatedAt = time.Now().UTC()
 
-	newuser, err := uc.repo.Create(ctx, request)
+	// Create the user in the repository
+	newUser, err := uc.userRepo.Create(ctx, request)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
-	request.ID = newuser.ID
 
-	return request, nil
+	return newUser, nil
 }
 
-func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (string, string, error) {
+func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (model.Token, error) {
 	err := request.Validate()
 	if err != nil {
-		return "", "", err
+		return model.Token{}, err
 	}
 
-	user, err := uc.repo.GetByEmail(ctx, request.Email)
+	user, err := uc.userRepo.GetByEmail(ctx, request.Email)
 	if err != nil {
-		return "", "", err
+		return model.Token{}, err
 	}
 
-	if err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.PasswordHash)); err != nil {
-		switch err {
-		case bcrypt.ErrMismatchedHashAndPassword:
-			return "", "", ErrWrongPassword
-		}
-		return "", "", err
-	}
-
-	accessPayload := uc.tokenService.CreateAccessPayload(user)
-	refreshPayload := uc.tokenService.CreateRefreshPayload(user)
-
-	accessToken, refreshToken, err := uc.tokenService.GenerateTokens(accessPayload, refreshPayload)
+	err = uc.passwordManager.CheckPassword(user.PasswordHash, request.CurrentPassword)
 	if err != nil {
-		return "", "", err
+		return model.Token{}, err
 	}
 
-	return accessToken, refreshToken, nil
+	accessPayload := uc.jwtManager.CreateAccessPayload(user)
+	refreshPayload := uc.jwtManager.CreateRefreshPayload(user)
+
+	accessToken, refreshToken, err := uc.jwtManager.GenerateTokens(accessPayload, refreshPayload)
+	if err != nil {
+		return model.Token{}, err
+	}
+
+	session := model.Session{
+		UserID:       user.ID,
+		RefreshToken: refreshToken,
+		ExpiresAt:    time.Now().Add(7 * 24 * time.Hour),
+		CreatedAt:    time.Now(),
+	}
+
+	err = uc.tokenRepo.Create(ctx, &session)
+	if err != nil {
+		return model.Token{}, err
+	}
+
+	return model.Token{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, nil
+}
+
+func (uc *userUsecase) RefreshToken(ctx context.Context, refreshToken string) (model.Token, error) {
+	session, err := uc.tokenRepo.GetByRefreshToken(ctx, refreshToken)
+	if err != nil {
+		return model.Token{}, err
+	}
+	if session.ExpiresAt.Before(time.Now().UTC()) {
+		return model.Token{}, model.ErrRefreshTokenExpired
+	}
+
+	user, err := uc.userRepo.GetById(ctx, session.UserID)
+	if err != nil {
+		return model.Token{}, err
+	}
+
+	accessPayload := uc.jwtManager.CreateAccessPayload(user)
+	refreshPayload := uc.jwtManager.CreateRefreshPayload(user)
+
+	accessToken, newRefreshToken, err := uc.jwtManager.GenerateTokens(accessPayload, refreshPayload)
+	if err != nil {
+		return model.Token{}, err
+	}
+
+	// delete old refresh and insert new one (rotation)
+	err = uc.tokenRepo.DeleteByRefreshToken(ctx, refreshToken)
+	if err != nil {
+		return model.Token{}, err
+	}
+
+	newSession := model.Session{
+		UserID:       user.ID,
+		RefreshToken: newRefreshToken,
+		ExpiresAt:    time.Now().Add(7 * 24 * time.Hour),
+		CreatedAt:    time.Now(),
+	}
+
+	err = uc.tokenRepo.Create(ctx, &newSession)
+	if err != nil {
+		return model.Token{}, err
+	}
+
+	return model.Token{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, nil
 }
 
 func (uc *userUsecase) GetUserById(ctx context.Context, userID int64) (*model.User, error) {
-	return uc.repo.GetById(ctx, userID)
+	return uc.userRepo.GetById(ctx, userID)
 }
 
 func (uc *userUsecase) UpdateUser(ctx context.Context, user *model.User, userID int64) error {
-	return uc.repo.Update(ctx, user, userID)
+	return uc.userRepo.Update(ctx, user, userID)
 }
 
 func (uc *userUsecase) DeleteUser(ctx context.Context, userID int64) error {
-	return uc.repo.Delete(ctx, userID)
-}
-
-func (uc *userUsecase) hashPassword(password string) (string, error) {
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return "", err
-	}
-
-	return string(hash), nil
+	return uc.userRepo.Delete(ctx, userID)
 }

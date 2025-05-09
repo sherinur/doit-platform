@@ -10,16 +10,16 @@ import (
 
 	"github.com/sherinur/doit-platform/user-service/config"
 	grpcserver "github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server"
-	httpserver "github.com/sherinur/doit-platform/user-service/internal/adapter/controller/http/server"
-	userrepo "github.com/sherinur/doit-platform/user-service/internal/adapter/repo/postgres"
+	repo "github.com/sherinur/doit-platform/user-service/internal/adapter/repo/postgres"
 	"github.com/sherinur/doit-platform/user-service/internal/usecase"
 	postgresconn "github.com/sherinur/doit-platform/user-service/pkg/postgres"
+	"github.com/sherinur/doit-platform/user-service/pkg/security"
 )
 
 const serviceName = "user-service"
 
 type App struct {
-	httpServer *httpserver.API
+	// httpServer *httpserver.API
 	grpcServer *grpcserver.API
 }
 
@@ -35,18 +35,18 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	log.Println("Connected to PostgreSQL successfully.")
 
 	// Initialize Repositories
-	userRepo := userrepo.NewUserRepo(db)
-	tokenService := usecase.NewTokenService(cfg.Jwt.JwtAccessSecret, cfg.Jwt.JwtRefreshSecret, cfg.Jwt.JwtAccessExpiration, cfg.Jwt.JwtRefreshExpiration)
+	userRepo := repo.NewUserRepo(db)
+	tokenRepo := repo.NewSessionRepo(db)
+	jwtManager := security.NewJWTManager(cfg.Jwt.JwtAccessSecret, cfg.Jwt.JwtRefreshSecret, cfg.Jwt.JwtAccessExpiration, cfg.Jwt.JwtRefreshExpiration)
+	passwordManager := security.NewPasswordManager()
 
 	// Initialize UseCases
-	userUsecase := usecase.NewUserUsecase(userRepo, tokenService)
+	userUsecase := usecase.NewUserUsecase(userRepo, tokenRepo, jwtManager, passwordManager)
 
 	// Initialize HTTP Server
-	httpServer := httpserver.New(cfg.Server, userUsecase)
-	grpcServer := grpcserver.New(cfg.Server, userUsecase)
+	grpcServer := grpcserver.New(cfg.Server, userUsecase, cfg.Jwt)
 
 	app := &App{
-		httpServer: httpServer,
 		grpcServer: grpcServer,
 	}
 
@@ -60,10 +60,10 @@ func (a *App) Close(ctx context.Context) {
 	}
 
 	// Stop the HTTP server
-	err = a.httpServer.Stop()
-	if err != nil {
-		log.Println("Failed to shutdown HTTP server:", err)
-	}
+	// err = a.httpServer.Stop()
+	// if err != nil {
+	// 	log.Println("Failed to shutdown HTTP server:", err)
+	// }
 }
 
 func (a *App) Run() error {
@@ -71,12 +71,12 @@ func (a *App) Run() error {
 	ctx := context.Background()
 
 	// Start the GRPC server
-	a.grpcServer.Run(errCh)
+	a.grpcServer.Run(ctx, errCh)
 	log.Println(fmt.Sprintf("server %v started", serviceName))
 
 	// Start the HTTP server
-	a.httpServer.Run(errCh)
-	log.Printf("Service %v started", serviceName)
+	// a.httpServer.Run(errCh)
+	// log.Printf("Service %v started", serviceName)
 
 	// Wait for termination signals
 	shutdownCh := make(chan os.Signal, 1)

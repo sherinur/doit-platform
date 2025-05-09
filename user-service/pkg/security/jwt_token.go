@@ -1,4 +1,4 @@
-package usecase
+package security
 
 import (
 	"fmt"
@@ -8,23 +8,15 @@ import (
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 )
 
-type TokenService interface {
-	GenerateTokens(accessPayload jwt.MapClaims, refreshPayload jwt.MapClaims) (string, string, error)
-	CreateAccessPayload(user *model.User) jwt.MapClaims
-	CreateRefreshPayload(user *model.User) jwt.MapClaims
-	ValidateAccessToken(tokenStr string) bool
-	ParseRefreshToken(tokenStr string) *model.User
-}
-
-type tokenService struct {
+type JWTManager struct {
 	jwtAccessSecret      []byte
 	jwtRefreshSecret     []byte
 	jwtAccessExpiration  int
 	jwtRefreshExpiration int
 }
 
-func NewTokenService(accessSecret string, refreshSecret string, accessExpiration int, refreshExpiration int) *tokenService {
-	return &tokenService{
+func NewJWTManager(accessSecret string, refreshSecret string, accessExpiration int, refreshExpiration int) *JWTManager {
+	return &JWTManager{
 		jwtAccessSecret:      []byte(accessSecret),
 		jwtRefreshSecret:     []byte(refreshSecret),
 		jwtAccessExpiration:  accessExpiration,
@@ -32,7 +24,7 @@ func NewTokenService(accessSecret string, refreshSecret string, accessExpiration
 	}
 }
 
-func (s *tokenService) GenerateTokens(accessPayload jwt.MapClaims, refreshPayload jwt.MapClaims) (string, string, error) {
+func (s *JWTManager) GenerateTokens(accessPayload jwt.MapClaims, refreshPayload jwt.MapClaims) (string, string, error) {
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessPayload)
 	accessTokenStr, err := accessToken.SignedString(s.jwtAccessSecret)
 	if err != nil {
@@ -48,7 +40,7 @@ func (s *tokenService) GenerateTokens(accessPayload jwt.MapClaims, refreshPayloa
 	return accessTokenStr, refreshTokenStr, nil
 }
 
-func (s *tokenService) CreateAccessPayload(user *model.User) jwt.MapClaims {
+func (s *JWTManager) CreateAccessPayload(user *model.User) jwt.MapClaims {
 	return jwt.MapClaims{
 		"role":    user.Role,
 		"user_id": user.ID,
@@ -56,7 +48,7 @@ func (s *tokenService) CreateAccessPayload(user *model.User) jwt.MapClaims {
 	}
 }
 
-func (s *tokenService) CreateRefreshPayload(user *model.User) jwt.MapClaims {
+func (s *JWTManager) CreateRefreshPayload(user *model.User) jwt.MapClaims {
 	return jwt.MapClaims{
 		"role":    user.Role,
 		"user_id": user.ID,
@@ -64,7 +56,7 @@ func (s *tokenService) CreateRefreshPayload(user *model.User) jwt.MapClaims {
 	}
 }
 
-func (s *tokenService) ValidateAccessToken(tokenStr string) bool {
+func (s *JWTManager) ValidateAccessToken(tokenStr string) bool {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -75,7 +67,7 @@ func (s *tokenService) ValidateAccessToken(tokenStr string) bool {
 	return err == nil && token.Valid
 }
 
-func (s *tokenService) ParseRefreshToken(tokenStr string) *model.User {
+func (s *JWTManager) ParseRefreshToken(tokenStr string) *model.User {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])

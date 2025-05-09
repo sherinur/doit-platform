@@ -1,4 +1,4 @@
-package userrepo
+package repo
 
 import (
 	"context"
@@ -51,7 +51,7 @@ func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, e
 
 func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, error) {
 	query := `
-        SELECT id, name, phone, email, role, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        SELECT id, name, phone, email, role, password_hash, created_at, updated_at, is_deleted
         FROM users
         WHERE id = $1 AND is_deleted = false
     `
@@ -66,7 +66,6 @@ func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, erro
 		&user.Email,
 		&user.Role,
 		&user.PasswordHash,
-		&user.NewPasswordHash,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 		&user.IsDeleted,
@@ -80,7 +79,7 @@ func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, erro
 
 func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, error) {
 	query := `
-        SELECT id, name, phone, email, role, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        SELECT id, name, phone, email, role, password_hash, created_at, updated_at, is_deleted
         FROM users
         WHERE email = $1 AND is_deleted = false
     `
@@ -95,7 +94,6 @@ func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, e
 		&user.Email,
 		&user.Role,
 		&user.PasswordHash,
-		&user.NewPasswordHash,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 		&user.IsDeleted,
@@ -109,7 +107,7 @@ func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, e
 
 func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 	query := `
-        SELECT id, name, phone, email, role, password_hash, new_password_hash, created_at, updated_at, is_deleted
+        SELECT id, name, phone, email, role, password_hash, created_at, updated_at, is_deleted
         FROM users
         WHERE is_deleted = false
     `
@@ -130,7 +128,6 @@ func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 			&user.Email,
 			&user.Role,
 			&user.PasswordHash,
-			&user.NewPasswordHash,
 			&user.CreatedAt,
 			&user.UpdatedAt,
 			&user.IsDeleted,
@@ -154,7 +151,7 @@ func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) e
 	object := dao.FromDomain(user)
 	query := `
         UPDATE users
-        SET name = $1, phone = $2, email = $3, password_hash = $4, new_password_hash = $5, updated_at = $6
+        SET name = $1, phone = $2, email = $3, password_hash = $4, updated_at = $6
         WHERE id = $7 AND is_deleted = false
     `
 	_, err := r.db.ExecContext(ctx, query,
@@ -162,7 +159,6 @@ func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) e
 		object.Phone,
 		object.Email,
 		object.PasswordHash,
-		object.NewPasswordHash,
 		object.UpdatedAt,
 		userID,
 	)

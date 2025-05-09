@@ -25,9 +25,9 @@ func ToUserFromLoginRequest(req *svc.LoginRequest) (model.User, error) {
 	}, nil
 }
 
-func FromUserToLoginResponse(accessToken, refreshToken string) (*svc.LoginResponse, error) {
+func FromTokenToLoginResponse(token model.Token) (*svc.LoginResponse, error) {
 	return &svc.LoginResponse{
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
+		AccessToken:  token.AccessToken,
+		RefreshToken: token.RefreshToken,
 	}, nil
 }
