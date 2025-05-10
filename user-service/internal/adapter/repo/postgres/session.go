@@ -15,7 +15,7 @@ type sessionRepo struct {
 }
 
 const (
-	tableSession = "sessions"
+	tableSession = "users.sessions"
 )
 
 func NewSessionRepo(db *sql.DB) *sessionRepo {

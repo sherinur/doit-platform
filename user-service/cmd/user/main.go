@@ -27,7 +27,7 @@ func main() {
 		return
 	}
 
-	err = application.Run()
+	err = application.Run(ctx)
 	if err != nil {
 		log.Println("failed to run application: ", err)
 

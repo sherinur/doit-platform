@@ -66,9 +66,8 @@ func (a *App) Close(ctx context.Context) {
 	// }
 }
 
-func (a *App) Run() error {
+func (a *App) Run(ctx context.Context) error {
 	errCh := make(chan error, 1)
-	ctx := context.Background()
 
 	// Start the GRPC server
 	a.grpcServer.Run(ctx, errCh)

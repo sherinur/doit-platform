@@ -4,8 +4,8 @@ CREATE SCHEMA IF NOT EXISTS users;
 -- Create the users table
 CREATE TABLE IF NOT EXISTS users.users (
     id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
+    name VARCHAR(255),
+    phone VARCHAR(20),
     email VARCHAR(255) UNIQUE NOT NULL,
     role VARCHAR(255) NOT NULL,
     password_hash TEXT NOT NULL,

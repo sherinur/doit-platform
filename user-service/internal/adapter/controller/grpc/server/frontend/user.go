@@ -66,3 +66,24 @@ func (u *User) RefreshToken(
 		RefreshToken: token.RefreshToken,
 	}, nil
 }
+
+func (u *User) Profile(ctx context.Context, req *svc.ProfileRequest) (*svc.ProfileResponse, error) {
+	userID, ok := ctx.Value("user_id").(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "user_id missing in context")
+	}
+
+	// Now you can use userID to fetch the user profile
+	user, err := u.uc.GetUserById(ctx, userID)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "failed to get profile")
+	}
+
+	return &svc.ProfileResponse{
+		Id:    user.ID,
+		Name:  user.Name,
+		Phone: user.Phone,
+		Email: user.Email,
+		Role:  user.Role,
+	}, nil
+}

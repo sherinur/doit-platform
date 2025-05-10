@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
@@ -37,7 +38,7 @@ func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*
 
 	// Check if the user already exists
 	existingUser, err := uc.userRepo.GetByEmail(ctx, request.Email)
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 	if existingUser != nil {
@@ -50,11 +51,10 @@ func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*
 		return nil, err
 	}
 
-	// Set timestamps
 	request.CreatedAt = time.Now().UTC()
 	request.UpdatedAt = time.Now().UTC()
+	request.Role = "user"
 
-	// Create the user in the repository
 	newUser, err := uc.userRepo.Create(ctx, request)
 	if err != nil {
 		return nil, err

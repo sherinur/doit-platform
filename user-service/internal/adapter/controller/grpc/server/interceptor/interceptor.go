@@ -1,4 +1,3 @@
-// internal/adapter/controller/grpc/server/interceptor/auth.go
 package interceptor
 
 import (
@@ -12,6 +11,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+const (
+	UserIDKey = "user_id"
+)
+
 func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 	return func(
 		ctx context.Context,
@@ -19,7 +22,10 @@ func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 		info *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler,
 	) (interface{}, error) {
-		if strings.Contains(info.FullMethod, "Login") || strings.Contains(info.FullMethod, "Register") {
+		// Skip auth for these methods
+		if strings.Contains(info.FullMethod, "Login") ||
+			strings.Contains(info.FullMethod, "Register") ||
+			strings.Contains(info.FullMethod, "RefreshToken") {
 			return handler(ctx, req)
 		}
 
@@ -35,13 +41,24 @@ func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 
 		tokenStr := strings.TrimPrefix(authHeader[0], "Bearer ")
 		claims := jwt.MapClaims{}
-		_, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
 			return []byte(secretKey), nil
 		})
 
 		if err != nil {
 			return nil, status.Error(codes.Unauthenticated, "invalid token")
 		}
+
+		if !token.Valid {
+			return nil, status.Error(codes.Unauthenticated, "invalid token")
+		}
+
+		userID, ok := claims["user_id"].(float64)
+		if !ok {
+			return nil, status.Error(codes.Unauthenticated, "user_id missing in token")
+		}
+
+		ctx = context.WithValue(ctx, UserIDKey, int64(userID))
 
 		return handler(ctx, req)
 	}

@@ -14,7 +14,7 @@ type userRepo struct {
 }
 
 const (
-	tableUser = "users"
+	tableUser = "users.users"
 )
 
 func NewUserRepo(db *sql.DB) *userRepo {
@@ -27,9 +27,10 @@ func NewUserRepo(db *sql.DB) *userRepo {
 func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, error) {
 	newuser := dao.FromDomain(user)
 	query := `
-        INSERT INTO users (name, phone, email, role, password_hash, created_at, updated_at, is_deleted)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-		RETURNING id
+        INSERT INTO ` + r.table + `
+        (name, phone, email, role, password_hash, created_at, updated_at, is_deleted)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING id
     `
 
 	err := r.db.QueryRowContext(ctx, query,
@@ -40,20 +41,20 @@ func (r *userRepo) Create(ctx context.Context, user *model.User) (*model.User, e
 		newuser.PasswordHash,
 		newuser.CreatedAt,
 		newuser.UpdatedAt,
-		newuser.IsDeleted,
-	).Scan(newuser.ID)
+		false,
+	).Scan(&newuser.ID)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
-	return user, err
+	return dao.ToDomain(newuser), nil
 }
 
 func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, error) {
 	query := `
         SELECT id, name, phone, email, role, password_hash, created_at, updated_at, is_deleted
-        FROM users
-        WHERE id = $1 AND is_deleted = false
+        FROM ` + r.table + `
+		WHERE id = $1 AND is_deleted = false
     `
 
 	row := r.db.QueryRowContext(ctx, query, userID)
@@ -80,7 +81,7 @@ func (r *userRepo) GetById(ctx context.Context, userID int64) (*model.User, erro
 func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, error) {
 	query := `
         SELECT id, name, phone, email, role, password_hash, created_at, updated_at, is_deleted
-        FROM users
+        FROM ` + r.table + `
         WHERE email = $1 AND is_deleted = false
     `
 
@@ -108,7 +109,7 @@ func (r *userRepo) GetByEmail(ctx context.Context, email string) (*model.User, e
 func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 	query := `
         SELECT id, name, phone, email, role, password_hash, created_at, updated_at, is_deleted
-        FROM users
+        FROM ` + r.table + `
         WHERE is_deleted = false
     `
 
@@ -150,7 +151,7 @@ func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) error {
 	object := dao.FromDomain(user)
 	query := `
-        UPDATE users
+        UPDATE ` + r.table + `
         SET name = $1, phone = $2, email = $3, password_hash = $4, updated_at = $6
         WHERE id = $7 AND is_deleted = false
     `
@@ -170,7 +171,7 @@ func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) e
 
 func (r *userRepo) Delete(ctx context.Context, userID int64) error {
 	query := `
-        UPDATE users
+        UPDATE ` + r.table + `
         SET is_deleted = true, updated_at = CURRENT_TIMESTAMP
         WHERE id = $1
     `
