@@ -14,16 +14,24 @@ import (
 	"github.com/sherinur/doit-platform/user-service/internal/usecase"
 	postgresconn "github.com/sherinur/doit-platform/user-service/pkg/postgres"
 	"github.com/sherinur/doit-platform/user-service/pkg/security"
+	"go.uber.org/zap"
 )
 
 const serviceName = "user-service"
 
 type App struct {
+	cfg *config.Config
+	log *zap.Logger
 	// httpServer *httpserver.API
 	grpcServer *grpcserver.API
 }
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
+	logger, err := NewLogger(cfg)
+	if err != nil {
+		return nil, err
+	}
+
 	log.Printf("Starting %v service...", serviceName)
 
 	// Connect to PostgreSQL
@@ -48,6 +56,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 
 	app := &App{
 		grpcServer: grpcServer,
+		log:        logger,
 	}
 
 	return app, nil

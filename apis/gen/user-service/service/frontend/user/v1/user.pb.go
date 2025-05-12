@@ -337,7 +337,8 @@ type UpdateProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Phone         string                 `protobuf:"bytes,2,opt,name=phone,proto3" json:"phone,omitempty"`
-	Role          string                 `protobuf:"bytes,3,opt,name=role,proto3" json:"role,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -382,6 +383,13 @@ func (x *UpdateProfileRequest) GetName() string {
 func (x *UpdateProfileRequest) GetPhone() string {
 	if x != nil {
 		return x.Phone
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
 	}
 	return ""
 }
@@ -629,6 +637,86 @@ func (x *RefreshTokenResponse) GetRefreshToken() string {
 	return ""
 }
 
+type DeleteAccountRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteAccountRequest) Reset() {
+	*x = DeleteAccountRequest{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteAccountRequest) ProtoMessage() {}
+
+func (x *DeleteAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteAccountRequest.ProtoReflect.Descriptor instead.
+func (*DeleteAccountRequest) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{12}
+}
+
+type DeleteAccountResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteAccountResponse) Reset() {
+	*x = DeleteAccountResponse{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteAccountResponse) ProtoMessage() {}
+
+func (x *DeleteAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteAccountResponse.ProtoReflect.Descriptor instead.
+func (*DeleteAccountResponse) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *DeleteAccountResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 var File_user_service_service_frontend_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
@@ -651,11 +739,12 @@ const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05phone\x18\x03 \x01(\tR\x05phone\x12\x14\n" +
 	"\x05email\x18\x04 \x01(\tR\x05email\x12\x12\n" +
-	"\x04role\x18\x05 \x01(\tR\x04role\"T\n" +
+	"\x04role\x18\x05 \x01(\tR\x04role\"j\n" +
 	"\x14UpdateProfileRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05phone\x18\x02 \x01(\tR\x05phone\x12\x12\n" +
-	"\x04role\x18\x03 \x01(\tR\x04role\"/\n" +
+	"\x05phone\x18\x02 \x01(\tR\x05phone\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\"/\n" +
 	"\x15UpdateProfileResponse\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\"e\n" +
 	"\x15UpdatePasswordRequest\x12)\n" +
@@ -667,14 +756,18 @@ const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
 	"\frefreshToken\x18\x01 \x01(\tR\frefreshToken\"\\\n" +
 	"\x14RefreshTokenResponse\x12 \n" +
 	"\vaccessToken\x18\x01 \x01(\tR\vaccessToken\x12\"\n" +
-	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken2\xbc\x05\n" +
+	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\"\x16\n" +
+	"\x14DeleteAccountRequest\"/\n" +
+	"\x15DeleteAccountResponse\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status2\xb8\x06\n" +
 	"\vUserService\x12k\n" +
 	"\bRegister\x12..user.service.frontend.user.v1.RegisterRequest\x1a/.user.service.frontend.user.v1.RegisterResponse\x12b\n" +
 	"\x05Login\x12+.user.service.frontend.user.v1.LoginRequest\x1a,.user.service.frontend.user.v1.LoginResponse\x12h\n" +
 	"\aProfile\x12-.user.service.frontend.user.v1.ProfileRequest\x1a..user.service.frontend.user.v1.ProfileResponse\x12z\n" +
 	"\rUpdateProfile\x123.user.service.frontend.user.v1.UpdateProfileRequest\x1a4.user.service.frontend.user.v1.UpdateProfileResponse\x12}\n" +
 	"\x0eUpdatePassword\x124.user.service.frontend.user.v1.UpdatePasswordRequest\x1a5.user.service.frontend.user.v1.UpdatePasswordResponse\x12w\n" +
-	"\fRefreshToken\x122.user.service.frontend.user.v1.RefreshTokenRequest\x1a3.user.service.frontend.user.v1.RefreshTokenResponseBZZXgithub.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvcb\x06proto3"
+	"\fRefreshToken\x122.user.service.frontend.user.v1.RefreshTokenRequest\x1a3.user.service.frontend.user.v1.RefreshTokenResponse\x12z\n" +
+	"\rDeleteAccount\x123.user.service.frontend.user.v1.DeleteAccountRequest\x1a4.user.service.frontend.user.v1.DeleteAccountResponseBZZXgithub.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvcb\x06proto3"
 
 var (
 	file_user_service_service_frontend_user_v1_user_proto_rawDescOnce sync.Once
@@ -688,7 +781,7 @@ func file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP() []byte 
 	return file_user_service_service_frontend_user_v1_user_proto_rawDescData
 }
 
-var file_user_service_service_frontend_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_user_service_service_frontend_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_user_service_service_frontend_user_v1_user_proto_goTypes = []any{
 	(*RegisterRequest)(nil),        // 0: user.service.frontend.user.v1.RegisterRequest
 	(*RegisterResponse)(nil),       // 1: user.service.frontend.user.v1.RegisterResponse
@@ -702,6 +795,8 @@ var file_user_service_service_frontend_user_v1_user_proto_goTypes = []any{
 	(*UpdatePasswordResponse)(nil), // 9: user.service.frontend.user.v1.UpdatePasswordResponse
 	(*RefreshTokenRequest)(nil),    // 10: user.service.frontend.user.v1.RefreshTokenRequest
 	(*RefreshTokenResponse)(nil),   // 11: user.service.frontend.user.v1.RefreshTokenResponse
+	(*DeleteAccountRequest)(nil),   // 12: user.service.frontend.user.v1.DeleteAccountRequest
+	(*DeleteAccountResponse)(nil),  // 13: user.service.frontend.user.v1.DeleteAccountResponse
 }
 var file_user_service_service_frontend_user_v1_user_proto_depIdxs = []int32{
 	0,  // 0: user.service.frontend.user.v1.UserService.Register:input_type -> user.service.frontend.user.v1.RegisterRequest
@@ -710,14 +805,16 @@ var file_user_service_service_frontend_user_v1_user_proto_depIdxs = []int32{
 	6,  // 3: user.service.frontend.user.v1.UserService.UpdateProfile:input_type -> user.service.frontend.user.v1.UpdateProfileRequest
 	8,  // 4: user.service.frontend.user.v1.UserService.UpdatePassword:input_type -> user.service.frontend.user.v1.UpdatePasswordRequest
 	10, // 5: user.service.frontend.user.v1.UserService.RefreshToken:input_type -> user.service.frontend.user.v1.RefreshTokenRequest
-	1,  // 6: user.service.frontend.user.v1.UserService.Register:output_type -> user.service.frontend.user.v1.RegisterResponse
-	3,  // 7: user.service.frontend.user.v1.UserService.Login:output_type -> user.service.frontend.user.v1.LoginResponse
-	5,  // 8: user.service.frontend.user.v1.UserService.Profile:output_type -> user.service.frontend.user.v1.ProfileResponse
-	7,  // 9: user.service.frontend.user.v1.UserService.UpdateProfile:output_type -> user.service.frontend.user.v1.UpdateProfileResponse
-	9,  // 10: user.service.frontend.user.v1.UserService.UpdatePassword:output_type -> user.service.frontend.user.v1.UpdatePasswordResponse
-	11, // 11: user.service.frontend.user.v1.UserService.RefreshToken:output_type -> user.service.frontend.user.v1.RefreshTokenResponse
-	6,  // [6:12] is the sub-list for method output_type
-	0,  // [0:6] is the sub-list for method input_type
+	12, // 6: user.service.frontend.user.v1.UserService.DeleteAccount:input_type -> user.service.frontend.user.v1.DeleteAccountRequest
+	1,  // 7: user.service.frontend.user.v1.UserService.Register:output_type -> user.service.frontend.user.v1.RegisterResponse
+	3,  // 8: user.service.frontend.user.v1.UserService.Login:output_type -> user.service.frontend.user.v1.LoginResponse
+	5,  // 9: user.service.frontend.user.v1.UserService.Profile:output_type -> user.service.frontend.user.v1.ProfileResponse
+	7,  // 10: user.service.frontend.user.v1.UserService.UpdateProfile:output_type -> user.service.frontend.user.v1.UpdateProfileResponse
+	9,  // 11: user.service.frontend.user.v1.UserService.UpdatePassword:output_type -> user.service.frontend.user.v1.UpdatePasswordResponse
+	11, // 12: user.service.frontend.user.v1.UserService.RefreshToken:output_type -> user.service.frontend.user.v1.RefreshTokenResponse
+	13, // 13: user.service.frontend.user.v1.UserService.DeleteAccount:output_type -> user.service.frontend.user.v1.DeleteAccountResponse
+	7,  // [7:14] is the sub-list for method output_type
+	0,  // [0:7] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -734,7 +831,7 @@ func file_user_service_service_frontend_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_service_service_frontend_user_v1_user_proto_rawDesc), len(file_user_service_service_frontend_user_v1_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

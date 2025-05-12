@@ -8,14 +8,35 @@ import (
 	"google.golang.org/grpc/keepalive"
 )
 
-func (a *API) setOptions(ctx context.Context, secretket string) []grpc.ServerOption {
+// func (a *API) setOptions(ctx context.Context, secretket string) []grpc.ServerOption {
+// 	opts := []grpc.ServerOption{
+// 		grpc.KeepaliveParams(keepalive.ServerParameters{
+// 			MaxConnectionAge:      a.cfg.MaxConnectionAge,
+// 			MaxConnectionAgeGrace: a.cfg.MaxConnectionAgeGrace,
+// 		}),
+// 		grpc.UnaryInterceptor(interceptor.AuthInterceptor(secretket)),
+// 		grpc.MaxRecvMsgSize(a.cfg.MaxRecvMsgSizeMiB * (1024 * 1024)), // MaxRecvSize * 1 MB
+// 	}
+
+// 	return opts
+// }
+
+func (a *API) setOptions(ctx context.Context, secretkey string) []grpc.ServerOption {
+
 	opts := []grpc.ServerOption{
+		// Params
 		grpc.KeepaliveParams(keepalive.ServerParameters{
 			MaxConnectionAge:      a.cfg.MaxConnectionAge,
 			MaxConnectionAgeGrace: a.cfg.MaxConnectionAgeGrace,
 		}),
-		grpc.UnaryInterceptor(interceptor.AuthInterceptor(secretket)),
-		grpc.MaxRecvMsgSize(a.cfg.MaxRecvMsgSizeMiB * (1024 * 1024)), // MaxRecvSize * 1 MB
+		grpc.MaxRecvMsgSize(a.cfg.MaxRecvMsgSizeMiB * (1024 * 1024) /*MB*/),
+
+		// Interceptors
+		grpc.ChainUnaryInterceptor(
+			interceptor.LoggingInterceptor(a.log),
+			interceptor.ErrorInterceptor(a.log),
+			interceptor.AuthInterceptor(secretkey),
+		),
 	}
 
 	return opts

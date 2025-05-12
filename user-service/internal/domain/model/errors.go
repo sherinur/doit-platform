@@ -10,4 +10,5 @@ var (
 	ErrUserExists          = errors.New("the user is already exists")
 	ErrInvalidPassword     = errors.New("invalid password")
 	ErrRefreshTokenExpired = errors.New("refresh token is expired")
+	ErrInvalidRole         = errors.New("invalid role")
 )

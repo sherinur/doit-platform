@@ -5,6 +5,7 @@ import (
 
 	svc "github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1"
 	"github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server/frontend/dto"
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -79,11 +80,65 @@ func (u *User) Profile(ctx context.Context, req *svc.ProfileRequest) (*svc.Profi
 		return nil, status.Error(codes.Internal, "failed to get profile")
 	}
 
-	return &svc.ProfileResponse{
-		Id:    user.ID,
-		Name:  user.Name,
-		Phone: user.Phone,
-		Email: user.Email,
-		Role:  user.Role,
+	return dto.FromUserToProfileResponse(*user)
+}
+
+func (u *User) UpdateProfile(ctx context.Context, req *svc.UpdateProfileRequest) (*svc.UpdateProfileResponse, error) {
+	userID, ok := ctx.Value("user_id").(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "user_id missing in context")
+	}
+
+	user := &model.UserUpdateData{
+		Name:  req.Name,
+		Email: req.Email,
+		Phone: req.Phone,
+	}
+
+	err := u.uc.UpdateUser(ctx, user, userID)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &svc.UpdateProfileResponse{
+		Status: "OK",
+	}, nil
+}
+
+func (u *User) UpdatePassword(ctx context.Context, req *svc.UpdatePasswordRequest) (*svc.UpdatePasswordResponse, error) {
+	// userID, ok := ctx.Value("user_id").(int64)
+	// if !ok {
+	// 	return nil, status.Error(codes.Unauthenticated, "user_id missing in context")
+	// }
+
+	// user := &model.User{
+	// 	ID:              userID,
+	// 	CurrentPassword: req.CurrentPassword,
+	// 	NewPassword:     req.NewPassword,
+	// }
+
+	// err := u.uc.UpdateUser(ctx, user, userID)
+	// if err != nil {
+	// 	return nil, status.Error(codes.Internal, err.Error())
+	// }
+
+	return &svc.UpdatePasswordResponse{
+		Status: "OK",
+	}, nil
+}
+
+func (u *User) DeleteAccount(ctx context.Context, req *svc.DeleteAccountRequest) (*svc.DeleteAccountResponse, error) {
+	userID, ok := ctx.Value("user_id").(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "user_id missing in context")
+	}
+
+	err := u.uc.DeleteUser(ctx, userID)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &svc.DeleteAccountResponse{
+		Status: "OK",
 	}, nil
 }

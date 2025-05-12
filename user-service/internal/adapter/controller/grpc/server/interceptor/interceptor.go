@@ -3,16 +3,14 @@ package interceptor
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/golang-jwt/jwt"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-)
-
-const (
-	UserIDKey = "user_id"
 )
 
 func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
@@ -58,8 +56,43 @@ func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 			return nil, status.Error(codes.Unauthenticated, "user_id missing in token")
 		}
 
-		ctx = context.WithValue(ctx, UserIDKey, int64(userID))
+		role, ok := claims["role"].(string)
+		if !ok {
+			return nil, status.Error(codes.Unauthenticated, "role missing in token")
+		}
+
+		ctx = context.WithValue(ctx, "user_id", int64(userID))
+		ctx = context.WithValue(ctx, "role", role)
 
 		return handler(ctx, req)
+	}
+}
+
+func LoggingInterceptor(log *zap.Logger) grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		start := time.Now()
+		resp, err := handler(ctx, req)
+
+		log.Info("gRPC request completed",
+			zap.String("method", info.FullMethod),
+			zap.Duration("duration", time.Since(start)),
+		)
+
+		log.Debug("Request details", zap.Any("request", req))
+
+		return resp, err
+	}
+}
+
+func ErrorInterceptor(log *zap.Logger) grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		resp, err := handler(ctx, req)
+		if err != nil {
+			log.Error("gRPC request error",
+				zap.Error(err),
+			)
+		}
+
+		return resp, err
 	}
 }

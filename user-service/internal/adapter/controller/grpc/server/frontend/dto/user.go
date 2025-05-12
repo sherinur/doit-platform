@@ -31,3 +31,13 @@ func FromTokenToLoginResponse(token model.Token) (*svc.LoginResponse, error) {
 		RefreshToken: token.RefreshToken,
 	}, nil
 }
+
+func FromUserToProfileResponse(user model.User) (*svc.ProfileResponse, error) {
+	return &svc.ProfileResponse{
+		Id:    user.ID,
+		Name:  user.Name,
+		Phone: user.Phone,
+		Email: user.Email,
+		Role:  user.Role,
+	}, nil
+}

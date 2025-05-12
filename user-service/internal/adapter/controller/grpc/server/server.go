@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
@@ -20,6 +21,7 @@ type API struct {
 	cfg    config.GRPCServer
 	addr   string
 	jwt    config.Jwt
+	log    *zap.Logger
 
 	UserUseCase UserUsecase
 }

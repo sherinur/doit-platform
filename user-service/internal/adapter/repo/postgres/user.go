@@ -152,8 +152,8 @@ func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) e
 	object := dao.FromDomain(user)
 	query := `
         UPDATE ` + r.table + `
-        SET name = $1, phone = $2, email = $3, password_hash = $4, updated_at = $6
-        WHERE id = $7 AND is_deleted = false
+        SET name = $1, phone = $2, email = $3, password_hash = $4, updated_at = $5
+        WHERE id = $6 AND is_deleted = false
     `
 	_, err := r.db.ExecContext(ctx, query,
 		object.Name,

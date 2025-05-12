@@ -34,27 +34,24 @@ func (u *User) Validate() error {
 }
 
 type UserUpdateData struct {
-	ID           *uint64
-	Name         *string
-	Phone        *string
-	Email        *string
-	PasswordHash *string
-	UpdatedAt    *time.Time
-
-	IsDeleted *bool
+	Name      string
+	Phone     string
+	Email     string
+	Role      string
+	UpdatedAt time.Time
 }
 
-// func (u *UserUpdateData) Validate() error {
-// 	switch {
-// 	case *u.Name == "" || len(*u.Name) < 2:
-// 		return ErrInvalidName
-// 	case *u.Phone == "":
-// 		return ErrInvalidPhone
-// 	case !utils.ValidateEmail(*u.Email):
-// 		return ErrInvalidEmail
-// 	case *u.PasswordHash == "":
-// 		return ErrInvalidPassword
-// 	default:
-// 		return nil
-// 	}
-// }
+func (u *UserUpdateData) Validate() error {
+	switch {
+	case u.Name == "":
+		return ErrInvalidName
+	case u.Phone == "":
+		return ErrInvalidPhone
+	case !utils.ValidateEmail(u.Email):
+		return ErrInvalidEmail
+	case u.Role == "":
+		return ErrInvalidRole
+	default:
+		return nil
+	}
+}

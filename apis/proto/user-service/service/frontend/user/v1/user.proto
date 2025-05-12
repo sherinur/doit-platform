@@ -11,6 +11,7 @@ service UserService {
     rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse);
     rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse);
     rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
+    rpc DeleteAccount (DeleteAccountRequest) returns (DeleteAccountResponse);
 }
 
 message RegisterRequest {
@@ -46,7 +47,8 @@ message ProfileResponse {
 message UpdateProfileRequest {
     string name = 1;
     string phone = 2;
-    string role = 3;
+    string email = 3;
+    string role = 4;
 }
 
 message UpdateProfileResponse {
@@ -69,4 +71,10 @@ message RefreshTokenRequest {
 message RefreshTokenResponse {
     string accessToken = 1;
     string refreshToken = 2;
+}
+
+message DeleteAccountRequest {
+}
+message DeleteAccountResponse {
+    string status = 1;
 }

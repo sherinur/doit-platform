@@ -155,8 +155,9 @@ func (uc *userUsecase) GetUserById(ctx context.Context, userID int64) (*model.Us
 	return uc.userRepo.GetById(ctx, userID)
 }
 
-func (uc *userUsecase) UpdateUser(ctx context.Context, user *model.User, userID int64) error {
-	return uc.userRepo.Update(ctx, user, userID)
+func (uc *userUsecase) UpdateUser(ctx context.Context, user *model.UserUpdateData, userID int64) error {
+
+	return nil
 }
 
 func (uc *userUsecase) DeleteUser(ctx context.Context, userID int64) error {
