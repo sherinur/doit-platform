@@ -148,21 +148,35 @@ func (r *userRepo) GetAll(ctx context.Context) ([]*model.User, error) {
 	return users, nil
 }
 
-func (r *userRepo) Update(ctx context.Context, user *model.User, userID int64) error {
-	object := dao.FromDomain(user)
+func (r *userRepo) UpdateInfo(ctx context.Context, user *model.UserUpdateData) error {
+	object := dao.FromUserUpdateData(user)
 	query := `
         UPDATE ` + r.table + `
-        SET name = $1, phone = $2, email = $3, password_hash = $4, updated_at = $5
+        SET name = $1, phone = $2, email = $3, role = $4, updated_at = $5
         WHERE id = $6 AND is_deleted = false
     `
 	_, err := r.db.ExecContext(ctx, query,
 		object.Name,
 		object.Phone,
 		object.Email,
-		object.PasswordHash,
+		object.Role,
 		object.UpdatedAt,
-		userID,
+		object.ID,
 	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *userRepo) UpdatePassword(ctx context.Context, user *model.UserUpdateData) error {
+	object := dao.FromUserUpdateData(user)
+	query := `
+		UPDATE ` + r.table + `
+		SET password_hash = $1, updated_at = CURRENT_TIMESTAMP
+		WHERE id = $2 AND is_deleted = false
+	`
+	_, err := r.db.ExecContext(ctx, query, object.NewPasswordHash, object.ID)
 	if err != nil {
 		return err
 	}

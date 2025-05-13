@@ -11,6 +11,7 @@ type UserUsecase interface {
 	LoginUser(ctx context.Context, request *model.User) (model.Token, error)
 	RefreshToken(ctx context.Context, refreshToken string) (model.Token, error)
 	GetUserById(ctx context.Context, userID int64) (*model.User, error)
-	UpdateUser(ctx context.Context, user *model.UserUpdateData, userID int64) error
+	UpdateUserInfo(ctx context.Context, req *model.UserUpdateData) error
+	UpdateUserPassword(ctx context.Context, req *model.UserUpdateData) error
 	DeleteUser(ctx context.Context, userID int64) error
 }

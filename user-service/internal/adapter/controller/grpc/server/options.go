@@ -22,7 +22,6 @@ import (
 // }
 
 func (a *API) setOptions(ctx context.Context, secretkey string) []grpc.ServerOption {
-
 	opts := []grpc.ServerOption{
 		// Params
 		grpc.KeepaliveParams(keepalive.ServerParameters{

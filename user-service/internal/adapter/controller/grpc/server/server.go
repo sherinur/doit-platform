@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 
 	"go.uber.org/zap"
@@ -21,7 +20,8 @@ type API struct {
 	cfg    config.GRPCServer
 	addr   string
 	jwt    config.Jwt
-	log    *zap.Logger
+
+	log *zap.Logger
 
 	UserUseCase UserUsecase
 }
@@ -30,18 +30,22 @@ func New(
 	cfg config.Server,
 	UserUseCase UserUsecase,
 	jwt config.Jwt,
+	log *zap.Logger,
 ) *API {
 	return &API{
 		cfg:         cfg.GRPCServer,
 		addr:        fmt.Sprintf("0.0.0.0:%d", cfg.GRPCServer.Port),
 		jwt:         jwt,
+		log:         log,
 		UserUseCase: UserUseCase,
 	}
 }
 
 func (a *API) Run(ctx context.Context, errCh chan<- error) {
 	go func() {
-		log.Println("gRPC server starting listen", fmt.Sprintf("addr: %s", a.addr))
+		a.log.Info("gRPC server starting",
+			zap.String("address", a.addr),
+		)
 
 		if err := a.run(ctx); err != nil {
 			errCh <- fmt.Errorf("can't start grpc server: %w", err)
@@ -69,6 +73,7 @@ func (a *API) Stop(ctx context.Context) error {
 	case <-stopped:
 	}
 
+	a.log.Info("gRPC server stopped")
 	return nil
 }
 
@@ -82,13 +87,20 @@ func (a *API) run(ctx context.Context) error {
 	// Register reflection service
 	reflection.Register(a.server)
 
+	a.log.Info("Service started",
+		zap.String("protocol", "gRPC"),
+		zap.String("address", a.addr),
+	)
+
 	listener, err := net.Listen("tcp", a.addr)
 	if err != nil {
+		a.log.Error("Failed to create listener", zap.Error(err))
 		return fmt.Errorf("failed to create listener: %w", err)
 	}
 
 	err = a.server.Serve(listener)
 	if err != nil {
+		a.log.Error("gRPC server failed", zap.Error(err))
 		return fmt.Errorf("failed to serve grpc: %w", err)
 	}
 

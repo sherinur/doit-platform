@@ -6,6 +6,7 @@ import (
 	svc "github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1"
 	"github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server/frontend/dto"
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
+	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -13,7 +14,8 @@ import (
 type User struct {
 	svc.UnimplementedUserServiceServer
 
-	uc UserUsecase
+	log *zap.Logger
+	uc  UserUsecase
 }
 
 func NewUser(uc UserUsecase) *User {
@@ -90,12 +92,14 @@ func (u *User) UpdateProfile(ctx context.Context, req *svc.UpdateProfileRequest)
 	}
 
 	user := &model.UserUpdateData{
+		ID:    userID,
 		Name:  req.Name,
 		Email: req.Email,
 		Phone: req.Phone,
+		Role:  req.Role,
 	}
 
-	err := u.uc.UpdateUser(ctx, user, userID)
+	err := u.uc.UpdateUserInfo(ctx, user)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -106,21 +110,20 @@ func (u *User) UpdateProfile(ctx context.Context, req *svc.UpdateProfileRequest)
 }
 
 func (u *User) UpdatePassword(ctx context.Context, req *svc.UpdatePasswordRequest) (*svc.UpdatePasswordResponse, error) {
-	// userID, ok := ctx.Value("user_id").(int64)
-	// if !ok {
-	// 	return nil, status.Error(codes.Unauthenticated, "user_id missing in context")
-	// }
+	userID, ok := ctx.Value("user_id").(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "user_id missing in context")
+	}
 
-	// user := &model.User{
-	// 	ID:              userID,
-	// 	CurrentPassword: req.CurrentPassword,
-	// 	NewPassword:     req.NewPassword,
-	// }
+	user := &model.UserUpdateData{
+		ID:          userID,
+		NewPassword: req.NewPassword,
+	}
 
-	// err := u.uc.UpdateUser(ctx, user, userID)
-	// if err != nil {
-	// 	return nil, status.Error(codes.Internal, err.Error())
-	// }
+	err := u.uc.UpdateUserPassword(ctx, user)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
 
 	return &svc.UpdatePasswordResponse{
 		Status: "OK",

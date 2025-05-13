@@ -7,6 +7,7 @@ import (
 
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 	"github.com/sherinur/doit-platform/user-service/pkg/security"
+	"github.com/sherinur/doit-platform/user-service/pkg/utils"
 )
 
 type userUsecase struct {
@@ -155,7 +156,52 @@ func (uc *userUsecase) GetUserById(ctx context.Context, userID int64) (*model.Us
 	return uc.userRepo.GetById(ctx, userID)
 }
 
-func (uc *userUsecase) UpdateUser(ctx context.Context, user *model.UserUpdateData, userID int64) error {
+func (uc *userUsecase) UpdateUserInfo(ctx context.Context, req *model.UserUpdateData) error {
+	err := req.Validate()
+	if err != nil {
+		return err
+	}
+
+	existingUser, err := uc.userRepo.GetByEmail(ctx, req.Email)
+	if err != nil && err != sql.ErrNoRows {
+		return err
+	}
+
+	if existingUser != nil {
+		return model.ErrUserExists
+	}
+
+	req.UpdatedAt = time.Now().UTC()
+	err = uc.userRepo.UpdateInfo(ctx, req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (uc *userUsecase) UpdateUserPassword(ctx context.Context, req *model.UserUpdateData) error {
+	if !utils.ValidatePassword(req.NewPassword) {
+		return model.ErrInvalidPassword
+	}
+
+	_, err := uc.userRepo.GetById(ctx, req.ID)
+	if err == sql.ErrNoRows {
+		return model.ErrUserNotFound
+	} else if err != nil {
+		return err
+	}
+
+	req.NewPasswordHash, err = uc.passwordManager.HashPassword(req.NewPassword)
+	if err != nil {
+		return err
+	}
+
+	req.UpdatedAt = time.Now().UTC()
+	err = uc.userRepo.UpdatePassword(ctx, req)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

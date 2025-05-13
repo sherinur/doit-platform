@@ -52,7 +52,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	userUsecase := usecase.NewUserUsecase(userRepo, tokenRepo, jwtManager, passwordManager)
 
 	// Initialize HTTP Server
-	grpcServer := grpcserver.New(cfg.Server, userUsecase, cfg.Jwt)
+	grpcServer := grpcserver.New(cfg.Server, userUsecase, cfg.Jwt, logger)
 
 	app := &App{
 		grpcServer: grpcServer,
@@ -80,7 +80,7 @@ func (a *App) Run(ctx context.Context) error {
 
 	// Start the GRPC server
 	a.grpcServer.Run(ctx, errCh)
-	log.Println(fmt.Sprintf("server %v started", serviceName))
+	a.log.Info(fmt.Sprintf("server %v started", serviceName))
 
 	// Start the HTTP server
 	// a.httpServer.Run(errCh)
@@ -95,9 +95,9 @@ func (a *App) Run(ctx context.Context) error {
 		return errRun
 
 	case s := <-shutdownCh:
-		log.Printf("Received signal: %v. Running graceful shutdown...", s)
+		a.log.Info(fmt.Sprintf("Received signal: %v. Running graceful shutdown...", s))
 		a.Close(ctx)
-		log.Println("Graceful shutdown completed!")
+		a.log.Info("Graceful shutdown completed!")
 	}
 
 	return nil

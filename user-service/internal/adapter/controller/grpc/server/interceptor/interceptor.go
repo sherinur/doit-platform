@@ -42,7 +42,6 @@ func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
 			return []byte(secretKey), nil
 		})
-
 		if err != nil {
 			return nil, status.Error(codes.Unauthenticated, "invalid token")
 		}

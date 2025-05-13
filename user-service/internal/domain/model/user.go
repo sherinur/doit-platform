@@ -34,11 +34,14 @@ func (u *User) Validate() error {
 }
 
 type UserUpdateData struct {
-	Name      string
-	Phone     string
-	Email     string
-	Role      string
-	UpdatedAt time.Time
+	ID              int64
+	Name            string
+	Phone           string
+	Email           string
+	Role            string
+	NewPassword     string
+	NewPasswordHash string
+	UpdatedAt       time.Time
 }
 
 func (u *UserUpdateData) Validate() error {

@@ -24,4 +24,3 @@ go.work.sum
 .DS_STORE
 Makefile
 docker-compose.yml
-

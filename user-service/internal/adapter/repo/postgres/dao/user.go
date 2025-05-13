@@ -48,29 +48,38 @@ func ToDomain(user User) *model.User {
 }
 
 type UserUpdateData struct {
-	Name      string
-	Phone     string
-	Email     string
-	Role      string
-	UpdatedAt time.Time
+	ID              int64
+	Name            string
+	Phone           string
+	Email           string
+	Role            string
+	NewPassword     string
+	NewPasswordHash string
+	UpdatedAt       time.Time
 }
 
 func FromUserUpdateData(userUpdateData *model.UserUpdateData) UserUpdateData {
 	return UserUpdateData{
-		Name:      userUpdateData.Name,
-		Phone:     userUpdateData.Phone,
-		Email:     userUpdateData.Email,
-		Role:      userUpdateData.Role,
-		UpdatedAt: userUpdateData.UpdatedAt,
+		ID:              userUpdateData.ID,
+		Name:            userUpdateData.Name,
+		Phone:           userUpdateData.Phone,
+		Email:           userUpdateData.Email,
+		Role:            userUpdateData.Role,
+		NewPassword:     userUpdateData.NewPassword,
+		NewPasswordHash: userUpdateData.NewPasswordHash,
+		UpdatedAt:       userUpdateData.UpdatedAt,
 	}
 }
 
 func ToUserUpdateData(userUpdateData UserUpdateData) *model.UserUpdateData {
 	return &model.UserUpdateData{
-		Name:      userUpdateData.Name,
-		Phone:     userUpdateData.Phone,
-		Email:     userUpdateData.Email,
-		Role:      userUpdateData.Role,
-		UpdatedAt: userUpdateData.UpdatedAt,
+		ID:              userUpdateData.ID,
+		Name:            userUpdateData.Name,
+		Phone:           userUpdateData.Phone,
+		Email:           userUpdateData.Email,
+		Role:            userUpdateData.Role,
+		NewPassword:     userUpdateData.NewPassword,
+		NewPasswordHash: userUpdateData.NewPasswordHash,
+		UpdatedAt:       userUpdateData.UpdatedAt,
 	}
 }

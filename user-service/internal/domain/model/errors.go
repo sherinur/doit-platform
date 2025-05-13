@@ -11,4 +11,5 @@ var (
 	ErrInvalidPassword     = errors.New("invalid password")
 	ErrRefreshTokenExpired = errors.New("refresh token is expired")
 	ErrInvalidRole         = errors.New("invalid role")
+	ErrUserNotFound        = errors.New("user not found")
 )
