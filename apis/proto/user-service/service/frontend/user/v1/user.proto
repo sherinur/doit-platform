@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package user.service.frontend.user.v1;
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvc";
+
+service UserService {
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Profile (ProfileRequest) returns (ProfileResponse);
+    rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse);
+    rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse);
+    rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
+    rpc DeleteAccount (DeleteAccountRequest) returns (DeleteAccountResponse);
+}
+
+message RegisterRequest {
+    string email = 1;
+    string password = 2; 
+}
+
+message RegisterResponse {
+    int64 user_id = 1;
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message ProfileRequest {
+}
+
+message ProfileResponse {
+    int64 id = 1;
+    string name = 2;
+    string phone = 3;
+    string email = 4;
+    string role = 5;
+}
+
+message UpdateProfileRequest {
+    string name = 1;
+    string phone = 2;
+    string email = 3;
+    string role = 4;
+}
+
+message UpdateProfileResponse {
+    string status = 1;
+}
+
+message UpdatePasswordRequest {
+    string current_password = 1;
+    string new_password = 2;
+}
+
+message UpdatePasswordResponse {
+    string status = 1;
+}
+
+message RefreshTokenRequest {
+    string refreshToken = 1; 
+}
+
+message RefreshTokenResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message DeleteAccountRequest {
+}
+message DeleteAccountResponse {
+    string status = 1;
+}

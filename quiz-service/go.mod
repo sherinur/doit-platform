@@ -1,6 +1,6 @@
 module github.com/sherinur/doit-platform/quiz-service
 
-go 1.23.7
+go 1.24.2
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0

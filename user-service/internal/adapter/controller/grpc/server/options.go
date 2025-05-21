@@ -1,0 +1,29 @@
+package server
+
+import (
+	"context"
+
+	"github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/keepalive"
+)
+
+func (a *API) setOptions(ctx context.Context, secretkey string) []grpc.ServerOption {
+	opts := []grpc.ServerOption{
+		// Params
+		grpc.KeepaliveParams(keepalive.ServerParameters{
+			MaxConnectionAge:      a.cfg.MaxConnectionAge,
+			MaxConnectionAgeGrace: a.cfg.MaxConnectionAgeGrace,
+		}),
+		grpc.MaxRecvMsgSize(a.cfg.MaxRecvMsgSizeMiB * (1024 * 1024) /*MB*/),
+
+		// Interceptors
+		grpc.ChainUnaryInterceptor(
+			interceptor.LoggingInterceptor(a.log),
+			interceptor.ErrorInterceptor(a.log),
+			interceptor.AuthInterceptor(secretkey),
+		),
+	}
+
+	return opts
+}
