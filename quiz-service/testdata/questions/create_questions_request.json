@@ -1,0 +1,124 @@
+[
+  {
+    "answers": [
+      {
+        "answer_id": "1",
+        "text": "answer1",
+        "is_correct": true
+      },
+      {
+        "answer_id": "2",
+        "text": "answer2",
+        "is_correct": false
+      },
+      {
+        "answer_id": "3",
+        "text": "answer3",
+        "is_correct": false
+      },
+      {
+        "answer_id": "4",
+        "text": "answer4",
+        "is_correct": false
+      }
+    ],
+    "points": 1,
+    "quiz_id": "681602f09256b08b903204ca",
+    "text": "Question1",
+    "type": "MCQ"
+  },
+  {
+    "answers": [
+      {
+        "answer_id": "1",
+        "text": "Wrong answer",
+        "is_correct": false
+      },
+      {
+        "answer_id": "2",
+        "text": "A. Shynggys",
+        "is_correct": true
+      },
+      {
+        "answer_id": "3",
+        "text": "Wrong answer",
+        "is_correct": false
+      },
+      {
+        "answer_id": "4",
+        "text": "Wrong answer",
+        "is_correct": false
+      }
+    ],
+    "points": 1,
+    "quiz_id": "681602f09256b08b903204ca",
+    "text": "Who is the best AP teacher in world",
+    "type": "MCQ"
+  },
+  {
+    "answers": [
+      {
+        "answer_id": "1",
+        "text": "answer1",
+        "is_correct": false
+      },
+      {
+        "answer_id": "2",
+        "text": "answer2",
+        "is_correct": false
+      },
+      {
+        "answer_id": "3",
+        "text": "answer3",
+        "is_correct": true
+      },
+      {
+        "answer_id": "4",
+        "text": "answer4",
+        "is_correct": false
+      },
+      {
+        "answer_id": "5",
+        "text": "answer5",
+        "is_correct": true
+      },
+      {
+        "answer_id": "6",
+        "text": "answer6",
+        "is_correct": false
+      }
+    ],
+    "points": 2,
+    "quiz_id": "681602f09256b08b903204ca",
+    "text": "Question3",
+    "type": "MCQ"
+  },
+  {
+    "answers": [
+      {
+        "answer_id": "1",
+        "text": "A",
+        "is_correct": false
+      },
+      {
+        "answer_id": "2",
+        "text": "B",
+        "is_correct": false
+      },
+      {
+        "answer_id": "3",
+        "text": "E",
+        "is_correct": false
+      },
+      {
+        "answer_id": "4",
+        "text": "D",
+        "is_correct": true
+      }
+    ],
+    "points": 1,
+    "quiz_id": "681602f09256b08b903204ca",
+    "text": "What comes after 'C' in alphabet",
+    "type": "MCQ"
+  }
+]

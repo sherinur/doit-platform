@@ -4,6 +4,7 @@ import (
 	"context"
 	svc "github.com/sherinur/doit-platform/apis/gen/quiz-service/service/frontend/quiz/v1"
 	"github.com/sherinur/doit-platform/quiz-service/internal/adapters/controller/grpc/server/frontend/dto"
+	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -11,24 +12,28 @@ import (
 type Quiz struct {
 	svc.UnimplementedQuizServiceServer
 
-	uc QuizUseCase
+	logger *zap.Logger
+	uc     QuizUseCase
 }
 
-func NewQuiz(auc QuizUseCase) *Quiz {
-	return &Quiz{uc: auc}
+func NewQuiz(auc QuizUseCase, log *zap.Logger) *Quiz {
+	return &Quiz{uc: auc, logger: log}
 }
 
 func (a *Quiz) CreateQuiz(ctx context.Context, req *svc.CreateQuizRequest) (*svc.CreateQuizResponse, error) {
 	result, err := dto.ToQuizFromCreateRequest(req)
 	if err != nil {
+		a.logger.Error("failed to parse request:", zap.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	resp, err := a.uc.CreateQuiz(ctx, result)
 	if err != nil {
+		a.logger.Error("failed to parse request: ", zap.Error(err))
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
+	a.logger.Info("Created quiz:", zap.Any("quiz", resp))
 	return dto.FromQuizToCreateResponse(resp)
 }
 

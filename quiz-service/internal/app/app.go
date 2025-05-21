@@ -28,6 +28,7 @@ type App struct {
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	log.Println(fmt.Sprintf("starting %v server", serviceName))
+
 	logger, err := NewLogger(cfg)
 	if err != nil {
 		return nil, err
@@ -51,7 +52,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 
 	// http server
 	httpServer := httpservice.New(cfg.Server, ResultUseCase, QuizUseCase, QuestionUseCase)
-	grpcServer := grpcserver.New(cfg.Server, ResultUseCase, QuizUseCase, QuestionUseCase)
+	grpcServer := grpcserver.New(cfg.Server, logger, ResultUseCase, QuizUseCase, QuestionUseCase)
 
 	app := &App{
 		log:        logger,

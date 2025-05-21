@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"go.uber.org/zap"
 
 	"log"
 	"net"
@@ -22,6 +23,8 @@ type API struct {
 	cfg    config.GRPCServer
 	addr   string
 
+	log *zap.Logger
+
 	ResultUseCase   ResultUseCase
 	QuestionUseCase QuestionUseCase
 	QuizUseCase     QuizUseCase
@@ -29,6 +32,7 @@ type API struct {
 
 func New(
 	cfg config.Server,
+	log *zap.Logger,
 	ResultUseCase ResultUseCase,
 	QuizUseCase QuizUseCase,
 	QuestionUseCase QuestionUseCase,
@@ -36,6 +40,7 @@ func New(
 	return &API{
 		cfg:             cfg.GRPCServer,
 		addr:            fmt.Sprintf("0.0.0.0:%d", cfg.GRPCServer.Port),
+		log:             log,
 		ResultUseCase:   ResultUseCase,
 		QuestionUseCase: QuestionUseCase,
 		QuizUseCase:     QuizUseCase,
@@ -81,7 +86,7 @@ func (a *API) run() error {
 
 	// Register services
 	quesvc.RegisterQuestionServiceServer(a.server, frontend.NewQuestion(a.QuestionUseCase))
-	quizsvc.RegisterQuizServiceServer(a.server, frontend.NewQuiz(a.QuizUseCase))
+	quizsvc.RegisterQuizServiceServer(a.server, frontend.NewQuiz(a.QuizUseCase, a.log))
 	ressvc.RegisterResultServiceServer(a.server, frontend.NewResult(a.ResultUseCase))
 
 	// Register reflection service

@@ -28,7 +28,7 @@ type (
 
 	ZapLogger struct {
 		Directory string `env:"ZAP_LOGGING_DIRECTORY" envDefault:"./logs"`
-		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"./logs"` // release, debug, test
+		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"release"` // release, debug, test
 	}
 )
 
@@ -36,6 +36,8 @@ func New() (*Config, error) {
 	var cfg Config
 	err := env.Parse(&cfg.Mongo)
 	err = env.Parse(&cfg.Server)
+	err = env.Parse(&cfg.ZapLogger)
+
 	return &cfg, err
 
 }

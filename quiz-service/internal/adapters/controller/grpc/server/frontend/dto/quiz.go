@@ -52,8 +52,7 @@ func ToQuizFromUpdateRequest(req *svc.UpdateQuizRequest) (model.Quiz, error) {
 	response.Description = quiz.Description
 	response.CreatedBy = quiz.CreatedBy
 	response.Status = quiz.Status
-	response.TotalPoints = quiz.TotalPoints
-	response.UpdatedAt = quiz.UpdatedAt.AsTime()
+	response.UpdatedAt = time.Now()
 
 	return response, nil
 }
