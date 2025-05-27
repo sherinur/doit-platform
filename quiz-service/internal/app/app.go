@@ -24,6 +24,8 @@ type App struct {
 
 	httpServer *httpservice.API
 	grpcServer *grpcserver.API
+
+	telemetry *Telemetry
 }
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
@@ -50,14 +52,21 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	QuizUseCase := usecase.NewQuizUsecase(quizRepo, questionRepo)
 	QuestionUseCase := usecase.NewQuestionUsecase(quizRepo, questionRepo)
 
-	// http server
+	// Servers
 	httpServer := httpservice.New(cfg.Server, ResultUseCase, QuizUseCase, QuestionUseCase)
 	grpcServer := grpcserver.New(cfg.Server, logger, ResultUseCase, QuizUseCase, QuestionUseCase)
+
+	// Telemetry
+	telemetry, err := InitTelemetry(ctx, cfg.Telemetry, logger)
+	if err != nil {
+		return nil, err
+	}
 
 	app := &App{
 		log:        logger,
 		httpServer: httpServer,
 		grpcServer: grpcServer,
+		telemetry:  telemetry,
 	}
 
 	return app, nil
