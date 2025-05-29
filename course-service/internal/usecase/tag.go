@@ -3,13 +3,11 @@ package usecase
 import (
 	"context"
 	"course-service/internal/model"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type TagRepo interface {
 	Create(ctx context.Context, tag *model.Tag) error
-	FindByID(ctx context.Context, id primitive.ObjectID) (*model.Tag, error)
+	FindByID(ctx context.Context, id string) (*model.Tag, error)
 	FindAll(ctx context.Context) ([]*model.Tag, error)
 }
 
@@ -25,7 +23,7 @@ func (uc *TagUsecase) Create(ctx context.Context, tag *model.Tag) error {
 	return uc.repo.Create(ctx, tag)
 }
 
-func (uc *TagUsecase) GetByID(ctx context.Context, id primitive.ObjectID) (*model.Tag, error) {
+func (uc *TagUsecase) GetByID(ctx context.Context, id string) (*model.Tag, error) {
 	return uc.repo.FindByID(ctx, id)
 }
 

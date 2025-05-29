@@ -1,43 +1,33 @@
 package main
 
 import (
-	"net"
+	"context"
+	"fmt"
 	"os"
 
-	grpcController "course-service/internal/adapters/controller/grpc"
-	mongoRepo "course-service/internal/adapters/repo/mongo"
 	"course-service/internal/app"
-	"course-service/internal/usecase"
-	"course-service/pkg/mongo"
 
-	grpcService "course-service/proto"
-
-	"go.uber.org/zap"
-	"google.golang.org/grpc"
+	"google.golang.org/api/config/v1"
 )
 
 func main() {
-	app.InitLogger()
-	logger := app.Log
-	logger.Info("Starting Course Service")
+	ctx := context.Background()
 
-	mongoClient := mongo.Connect(os.Getenv("MONGO_URI"))
-	db := mongoClient.Database("course_service")
-
-	courseRepo := mongoRepo.NewCourseRepository(db)
-	courseUsecase := usecase.NewCourseUsecase(courseRepo)
-	grpcHandler := grpcController.NewCourseHandler(courseUsecase)
-
-	grpcServer := grpc.NewServer()
-	grpcService.RegisterCourseServiceServer(grpcServer, grpcHandler)
-
-	listener, err := net.Listen("tcp", ":50053")
+	cfg, err := config.New()
 	if err != nil {
-		logger.Fatal("Failed to listen on port 50053", zap.Error(err))
+		fmt.Println("Config Error:", err)
+		os.Exit(1)
 	}
-	logger.Info("gRPC server listening on port 50053")
 
-	if err := grpcServer.Serve(listener); err != nil {
-		logger.Fatal("Failed to serve gRPC server", zap.Error(err))
+	app, err := app.New(ctx, cfg)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	err = app.Run()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }

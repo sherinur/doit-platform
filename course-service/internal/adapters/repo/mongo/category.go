@@ -2,7 +2,8 @@ package mongoRepo
 
 import (
 	"context"
-	"course-service/internal/model"
+
+	"github.com/sherinur/doit-platform/course-service/internal/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -23,7 +24,7 @@ func (r *CategoryRepository) Create(ctx context.Context, category *model.Categor
 	return err
 }
 
-func (r *CategoryRepository) FindByID(ctx context.Context, id primitive.ObjectID) (*model.Category, error) {
+func (r *CategoryRepository) FindByID(ctx context.Context, id string) (*model.Category, error) {
 	var category model.Category
 	err := r.collection.FindOne(ctx, bson.M{"_id": id}).Decode(&category)
 	if err != nil {
