@@ -5,7 +5,7 @@ import (
 	"os"
 
 	grpcController "course-service/internal/adapters/controller/grpc"
-	"course-service/internal/adapters/repo/mongo"
+	mongoRepo "course-service/internal/adapters/repo/mongo"
 	"course-service/internal/app"
 	"course-service/internal/usecase"
 	"course-service/pkg/mongo"
