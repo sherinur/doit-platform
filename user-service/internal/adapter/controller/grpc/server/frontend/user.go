@@ -145,3 +145,77 @@ func (u *User) DeleteAccount(ctx context.Context, req *svc.DeleteAccountRequest)
 		Status: "OK",
 	}, nil
 }
+
+func (u *User) GetAllUsers(ctx context.Context, req *svc.GetAllUsersRequest) (*svc.GetAllUsersResponse, error) {
+	users, err := u.uc.GetAllUsers(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	var respUsers []*svc.User
+	for _, user := range users {
+		respUsers = append(respUsers, &svc.User{
+			Id:    user.ID,
+			Name:  user.Name,
+			Phone: user.Phone,
+			Email: user.Email,
+			Role:  user.Role,
+		})
+	}
+
+	return &svc.GetAllUsersResponse{
+		Users: respUsers,
+	}, nil
+}
+
+func (u *User) Logout(ctx context.Context, req *svc.LogoutRequest) (*svc.LogoutResponse, error) {
+	if req.RefreshToken == "" {
+		return nil, status.Error(codes.InvalidArgument, "refresh token required")
+	}
+
+	err := u.uc.Logout(ctx, req.RefreshToken)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &svc.LogoutResponse{
+		Status: "OK",
+	}, nil
+}
+
+func (u *User) ChangeUserRole(ctx context.Context, req *svc.ChangeUserRoleRequest) (*svc.ChangeUserRoleResponse, error) {
+	if req.UserId == 0 || req.NewRole == "" {
+		return nil, status.Error(codes.InvalidArgument, "user_id and new_role are required")
+	}
+
+	err := u.uc.ChangeUserRole(ctx, req.UserId, req.NewRole)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &svc.ChangeUserRoleResponse{
+		Status: "OK",
+	}, nil
+}
+
+func (u *User) SendVerificationCode(ctx context.Context, req *svc.SendVerificationCodeRequest) (*svc.SendVerificationCodeResponse, error) {
+	if req.Email == "" {
+		return nil, status.Error(codes.InvalidArgument, "email required")
+	}
+	err := u.uc.SendVerificationCode(ctx, req.Email)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return &svc.SendVerificationCodeResponse{Status: "OK"}, nil
+}
+
+func (u *User) VerifyEmail(ctx context.Context, req *svc.VerifyEmailRequest) (*svc.VerifyEmailResponse, error) {
+	if req.Email == "" || req.Code == "" {
+		return nil, status.Error(codes.InvalidArgument, "email and code required")
+	}
+	err := u.uc.VerifyEmail(ctx, req.Email, req.Code)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return &svc.VerifyEmailResponse{Status: "OK"}, nil
+}

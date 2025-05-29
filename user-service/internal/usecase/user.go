@@ -3,9 +3,12 @@ package usecase
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/pkg/emailsender"
 	"github.com/sherinur/doit-platform/user-service/pkg/security"
 	"github.com/sherinur/doit-platform/user-service/pkg/utils"
 )
@@ -13,6 +16,7 @@ import (
 type userUsecase struct {
 	userRepo        UserRepo
 	tokenRepo       RefreshTokenRepo
+	cache           UserCache
 	jwtManager      *security.JWTManager
 	passwordManager *security.PasswordManager
 }
@@ -20,12 +24,14 @@ type userUsecase struct {
 func NewUserUsecase(
 	userRepo UserRepo,
 	tokenRepo RefreshTokenRepo,
+	cache UserCache,
 	jwtManager *security.JWTManager,
 	passwordManager *security.PasswordManager,
 ) *userUsecase {
 	return &userUsecase{
 		userRepo:        userRepo,
 		tokenRepo:       tokenRepo,
+		cache:           cache,
 		jwtManager:      jwtManager,
 		passwordManager: passwordManager,
 	}
@@ -104,6 +110,10 @@ func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (mode
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+func (uc *userUsecase) Logout(ctx context.Context, refreshToken string) error {
+	return uc.tokenRepo.DeleteByRefreshToken(ctx, refreshToken)
 }
 
 func (uc *userUsecase) RefreshToken(ctx context.Context, refreshToken string) (model.Token, error) {
@@ -208,4 +218,66 @@ func (uc *userUsecase) UpdateUserPassword(ctx context.Context, req *model.UserUp
 
 func (uc *userUsecase) DeleteUser(ctx context.Context, userID int64) error {
 	return uc.userRepo.Delete(ctx, userID)
+}
+
+func (uc *userUsecase) GetAllUsers(ctx context.Context) ([]*model.User, error) {
+	users, err := uc.userRepo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
+func (uc *userUsecase) ChangeUserRole(ctx context.Context, userID int64, newRole string) error {
+	user, err := uc.userRepo.GetById(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	user.Role = newRole
+	user.UpdatedAt = time.Now().UTC()
+	return uc.userRepo.UpdateInfo(ctx, &model.UserUpdateData{
+		ID:        userID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Phone:     user.Phone,
+		Role:      newRole,
+		UpdatedAt: user.UpdatedAt,
+	})
+}
+
+func (uc *userUsecase) SendVerificationCode(ctx context.Context, email string) error {
+
+	code := fmt.Sprintf("%06d", rand.Intn(1000000))
+
+	err := uc.cache.SaveVerificationCode(ctx, email, code)
+	if err != nil {
+		return err
+	}
+
+	err = emailsender.SendEmail(email, "Verification Code", "Your verification code is: "+code)
+	if err != nil {
+		return fmt.Errorf("failed to send verification email: %w", err)
+	}
+
+	return nil
+}
+
+func (uc *userUsecase) VerifyEmail(ctx context.Context, email, code string) error {
+	storedCode, err := uc.cache.GetVerificationCode(ctx, email)
+	if err != nil {
+		return err
+	}
+	if storedCode != code {
+		return fmt.Errorf("invalid verification code")
+	}
+
+	// Optionally, mark email as verified in DB
+	// err = uc.userRepo.MarkEmailVerified(ctx, email)
+	// if err != nil {
+	// 	return err
+	// }
+
+	return nil
 }

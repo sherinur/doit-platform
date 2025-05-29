@@ -126,3 +126,227 @@ google.golang.org/grpc.(*Server).serveStreams.func2.1
 2025-05-13 15:34:47	[34mINFO[0m	app/app.go:98	Received signal: interrupt. Running graceful shutdown...
 2025-05-13 15:34:47	[34mINFO[0m	server/server.go:76	gRPC server stopped
 2025-05-13 15:34:47	[34mINFO[0m	app/app.go:100	Graceful shutdown completed!
+2025-05-29 19:14:46	[34mINFO[0m	app/app.go:83	server user-service started
+2025-05-29 19:14:46	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-29 19:14:46	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-29 19:15:13	[31mERROR[0m	interceptor/interceptor.go:90	gRPC request error	{"error": "rpc error: code = Unauthenticated desc = authorization missing"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:90
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:73
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_GetAllUsers_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:460
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 19:15:13	[34mINFO[0m	interceptor/interceptor.go:75	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/GetAllUsers", "duration": "674.025µs"}
+2025-05-29 19:15:13	[35mDEBUG[0m	interceptor/interceptor.go:80	Request details	{"request": ""}
+2025-05-29 19:15:44	[34mINFO[0m	app/app.go:98	Received signal: interrupt. Running graceful shutdown...
+2025-05-29 19:15:44	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-29 19:15:44	[34mINFO[0m	app/app.go:100	Graceful shutdown completed!
+2025-05-29 19:15:51	[34mINFO[0m	app/app.go:83	server user-service started
+2025-05-29 19:15:51	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-29 19:15:51	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-29 19:15:55	[34mINFO[0m	interceptor/interceptor.go:76	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/GetAllUsers", "duration": "46.69554ms"}
+2025-05-29 19:15:55	[35mDEBUG[0m	interceptor/interceptor.go:81	Request details	{"request": ""}
+2025-05-29 19:16:15	[34mINFO[0m	app/app.go:98	Received signal: interrupt. Running graceful shutdown...
+2025-05-29 19:16:15	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-29 19:16:15	[34mINFO[0m	app/app.go:100	Graceful shutdown completed!
+2025-05-29 19:31:02	[34mINFO[0m	app/app.go:83	server user-service started
+2025-05-29 19:31:02	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-29 19:31:02	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-29 19:31:43	[31mERROR[0m	interceptor/interceptor.go:92	gRPC request error	{"error": "rpc error: code = Internal desc = invalid email"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:92
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:75
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_Register_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:280
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 19:31:43	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Register", "duration": "961.943µs"}
+2025-05-29 19:31:43	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"user2\" password:\"user2\""}
+2025-05-29 19:31:52	[31mERROR[0m	interceptor/interceptor.go:92	gRPC request error	{"error": "rpc error: code = Internal desc = invalid password"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:92
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:75
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_Register_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:280
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 19:31:52	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Register", "duration": "1.386246ms"}
+2025-05-29 19:31:52	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"user2@gmail.com\" password:\"user2\""}
+2025-05-29 19:32:01	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Register", "duration": "136.675519ms"}
+2025-05-29 19:32:01	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"user2@gmail.com\" password:\"Were123*\""}
+2025-05-29 19:32:40	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Login", "duration": "92.799794ms"}
+2025-05-29 19:32:40	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"user2@gmail.com\" password:\"Were123*\""}
+2025-05-29 19:32:54	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/GetAllUsers", "duration": "2.282325ms"}
+2025-05-29 19:32:54	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": ""}
+2025-05-29 19:33:34	[31mERROR[0m	interceptor/interceptor.go:92	gRPC request error	{"error": "rpc error: code = InvalidArgument desc = refresh token required"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:92
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:75
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_Logout_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:316
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 19:33:34	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Logout", "duration": "818.757µs"}
+2025-05-29 19:33:34	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": ""}
+2025-05-29 19:33:56	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Logout", "duration": "14.039727ms"}
+2025-05-29 19:33:56	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "refreshToken:\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg1MzI3NjAsInJvbGUiOiJ1c2VyIiwidXNlcl9pZCI6M30.FtTzhkoS28kyvI20LGPcxp4rcuuFnYpGnUxiVx0g5gU\""}
+2025-05-29 19:34:04	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Profile", "duration": "6.250954ms"}
+2025-05-29 19:34:04	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": ""}
+2025-05-29 19:35:29	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/UpdateProfile", "duration": "12.542199ms"}
+2025-05-29 19:35:29	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "name:\"user2\" phone:\"mollit ad minim\" email:\"user3@gmail.com\" role:\"admin\""}
+2025-05-29 19:37:33	[31mERROR[0m	interceptor/interceptor.go:92	gRPC request error	{"error": "rpc error: code = Unimplemented desc = method ChangeUserRole not implemented"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:92
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:75
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_ChangeUserRole_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:478
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 19:37:33	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/ChangeUserRole", "duration": "1.859894ms"}
+2025-05-29 19:37:33	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "user_id:3 new_role:\"teacher\""}
+2025-05-29 19:40:43	[34mINFO[0m	app/app.go:98	Received signal: interrupt. Running graceful shutdown...
+2025-05-29 19:40:43	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-29 19:40:43	[34mINFO[0m	app/app.go:100	Graceful shutdown completed!
+2025-05-29 19:40:48	[34mINFO[0m	app/app.go:83	server user-service started
+2025-05-29 19:40:48	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-29 19:40:48	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-29 19:40:53	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/GetAllUsers", "duration": "8.023898ms"}
+2025-05-29 19:40:53	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": ""}
+2025-05-29 19:41:19	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/ChangeUserRole", "duration": "14.815569ms"}
+2025-05-29 19:41:19	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "user_id:3 new_role:\"teacher\""}
+2025-05-29 19:41:23	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/GetAllUsers", "duration": "15.940618ms"}
+2025-05-29 19:41:23	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": ""}
+2025-05-29 19:41:30	[34mINFO[0m	app/app.go:98	Received signal: interrupt. Running graceful shutdown...
+2025-05-29 19:41:30	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-29 19:41:30	[34mINFO[0m	app/app.go:100	Graceful shutdown completed!
+2025-05-29 20:39:45	[34mINFO[0m	app/app.go:91	server user-service started
+2025-05-29 20:39:45	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-29 20:39:45	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-29 20:40:26	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Register", "duration": "238.258425ms"}
+2025-05-29 20:40:26	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay05@gmail.com\"  password:\"Were123*\""}
+2025-05-29 20:40:41	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Login", "duration": "94.118343ms"}
+2025-05-29 20:40:41	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay05@gmail.com\"  password:\"Were123*\""}
+2025-05-29 20:41:18	[31mERROR[0m	interceptor/interceptor.go:92	gRPC request error	{"error": "rpc error: code = Unimplemented desc = method SendVerificationCode not implemented"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:92
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:75
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_SendVerificationCode_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:424
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 20:41:18	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/SendVerificationCode", "duration": "924.45µs"}
+2025-05-29 20:41:18	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay05gmail.com\""}
+2025-05-29 20:41:50	[34mINFO[0m	app/app.go:106	Received signal: interrupt. Running graceful shutdown...
+2025-05-29 20:41:50	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-29 20:41:50	[34mINFO[0m	app/app.go:108	Graceful shutdown completed!
+2025-05-29 20:41:55	[34mINFO[0m	app/app.go:91	server user-service started
+2025-05-29 20:41:55	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-29 20:41:55	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-29 20:42:03	[31mERROR[0m	interceptor/interceptor.go:92	gRPC request error	{"error": "rpc error: code = Internal desc = failed to send verification email: gomail: could not send email 1: gomail: invalid address \"bukembay05gmail.com\": mail: missing '@' or angle-addr"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:92
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:75
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_SendVerificationCode_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:424
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 20:42:03	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/SendVerificationCode", "duration": "971.504564ms"}
+2025-05-29 20:42:03	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay05gmail.com\""}
+2025-05-29 20:42:40	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/SendVerificationCode", "duration": "1.557796329s"}
+2025-05-29 20:42:40	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay05@gmail.com\""}
+2025-05-29 20:43:49	[34mINFO[0m	app/app.go:106	Received signal: interrupt. Running graceful shutdown...
+2025-05-29 20:43:49	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-29 20:43:49	[34mINFO[0m	app/app.go:108	Graceful shutdown completed!
+2025-05-29 20:43:54	[34mINFO[0m	app/app.go:91	server user-service started
+2025-05-29 20:43:54	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-29 20:43:54	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-29 20:44:04	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/SendVerificationCode", "duration": "1.839650994s"}
+2025-05-29 20:44:04	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay05@gmail.com\""}
+2025-05-29 20:44:57	[31mERROR[0m	interceptor/interceptor.go:92	gRPC request error	{"error": "rpc error: code = Internal desc = redis: nil"}
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.ErrorInterceptor.func3
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:92
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server.(*API).setOptions.LoggingInterceptor.func2
+	/Users/bukembay/Desktop/Golang/doit-platform/user-service/internal/adapter/controller/grpc/server/interceptor/interceptor.go:75
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1._UserService_VerifyEmail_Handler
+	/Users/bukembay/Desktop/Golang/doit-platform/apis/gen/user-service/service/frontend/user/v1/user_grpc.pb.go:442
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/Users/bukembay/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-29 20:44:57	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/VerifyEmail", "duration": "8.108044ms"}
+2025-05-29 20:44:57	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay@gmail.com\"  code:\"004877\""}
+2025-05-29 20:45:04	[34mINFO[0m	interceptor/interceptor.go:77	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/VerifyEmail", "duration": "4.593908ms"}
+2025-05-29 20:45:04	[35mDEBUG[0m	interceptor/interceptor.go:82	Request details	{"request": "email:\"bukembay05@gmail.com\"  code:\"004877\""}
+2025-05-29 20:45:13	[34mINFO[0m	app/app.go:106	Received signal: interrupt. Running graceful shutdown...
+2025-05-29 20:45:13	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-29 20:45:13	[34mINFO[0m	app/app.go:108	Graceful shutdown completed!

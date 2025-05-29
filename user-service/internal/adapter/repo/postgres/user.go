@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/sherinur/doit-platform/user-service/internal/adapter/repo/postgres/dao"
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
@@ -194,4 +195,14 @@ func (r *userRepo) Delete(ctx context.Context, userID int64) error {
 		return err
 	}
 	return nil
+}
+
+func (r *userRepo) ChangeUserRole(ctx context.Context, userID int64, newRole string) error {
+	query := `
+        UPDATE ` + r.table + `
+        SET role = $1, updated_at = $2
+        WHERE id = $3 AND is_deleted = false
+    `
+	_, err := r.db.ExecContext(ctx, query, newRole, time.Now().UTC(), userID)
+	return err
 }

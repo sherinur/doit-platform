@@ -15,6 +15,7 @@ type (
 		Server    Server
 		ZapLogger ZapLogger
 		Jwt       Jwt
+		Redis     RedisConfig
 
 		Version string `env:"VERSION"`
 	}
@@ -51,6 +52,12 @@ type (
 		JwtRefreshSecret     string `env:"JWT_REFRESH_SECRET"`
 		JwtAccessExpiration  int    `env:"JWT_ACCESS_EXPIRATION"`
 		JwtRefreshExpiration int    `env:"JWT_REFRESH_EXPIRATION"`
+	}
+
+	RedisConfig struct {
+		RedisAddr string `env:"REDIS_ADDR" envDefault:"localhost:6379"`
+		RedisPass string `env:"REDIS_PASS" envDefault:""`
+		RedisDB   int    `env:"REDIS_DB" envDefault:"0"`
 	}
 )
 

@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/sherinur/doit-platform/user-service/config"
+	cache "github.com/sherinur/doit-platform/user-service/internal/adapter/cahce"
 	grpcserver "github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server"
 	repo "github.com/sherinur/doit-platform/user-service/internal/adapter/repo/postgres"
 	"github.com/sherinur/doit-platform/user-service/internal/usecase"
@@ -42,6 +43,13 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	}
 	log.Println("Connected to PostgreSQL successfully.")
 
+	redisCache, err := cache.NewRedisCache(cfg.Redis.RedisAddr, cfg.Redis.RedisPass, cfg.Redis.RedisDB)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize redis cache: %w", err)
+	}
+	log.Println("Connecting to redis cahce")
+	UserCache := cache.NewUserCache(redisCache)
+
 	// Initialize Repositories
 	userRepo := repo.NewUserRepo(db)
 	tokenRepo := repo.NewSessionRepo(db)
@@ -49,7 +57,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	passwordManager := security.NewPasswordManager()
 
 	// Initialize UseCases
-	userUsecase := usecase.NewUserUsecase(userRepo, tokenRepo, jwtManager, passwordManager)
+	userUsecase := usecase.NewUserUsecase(userRepo, tokenRepo, UserCache, jwtManager, passwordManager)
 
 	// Initialize HTTP Server
 	grpcServer := grpcserver.New(cfg.Server, userUsecase, cfg.Jwt, logger)
