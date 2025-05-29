@@ -48,7 +48,7 @@ gen:
 		--go-grpc_out=$(GEN_DIR) \
 		--go-grpc_opt=paths=source_relative \
 		$(PROTO_ROOT)/content-service/service/frontend/file/v1/file.proto
-
+		
 	@protoc \
 		--proto_path=$(PROTO_ROOT) \
 		--go_out=$(GEN_DIR) \
@@ -58,6 +58,7 @@ gen:
 		$(PROTO_ROOT)/social-service/service/frontend/feedback/v1/feedback.proto
 	
 	@echo "Successfully generated all proto files"
+
 
 clean-gen:
 	@rm -rf $(GEN_DIR)
