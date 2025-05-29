@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package course.service.frontend.course.v1;
 
-package course;
-
 option go_package = "github.com/sherinur/doit-platform/apis/gen/course-service/service/frontend/course/v1;coursesvc";
 
 service CourseService {
