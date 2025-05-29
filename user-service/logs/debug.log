@@ -812,3 +812,6 @@ google.golang.org/grpc.(*Server).serveStreams.func2.1
 2025-05-30 02:13:55	[34mINFO[0m	app/app.go:105	server user-service started
 2025-05-30 02:13:55	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
 2025-05-30 02:13:55	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-30 02:17:16	[34mINFO[0m	app/app.go:120	Received signal: interrupt. Running graceful shutdown...
+2025-05-30 02:17:16	[34mINFO[0m	server/server.go:76	gRPC server stopped
+2025-05-30 02:17:16	[34mINFO[0m	app/app.go:122	Graceful shutdown completed!

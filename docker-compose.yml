@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: userDB
     volumes:
-      - ./user-service/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./user-service/database/migrations/001_init.up.sql:/docker-entrypoint-initdb.d/init.sql
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5430:5432"
