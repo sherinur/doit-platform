@@ -1,3 +1,5 @@
+//rmv file: app.go
+
 package app
 
 import (
@@ -15,13 +17,19 @@ import (
 )
 
 type App struct {
-	DB                *mongo.Database
-	Logger            *zap.Logger
-	CourseUsecase     *usecase.CourseUsecase
-	TagUsecase        *usecase.TagUsecase
-	CategoryUsecase   *usecase.CategoryUsecase
-	InstructorUsecase *usecase.InstructorUsecase
+	// DB                *mongo.Database
+	Logger *zap.Logger
+	// CourseUsecase     *usecase.CourseUsecase
+	// TagUsecase        *usecase.TagUsecase
+	// CategoryUsecase   *usecase.CategoryUsecase
+	// InstructorUsecase *usecase.InstructorUsecase
 }
+
+// TODO:
+// remove usecase from app structure
+// remove db from app structure
+// add config to app structure
+// add metrics(otel, prometheus) to app structure
 
 func NewApp() *App {
 	// Initialize logger
