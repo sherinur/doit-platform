@@ -43,28 +43,28 @@ func (uc *UserCache) SetUser(ctx context.Context, user *model.User) error {
 	return uc.cache.Set(ctx, key, val, defaultExpiration)
 }
 
-// func (uc *UserCache) GetUsers(ctx context.Context) ([]dto.UserResponse, error) {
-// 	val, err := uc.cache.Get(ctx, "users:list")
-// 	if err != nil {
-// 		return nil, err
-// 	}
+func (uc *UserCache) GetUsers(ctx context.Context) ([]model.User, error) {
+	val, err := uc.cache.Get(ctx, "users:list")
+	if err != nil {
+		return nil, err
+	}
 
-// 	var users []dto.UserResponse
-// 	if err := json.Unmarshal([]byte(val), &users); err != nil {
-// 		return nil, err
-// 	}
+	var users []model.User
+	if err := json.Unmarshal([]byte(val), &users); err != nil {
+		return nil, err
+	}
 
-// 	return users, nil
-// }
+	return users, nil
+}
 
-// func (uc *UserCache) SetUsers(ctx context.Context, users []dto.UserResponse) error {
-// 	val, err := json.Marshal(users)
-// 	if err != nil {
-// 		return err
-// 	}
+func (uc *UserCache) SetUsers(ctx context.Context, users []model.User) error {
+	val, err := json.Marshal(users)
+	if err != nil {
+		return err
+	}
 
-// 	return uc.cache.Set(ctx, "users:list", val, defaultExpiration)
-// }
+	return uc.cache.Set(ctx, "users:list", val, defaultExpiration)
+}
 
 func (uc *UserCache) InvalidateUser(ctx context.Context, id int64) error {
 	ID := strconv.FormatInt(id, 10)

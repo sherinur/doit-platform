@@ -16,6 +16,7 @@ type (
 		ZapLogger ZapLogger
 		Jwt       Jwt
 		Redis     RedisConfig
+		Nats      Nats
 
 		Version string `env:"VERSION"`
 	}
@@ -58,6 +59,12 @@ type (
 		RedisAddr string `env:"REDIS_ADDR" envDefault:"localhost:6379"`
 		RedisPass string `env:"REDIS_PASS" envDefault:""`
 		RedisDB   int    `env:"REDIS_DB" envDefault:"0"`
+	}
+
+	Nats struct {
+		Hosts  []string `env:"NATS_HOSTS,notEmpty" envSeparator:","`
+		NKey   string   `env:"NATS_NKEY,notEmpty"`
+		IsTest bool     `env:"NATS_IS_TEST,notEmpty" envDefault:"true"`
 	}
 )
 

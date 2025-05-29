@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 
@@ -17,6 +18,7 @@ type userUsecase struct {
 	userRepo        UserRepo
 	tokenRepo       RefreshTokenRepo
 	cache           UserCache
+	producer        UserEventStorage
 	jwtManager      *security.JWTManager
 	passwordManager *security.PasswordManager
 }
@@ -25,6 +27,7 @@ func NewUserUsecase(
 	userRepo UserRepo,
 	tokenRepo RefreshTokenRepo,
 	cache UserCache,
+	producer UserEventStorage,
 	jwtManager *security.JWTManager,
 	passwordManager *security.PasswordManager,
 ) *userUsecase {
@@ -32,6 +35,7 @@ func NewUserUsecase(
 		userRepo:        userRepo,
 		tokenRepo:       tokenRepo,
 		cache:           cache,
+		producer:        producer,
 		jwtManager:      jwtManager,
 		passwordManager: passwordManager,
 	}
@@ -65,6 +69,11 @@ func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*
 	newUser, err := uc.userRepo.Create(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+
+	err = uc.producer.Push(ctx, *newUser)
+	if err != nil {
+		log.Println("uc.producer.Push: %w", err)
 	}
 
 	return newUser, nil
@@ -187,6 +196,21 @@ func (uc *userUsecase) UpdateUserInfo(ctx context.Context, req *model.UserUpdate
 		return err
 	}
 
+	user := model.User{
+		ID:        req.ID,
+		Name:      req.Name,
+		Email:     req.Email,
+		Phone:     req.Phone,
+		Role:      req.Role,
+		UpdatedAt: req.UpdatedAt,
+	}
+
+	err = uc.producer.Push(ctx, user)
+	if err != nil {
+		log.Println("uc.producer.Push: %w", err)
+	}
+
+	_ = uc.cache.InvalidateUser(ctx, req.ID)
 	return nil
 }
 
@@ -213,13 +237,19 @@ func (uc *userUsecase) UpdateUserPassword(ctx context.Context, req *model.UserUp
 		return err
 	}
 
+	_ = uc.cache.InvalidateUser(ctx, req.ID)
 	return nil
 }
 
 func (uc *userUsecase) DeleteUser(ctx context.Context, userID int64) error {
-	return uc.userRepo.Delete(ctx, userID)
-}
+	err := uc.userRepo.Delete(ctx, userID)
+	if err != nil {
+		return err
+	}
 
+	_ = uc.cache.InvalidateUser(ctx, userID)
+	return nil
+}
 func (uc *userUsecase) GetAllUsers(ctx context.Context) ([]*model.User, error) {
 	users, err := uc.userRepo.GetAll(ctx)
 	if err != nil {
@@ -248,7 +278,6 @@ func (uc *userUsecase) ChangeUserRole(ctx context.Context, userID int64, newRole
 }
 
 func (uc *userUsecase) SendVerificationCode(ctx context.Context, email string) error {
-
 	code := fmt.Sprintf("%06d", rand.Intn(1000000))
 
 	err := uc.cache.SaveVerificationCode(ctx, email, code)

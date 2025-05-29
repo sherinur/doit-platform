@@ -15,11 +15,6 @@ type UserRepo interface {
 	UpdatePassword(ctx context.Context, user *model.UserUpdateData) error
 	Delete(ctx context.Context, userID int64) error
 	ChangeUserRole(ctx context.Context, userID int64, newRole string) error
-
-	// SaveVerificationCode(ctx context.Context, email, code string) error
-	// GetVerificationCode(ctx context.Context, email string) (string, error)
-	// SendEmail(ctx context.Context, to, subject, body string) error
-	// MarkEmailVerified(ctx context.Context, email string) error
 }
 
 type RefreshTokenRepo interface {
@@ -36,4 +31,8 @@ type UserCache interface {
 	GetVerificationCode(ctx context.Context, email string) (string, error)
 	InvalidateUser(ctx context.Context, id int64) error
 	InvalidateUsersList(ctx context.Context) error
+}
+
+type UserEventStorage interface {
+	Push(ctx context.Context, client model.User) error
 }
