@@ -9,7 +9,7 @@ import (
 type UserUsecase interface {
 	RegisterUser(ctx context.Context, request *model.User) (*model.User, error)
 	LoginUser(ctx context.Context, request *model.User) (model.Token, error)
-	Logout(ctx context.Context, refreshToken string) error
+	Logout(ctx context.Context, req string) error
 	RefreshToken(ctx context.Context, refreshToken string) (model.Token, error)
 	GetUserById(ctx context.Context, userID int64) (*model.User, error)
 	UpdateUserInfo(ctx context.Context, req *model.UserUpdateData) error

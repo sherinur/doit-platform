@@ -55,7 +55,6 @@ message UpdateProfileRequest {
     string name = 1;
     string phone = 2;
     string email = 3;
-    string role = 4;
 }
 
 message UpdateProfileResponse {

@@ -64,6 +64,7 @@ func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 
 		ctx = context.WithValue(ctx, "user_id", int64(userID))
 		ctx = context.WithValue(ctx, "role", role)
+		ctx = context.WithValue(ctx, "token", tokenStr)
 
 		return handler(ctx, req)
 	}

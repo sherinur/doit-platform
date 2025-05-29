@@ -19,7 +19,8 @@ type User struct {
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 
-	IsDeleted bool
+	ISemailVerified bool
+	IsDeleted       bool
 }
 
 func (u *User) Validate() error {

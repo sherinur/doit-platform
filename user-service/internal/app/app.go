@@ -63,15 +63,15 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	}
 	log.Println("Connecting to redis cahce")
 	UserCache := cache.NewUserCache(redisCache)
+	SessionCahce := cache.NewSessionCache(redisCache)
 
 	// Initialize Repositories
 	userRepo := repo.NewUserRepo(db)
-	tokenRepo := repo.NewSessionRepo(db)
 	jwtManager := security.NewJWTManager(cfg.Jwt.JwtAccessSecret, cfg.Jwt.JwtRefreshSecret, cfg.Jwt.JwtAccessExpiration, cfg.Jwt.JwtRefreshExpiration)
 	passwordManager := security.NewPasswordManager()
 
 	// Initialize UseCases
-	userUsecase := usecase.NewUserUsecase(userRepo, tokenRepo, UserCache, UserProducer, jwtManager, passwordManager)
+	userUsecase := usecase.NewUserUsecase(userRepo, UserCache, SessionCahce, UserProducer, jwtManager, passwordManager)
 
 	// Initialize HTTP Server
 	grpcServer := grpcserver.New(cfg.Server, userUsecase, cfg.Jwt, logger)

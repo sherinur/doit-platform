@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"time"
+
+	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
 )
 
 const sessionDefaultExpiration = 24 * time.Hour
@@ -16,7 +18,7 @@ func NewSessionCache(cache Cache) *SessionCache {
 	return &SessionCache{cache: cache}
 }
 
-func (sc *SessionCache) SetSession(ctx context.Context, sessionID string, data interface{}) error {
+func (sc *SessionCache) SetSession(ctx context.Context, sessionID string, data model.Session) error {
 	val, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -24,14 +26,19 @@ func (sc *SessionCache) SetSession(ctx context.Context, sessionID string, data i
 	return sc.cache.Set(ctx, "session:"+sessionID, val, sessionDefaultExpiration)
 }
 
-func (sc *SessionCache) GetSession(ctx context.Context, sessionID string, dest interface{}) error {
+func (sc *SessionCache) GetSession(ctx context.Context, sessionID string) (*model.Session, error) {
 	val, err := sc.cache.Get(ctx, "session:"+sessionID)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return json.Unmarshal([]byte(val), dest)
+
+	var session model.Session
+	if err := json.Unmarshal([]byte(val), &session); err != nil {
+		return nil, err
+	}
+	return &session, nil
 }
 
-func (sc *SessionCache) DeleteSession(ctx context.Context, sessionID string) error {
+func (sc *SessionCache) InvalidateSession(ctx context.Context, sessionID string) error {
 	return sc.cache.Delete(ctx, "session:"+sessionID)
 }

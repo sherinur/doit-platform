@@ -96,7 +96,6 @@ func (u *User) UpdateProfile(ctx context.Context, req *svc.UpdateProfileRequest)
 		Name:  req.Name,
 		Email: req.Email,
 		Phone: req.Phone,
-		Role:  req.Role,
 	}
 
 	err := u.uc.UpdateUserInfo(ctx, user)

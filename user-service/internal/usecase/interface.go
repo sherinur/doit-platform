@@ -15,13 +15,7 @@ type UserRepo interface {
 	UpdatePassword(ctx context.Context, user *model.UserUpdateData) error
 	Delete(ctx context.Context, userID int64) error
 	ChangeUserRole(ctx context.Context, userID int64, newRole string) error
-}
-
-type RefreshTokenRepo interface {
-	Create(ctx context.Context, session *model.Session) error
-	GetByRefreshToken(ctx context.Context, refreshToken string) (*model.Session, error)
-	DeleteByRefreshToken(ctx context.Context, refreshToken string) error
-	DeleteByUserID(ctx context.Context, userID uint64) error
+	VerifyEmail(ctx context.Context, email string) error
 }
 
 type UserCache interface {
@@ -31,6 +25,12 @@ type UserCache interface {
 	GetVerificationCode(ctx context.Context, email string) (string, error)
 	InvalidateUser(ctx context.Context, id int64) error
 	InvalidateUsersList(ctx context.Context) error
+}
+
+type SessionCache interface {
+	SetSession(ctx context.Context, sessionID string, data model.Session) error
+	GetSession(ctx context.Context, sessionID string) (*model.Session, error)
+	InvalidateSession(ctx context.Context, sessionID string) error
 }
 
 type UserEventStorage interface {
