@@ -6,6 +6,7 @@ require (
 	github.com/caarlos0/env/v7 v7.1.0
 	github.com/joho/godotenv v1.5.1
 	github.com/prometheus/client_golang v1.22.0
+	github.com/sherinur/doit-platform v0.0.0-20250529215630-01275797d6e0
 	go.mongodb.org/mongo-driver v1.17.3
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.60.0
 	go.opentelemetry.io/otel v1.35.0
@@ -17,8 +18,7 @@ require (
 	google.golang.org/grpc v1.72.0
 )
 
-replace github.com/sherinur/doit-platform => ../
-replace github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1/feedbacksvc => ../apis/gen/social-service/service/frontend/feedback/v1/feedbacksvc
+// replace github.com/sherinur/doit-platform => ../
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
