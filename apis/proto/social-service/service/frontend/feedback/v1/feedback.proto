@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package social.service.frontend.feedback.v1;
+
+// import "base/frontend/v1/feedback.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1;feedbacksvc";
+
+//------------------------
+// Feedback service:
+//------------------------
+// Format: proto
+// client: frontend (web, native apps) 
+// server: social-service
+// Access:
+//   gRPC
+//------------------------
+
+service FeedbackService {
+    rpc AddFeedback(AddFeedbackRequest) returns (AddFeedbackResponse);
+    rpc GetFeedback(GetFeedbackRequest) returns (GetFeedbackResponse);
+    rpc GetAverageRating(GetAverageRatingRequest) returns (GetAverageRatingResponse);
+    rpc ListFeedbacks(ListCourseFeedbacksRequest) returns (ListCourseFeedbacksResponse);
+    rpc UpdateFeedback(UpdateFeedbackRequest) returns (UpdateFeedbackResponse);
+    rpc DeleteFeedback(DeleteFeedbackRequest) returns (DeleteFeedbackResponse);
+}
+
+message Feedback {
+    string id = 1;
+    int64 user_id = 2;
+    string course_id = 3;
+    string comment = 4;
+    int32 rating = 5;  // 1-6
+    google.protobuf.Timestamp created_at = 6;
+}
+
+message AddFeedbackRequest {
+    int64 user_id = 1;
+    string course_id = 2;
+    string comment = 3;
+    int32 rating = 4;
+}
+
+message AddFeedbackResponse {
+   Feedback feedback = 1;
+}
+
+message GetFeedbackRequest {
+    string feedback_id = 1;
+}
+
+message GetFeedbackResponse {
+    Feedback feedback = 1;
+}
+
+message ListCourseFeedbacksRequest {
+    string course_id = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+}
+
+message ListCourseFeedbacksResponse {
+    repeated Feedback feedbacks = 1;
+    int32 total = 2;
+}
+
+message UpdateFeedbackRequest {
+    string feedback_id = 1;
+    string comment = 4;
+    int32 rating = 5;  // 1-6
+}
+
+message UpdateFeedbackResponse {
+}
+
+message DeleteFeedbackRequest {
+    string feedback_id = 1;
+}
+
+message DeleteFeedbackResponse {}
+
+message GetAverageRatingRequest {
+    string course_id = 1;
+}
+
+message GetAverageRatingResponse {
+    double average_rating = 1;
+    int32 feedback_count = 2;
+}

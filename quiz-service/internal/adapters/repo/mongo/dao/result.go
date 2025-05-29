@@ -1,8 +1,9 @@
 package dao
 
 import (
-	"github.com/sherinur/doit-platform/quiz-service/internal/model"
 	"time"
+
+	"github.com/sherinur/doit-platform/quiz-service/internal/model"
 )
 
 type Result struct {
