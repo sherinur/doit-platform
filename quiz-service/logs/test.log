@@ -1,0 +1,42 @@
+{"level":"info","ts":1748543223.726299,"caller":"app/app.go:115","msg":"received signal: interrupt. Running graceful shutdown..."}
+{"level":"info","ts":1748543223.726864,"caller":"app/app.go:118","msg":"graceful shutdown completed!"}
+{"level":"info","ts":1748543227.5914967,"caller":"app/app.go:38","msg":"starting quiz-service server"}
+{"level":"info","ts":1748543227.591614,"caller":"app/app.go:41","msg":"connecting to mongo database","db_name":"quizDB"}
+{"level":"info","ts":1748543227.5969625,"caller":"app/app.go:48","msg":"connecting to Redis","redis_uri":""}
+{"level":"info","ts":1748543227.6026115,"caller":"app/app.go:104","msg":"server quiz-service started"}
+{"level":"info","ts":1748543227.6029086,"caller":"app/otel.go:84","msg":"Starting serving metrics on http","addr":"0.0.0.0:3003/metrics"}
+{"level":"info","ts":1748543288.3144224,"caller":"frontend/question.go:36","msg":"Created question:","question":{"ID":"6838a738b076d03cb97d4573","Text":"","Type":"","Points":0,"QuizID":"","Answers":null}}
+{"level":"info","ts":1748543329.7756732,"caller":"frontend/question.go:64","msg":"Returned question:","question":{"ID":"","Text":"laborum","Type":"nostrud esse dolore non eu","Points":1,"QuizID":"68386b5b1f2f437d1a88160b","Answers":[{"AnswerID":"enim","Text":"commodo exercitation labore","IsCorrect":true},{"AnswerID":"eu sed ad","Text":"mollit pariatur Ut amet","IsCorrect":false},{"AnswerID":"aliquip","Text":"proident qui enim id ut","IsCorrect":true},{"AnswerID":"deserunt aliquip sunt incididunt","Text":"voluptate ex","IsCorrect":false}]}}
+{"level":"info","ts":1748543343.6999307,"caller":"frontend/question.go:64","msg":"Returned question:","question":{"ID":"","Text":"laborum","Type":"nostrud esse dolore non eu","Points":1,"QuizID":"68386b5b1f2f437d1a88160b","Answers":[{"AnswerID":"enim","Text":"commodo exercitation labore","IsCorrect":true},{"AnswerID":"eu sed ad","Text":"mollit pariatur Ut amet","IsCorrect":false},{"AnswerID":"aliquip","Text":"proident qui enim id ut","IsCorrect":true},{"AnswerID":"deserunt aliquip sunt incididunt","Text":"voluptate ex","IsCorrect":false}]}}
+{"level":"info","ts":1748543358.3297215,"caller":"frontend/question.go:64","msg":"Returned question:","question":{"ID":"","Text":"laborum","Type":"nostrud esse dolore non eu","Points":1,"QuizID":"68386b5b1f2f437d1a88160b","Answers":[{"AnswerID":"enim","Text":"commodo exercitation labore","IsCorrect":true},{"AnswerID":"eu sed ad","Text":"mollit pariatur Ut amet","IsCorrect":false},{"AnswerID":"aliquip","Text":"proident qui enim id ut","IsCorrect":true},{"AnswerID":"deserunt aliquip sunt incididunt","Text":"voluptate ex","IsCorrect":false}]}}
+{"level":"info","ts":1748555761.8429642,"caller":"app/app.go:115","msg":"received signal: interrupt. Running graceful shutdown..."}
+{"level":"info","ts":1748555761.8431535,"caller":"app/app.go:118","msg":"graceful shutdown completed!"}
+{"level":"info","ts":1748557535.535145,"caller":"app/app.go:38","msg":"starting quiz-service server"}
+{"level":"info","ts":1748557535.5353105,"caller":"app/app.go:41","msg":"connecting to mongo database","db_name":"quizDB"}
+{"level":"info","ts":1748557535.5410175,"caller":"app/app.go:48","msg":"connecting to Redis","redis_uri":""}
+{"level":"info","ts":1748557535.5469036,"caller":"app/app.go:104","msg":"server quiz-service started"}
+{"level":"info","ts":1748557535.5471692,"caller":"app/otel.go:84","msg":"Starting serving metrics on http","addr":"0.0.0.0:3003/metrics"}
+{"level":"info","ts":1748557659.9147313,"caller":"app/app.go:115","msg":"received signal: interrupt. Running graceful shutdown..."}
+{"level":"info","ts":1748557659.9153795,"caller":"app/app.go:118","msg":"graceful shutdown completed!"}
+{"level":"info","ts":1748557675.998642,"caller":"app/app.go:38","msg":"starting quiz-service server"}
+{"level":"info","ts":1748557675.9987965,"caller":"app/app.go:41","msg":"connecting to mongo database","db_name":"quizDB"}
+{"level":"info","ts":1748557676.005072,"caller":"app/app.go:48","msg":"connecting to Redis","redis_uri":""}
+{"level":"info","ts":1748557676.0118818,"caller":"app/app.go:104","msg":"server quiz-service started"}
+{"level":"info","ts":1748557676.0121562,"caller":"app/otel.go:84","msg":"Starting serving metrics on http","addr":"0.0.0.0:3003/metrics"}
+{"level":"info","ts":1748557798.5825353,"caller":"app/app.go:115","msg":"received signal: interrupt. Running graceful shutdown..."}
+{"level":"info","ts":1748557798.5828724,"caller":"app/app.go:118","msg":"graceful shutdown completed!"}
+{"level":"info","ts":1748557799.5822709,"caller":"app/app.go:38","msg":"starting quiz-service server"}
+{"level":"info","ts":1748557799.5824435,"caller":"app/app.go:41","msg":"connecting to mongo database","db_name":"quizDB"}
+{"level":"info","ts":1748557799.5866554,"caller":"app/app.go:48","msg":"connecting to Redis","redis_uri":""}
+{"level":"info","ts":1748557799.5942736,"caller":"app/app.go:104","msg":"server quiz-service started"}
+{"level":"info","ts":1748557799.5945208,"caller":"app/otel.go:84","msg":"Starting serving metrics on http","addr":"0.0.0.0:3002/metrics"}
+{"level":"info","ts":1748558441.1848218,"caller":"app/app.go:115","msg":"received signal: interrupt. Running graceful shutdown..."}
+{"level":"info","ts":1748558441.1853082,"caller":"app/app.go:118","msg":"graceful shutdown completed!"}
+{"level":"info","ts":1748558596.3408816,"caller":"app/app.go:38","msg":"starting quiz-service server"}
+{"level":"info","ts":1748558596.341032,"caller":"app/app.go:41","msg":"connecting to mongo database","db_name":"quizDB"}
+{"level":"info","ts":1748558596.3461607,"caller":"app/app.go:48","msg":"connecting to Redis","redis_uri":""}
+{"level":"info","ts":1748558596.3522174,"caller":"app/app.go:104","msg":"server quiz-service started"}
+{"level":"info","ts":1748558712.16447,"caller":"frontend/result.go:47","msg":"Returned result:","result":{"ID":"68160f6e32101f829c570f1c","UserID":"681602f09256b08b903204cf","QuizID":"681602f09256b08b903204ca","Score":0.5,"Questions":[{"ID":"6816077b5b9d794d2287bc41","Text":"Question1","Type":"MCQ","Points":1,"QuizID":"681602f09256b08b903204ca","Answers":[{"AnswerID":"1","Text":"answer1","IsCorrect":false}]},{"ID":"6816084c5b9d794d2287bc42","Text":"changed Question","Type":"MCQ","Points":1,"QuizID":"68386b5b1f2f437d1a88160b","Answers":[{"AnswerID":"2","Text":"answer2","IsCorrect":false}]},{"ID":"6816084c5b9d794d2287bc43","Text":"Question3","Type":"MCQ","Points":2,"QuizID":"681602f09256b08b903204ca","Answers":[{"AnswerID":"2","Text":"answer2","IsCorrect":false},{"AnswerID":"3","Text":"answer3","IsCorrect":false}]}],"Status":"","PassedAt":"2025-05-03T12:43:26.317Z"}}
+{"level":"info","ts":1748558880.800286,"caller":"frontend/result.go:47","msg":"Returned result:","result":{"ID":"68160f6e32101f829c570f1c","UserID":"681602f09256b08b903204cf","QuizID":"681602f09256b08b903204ca","Score":0.5,"Questions":[{"ID":"6816077b5b9d794d2287bc41","Text":"Question1","Type":"MCQ","Points":1,"QuizID":"681602f09256b08b903204ca","Answers":[{"AnswerID":"1","Text":"answer1","IsCorrect":false}]},{"ID":"6816084c5b9d794d2287bc42","Text":"changed Question","Type":"MCQ","Points":1,"QuizID":"68386b5b1f2f437d1a88160b","Answers":[{"AnswerID":"2","Text":"answer2","IsCorrect":false}]},{"ID":"6816084c5b9d794d2287bc43","Text":"Question3","Type":"MCQ","Points":2,"QuizID":"681602f09256b08b903204ca","Answers":[{"AnswerID":"2","Text":"answer2","IsCorrect":false},{"AnswerID":"3","Text":"answer3","IsCorrect":false}]}],"Status":"","PassedAt":"2025-05-03T12:43:26.317Z"}}
+{"level":"info","ts":1748561506.1117334,"caller":"app/app.go:115","msg":"received signal: interrupt. Running graceful shutdown..."}
+{"level":"info","ts":1748561506.1194317,"caller":"app/app.go:118","msg":"graceful shutdown completed!"}

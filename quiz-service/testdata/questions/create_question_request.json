@@ -1,0 +1,28 @@
+{
+  "answers": [
+    {
+      "answer_id": "1",
+      "text": "Golang",
+      "is_correct": true
+    },
+    {
+      "answer_id": "2",
+      "text": "Python",
+      "is_correct": false
+    },
+    {
+      "answer_id": "3",
+      "text": "PHP",
+      "is_correct": false
+    },
+    {
+      "answer_id": "4",
+      "text": "JavaScript",
+      "is_correct": false
+    }
+  ],
+  "points": 1,
+  "quiz_id": "681602f09256b08b903204ca",
+  "text": "Best language in world",
+  "type": "MCQ"
+}

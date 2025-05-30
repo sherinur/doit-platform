@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {
+      "id": "6816077b5b9d794d2287bc41",
+      "answers": [
+        {
+          "id": "1"
+        }
+      ]
+    },
+    {
+      "id": "6816084c5b9d794d2287bc42",
+      "answers": [
+        {
+          "id": "2"
+        }
+      ]
+    },
+    {
+      "id": "6816084c5b9d794d2287bc43",
+      "answers": [
+        {
+          "id": "2"
+        },
+        {
+          "id": "4"
+        }
+      ]
+    }
+  ],
+  "quiz_id": "681602f09256b08b903204ca",
+  "status": "verified",
+  "user_id": "userId0123"
+}

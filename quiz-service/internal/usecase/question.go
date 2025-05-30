@@ -10,10 +10,12 @@ import (
 type QuestionUsecase struct {
 	quizRepo     QuizRepo
 	questionRepo QuestionRepo
+
+	redis QuestionRedis
 }
 
-func NewQuestionUsecase(qrepo QuizRepo, querepo QuestionRepo) *QuestionUsecase {
-	return &QuestionUsecase{quizRepo: qrepo, questionRepo: querepo}
+func NewQuestionUsecase(qrepo QuizRepo, querepo QuestionRepo, redis QuestionRedis) *QuestionUsecase {
+	return &QuestionUsecase{quizRepo: qrepo, questionRepo: querepo, redis: redis}
 }
 
 func (uc QuestionUsecase) CreateQuestion(ctx context.Context, request model.Question) (model.Question, error) {
@@ -22,6 +24,11 @@ func (uc QuestionUsecase) CreateQuestion(ctx context.Context, request model.Ques
 	}
 
 	res, err := uc.questionRepo.CreateQuestion(ctx, request)
+	if err != nil {
+		return model.Question{}, err
+	}
+
+	err = uc.redis.SetQuestion(ctx, res.ID, request)
 	if err != nil {
 		return model.Question{}, err
 	}
@@ -45,7 +52,12 @@ func (uc QuestionUsecase) CreateQuestions(ctx context.Context, request []model.Q
 }
 
 func (uc QuestionUsecase) GetQuestionById(ctx context.Context, id string) (model.Question, error) {
-	question, err := uc.questionRepo.GetQuestionById(ctx, id)
+	//question, err := uc.questionRepo.GetQuestionById(ctx, id)
+	//if err != nil {
+	//	return model.Question{}, err
+	//}
+
+	question, err := uc.redis.GetQuestion(ctx, id)
 	if err != nil {
 		return model.Question{}, err
 	}
