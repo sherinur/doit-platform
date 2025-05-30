@@ -2,7 +2,8 @@ package usecase
 
 import (
 	"context"
-	"course-service/internal/model"
+
+	"github.com/sherinur/doit-platform/course-service/internal/model"
 )
 
 type InstructorRepo interface {

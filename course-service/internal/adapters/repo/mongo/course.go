@@ -2,8 +2,9 @@ package mongoRepo
 
 import (
 	"context"
-	"course-service/internal/model"
 	"time"
+
+	"github.com/sherinur/doit-platform/course-service/internal/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,7 +21,7 @@ func NewCourseRepository(db *mongo.Database) *CourseRepository {
 }
 
 func (r *CourseRepository) Create(ctx context.Context, course *model.Course) error {
-	course.ID = primitive.NewObjectID()
+	course.ID = primitive.NewObjectID().Hex()
 	now := time.Now().Unix()
 	course.CreatedAt = now
 	course.UpdatedAt = now
@@ -28,13 +29,13 @@ func (r *CourseRepository) Create(ctx context.Context, course *model.Course) err
 	return err
 }
 
-func (r *CourseRepository) Update(ctx context.Context, id primitive.ObjectID, updated model.Course) error {
+func (r *CourseRepository) Update(ctx context.Context, id string, updated model.Course) error {
 	updated.UpdatedAt = time.Now().Unix()
 	_, err := r.collection.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": updated})
 	return err
 }
 
-func (r *CourseRepository) GetByID(ctx context.Context, id primitive.ObjectID) (*model.Course, error) {
+func (r *CourseRepository) GetByID(ctx context.Context, id string) (*model.Course, error) {
 	var course model.Course
 	err := r.collection.FindOne(ctx, bson.M{"_id": id}).Decode(&course)
 	if err != nil {

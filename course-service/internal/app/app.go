@@ -1,74 +1,61 @@
-//rmv file: app.go
-
 package app
 
 import (
 	"context"
-	"course-service/internal/adapters/repo/mongo"
-	"course-service/internal/app/logger"
-	"course-service/internal/usecase"
-	"log"
-	"os"
-	"time"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/sherinur/doit-platform/course-service/config"
+	grpcserver "github.com/sherinur/doit-platform/course-service/internal/adapters/controller/grpc/server"
+	mongoRepo "github.com/sherinur/doit-platform/course-service/internal/adapters/repo/mongo"
+	"github.com/sherinur/doit-platform/course-service/internal/usecase"
+	mongocon "github.com/sherinur/doit-platform/course-service/pkg/mongo"
 	"go.uber.org/zap"
 )
 
+const serviceName = "content-service"
+
 type App struct {
-	// DB                *mongo.Database
-	Logger *zap.Logger
-	// CourseUsecase     *usecase.CourseUsecase
-	// TagUsecase        *usecase.TagUsecase
-	// CategoryUsecase   *usecase.CategoryUsecase
-	// InstructorUsecase *usecase.InstructorUsecase
+	cfg *config.Config
+	log *zap.Logger
+
+	grpcServer *grpcserver.API
+
+	telemetry *Telemetry
 }
 
-// TODO:
-// remove usecase from app structure
-// remove db from app structure
-// add config to app structure
-// add metrics(otel, prometheus) to app structure
-
-func NewApp() *App {
-	// Initialize logger
-	zapLogger := logger.NewZapLogger()
-
-	// Connect to MongoDB
-	client, err := mongo.NewClient(options.Client().ApplyURI(os.Getenv("MONGO_URI")))
+func New(ctx context.Context, cfg *config.Config) (*App, error) {
+	// logger
+	logger, err := NewLogger(cfg)
 	if err != nil {
-		log.Fatalf("failed to create mongo client: %v", err)
+		return nil, err
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	// TODO : Initialize database connection here
+	mongoClient := mongocon.Connect(cfg.Mongo.URI)
+	courseRepo := mongoRepo.NewCourseRepository(mongoCliet.)
+	courseUsecase := usecase.NewCourseUsecase(courseRepo)
+	// controllers
+	grpcServer := grpcserver.New(*cfg, courseUsecase, logger)
 
-	err = client.Connect(ctx)
+	// telemetry
+	telemetry, err := InitTelemetry(ctx, cfg.Telemetry, logger)
 	if err != nil {
-		log.Fatalf("failed to connect to mongo: %v", err)
+		return nil, err
 	}
 
-	db := client.Database("course_service")
-
-	// Initialize Repositories
-	courseRepo := mongoRepo.NewCourseRepository(db)
-	tagRepo := mongoRepo.NewTagRepository(db)
-	categoryRepo := mongoRepo.NewCategoryRepository(db)
-	instructorRepo := mongoRepo.NewInstructorRepository(db)
-
-	// Initialize Usecases
-	courseUC := usecase.NewCourseUsecase(courseRepo)
-	tagUC := usecase.NewTagUsecase(tagRepo)
-	categoryUC := usecase.NewCategoryUsecase(categoryRepo)
-	instructorUC := usecase.NewInstructorUsecase(instructorRepo)
-
-	return &App{
-		DB:                db,
-		Logger:            zapLogger,
-		CourseUsecase:     courseUC,
-		TagUsecase:        tagUC,
-		CategoryUsecase:   categoryUC,
-		InstructorUsecase: instructorUC,
+	app := &App{
+		log:        logger,
+		grpcServer: grpcServer,
+		telemetry:  telemetry,
 	}
+
+	return app, nil
+}
+
+func (a *App) Run() error {
+	a.log.Info("Starting the service")
+	return a.grpcServer.Run(context.Background())
+}
+
+func (a *App) Stop() error {
+	return nil
 }

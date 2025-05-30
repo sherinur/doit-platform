@@ -2,7 +2,8 @@ package mongoRepo
 
 import (
 	"context"
-	"course-service/internal/model"
+
+	"github.com/sherinur/doit-platform/course-service/internal/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

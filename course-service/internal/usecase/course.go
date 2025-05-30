@@ -1,9 +1,9 @@
-// internal/usecase/course.go
 package usecase
 
 import (
 	"context"
-	"course-service/internal/model"
+
+	"github.com/sherinur/doit-platform/course-service/internal/model"
 )
 
 type CourseRepo interface {

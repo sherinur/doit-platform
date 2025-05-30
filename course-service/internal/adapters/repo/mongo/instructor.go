@@ -2,7 +2,8 @@ package mongoRepo
 
 import (
 	"context"
-	"course-service/internal/model"
+
+	"github.com/sherinur/doit-platform/course-service/internal/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,7 +19,7 @@ func NewInstructorRepository(db *mongo.Database) *InstructorRepository {
 }
 
 func (r *InstructorRepository) Create(ctx context.Context, instructor *model.Instructor) error {
-	instructor.ID = primitive.NewObjectID()
+	instructor.ID = primitive.NewObjectID().Hex()
 	_, err := r.collection.InsertOne(ctx, instructor)
 	return err
 }
