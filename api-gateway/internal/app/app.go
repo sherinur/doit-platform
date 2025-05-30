@@ -6,10 +6,12 @@ import (
 
 	"github.com/sherinur/doit-platform/api-gateway/config"
 	"github.com/sherinur/doit-platform/api-gateway/internal/adapter/grpc/file"
+	user "github.com/sherinur/doit-platform/api-gateway/internal/adapter/grpc/user"
 	"github.com/sherinur/doit-platform/api-gateway/internal/adapter/http/server"
 	"github.com/sherinur/doit-platform/api-gateway/internal/usecase"
 	"github.com/sherinur/doit-platform/api-gateway/pkg/grpcconn"
 	filesvc "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1"
+	usersvc "github.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1"
 	"go.uber.org/zap"
 )
 
@@ -36,10 +38,22 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	}
 	log.Debug("Connected to the file service grpc client", zap.String("url", cfg.GRPC.GRPCClient.ContentServiceURL))
 
+	usersServiceGRPCConn, err := grpcconn.New(cfg.GRPC.GRPCClient.UserServiceURL)
+	if err != nil {
+		return nil, err
+	}
+	log.Debug("Connected to the user service grpc client", zap.String("url", cfg.GRPC.GRPCClient.UserServiceURL))
+
+	usersServiceClient := usersvc.NewUserServiceClient(usersServiceGRPCConn)
+
+	// Create a presenter that adapts usersServiceClient to usecase.UserPresenter
+	userPresenter := user.NewUser(usersServiceClient)
+	usersUsecase := usecase.NewUser(userPresenter)
+
 	filePresenter := file.NewFile(filesvc.NewFileServiceClient(fileServiceGRPCConn))
 	fileUsecase := usecase.NewFile(filePresenter)
 
-	httpServer := server.New(cfg.Server.HTTPServer, log, fileUsecase)
+	httpServer := server.New(cfg.Server.HTTPServer, log, fileUsecase, usersUsecase)
 
 	app := &App{
 		log:        log,

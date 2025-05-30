@@ -5,3 +5,7 @@ import "github.com/sherinur/doit-platform/api-gateway/internal/adapter/http/serv
 type FileUsecase interface {
 	handler.FileUsecase
 }
+
+type UserUsecase interface {
+	handler.UserUsecase
+}

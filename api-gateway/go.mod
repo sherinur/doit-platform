@@ -10,6 +10,8 @@ require (
 	go.uber.org/zap v1.27.0
 )
 
+replace github.com/sherinur/doit-platform => ../
+
 require (
 	github.com/bytedance/sonic v1.13.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect

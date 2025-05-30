@@ -815,3 +815,10 @@ google.golang.org/grpc.(*Server).serveStreams.func2.1
 2025-05-30 02:17:16	[34mINFO[0m	app/app.go:120	Received signal: interrupt. Running graceful shutdown...
 2025-05-30 02:17:16	[34mINFO[0m	server/server.go:76	gRPC server stopped
 2025-05-30 02:17:16	[34mINFO[0m	app/app.go:122	Graceful shutdown completed!
+2025-05-30 05:23:13	[34mINFO[0m	app/app.go:105	server user-service started
+2025-05-30 05:23:13	[34mINFO[0m	server/server.go:46	gRPC server starting	{"address": "0.0.0.0:50052"}
+2025-05-30 05:23:13	[34mINFO[0m	server/server.go:90	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50052"}
+2025-05-30 05:29:35	[34mINFO[0m	interceptor/interceptor.go:78	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Register", "duration": "151.594714ms"}
+2025-05-30 05:29:35	[35mDEBUG[0m	interceptor/interceptor.go:83	Request details	{"request": "email:\"user6@gmail.com\" password:\"Qwerty123*\""}
+2025-05-30 05:33:19	[34mINFO[0m	interceptor/interceptor.go:78	gRPC request completed	{"method": "/user.service.frontend.user.v1.UserService/Login", "duration": "109.763729ms"}
+2025-05-30 05:33:19	[35mDEBUG[0m	interceptor/interceptor.go:83	Request details	{"request": "email:\"user6@gmail.com\" password:\"Qwerty123*\""}
