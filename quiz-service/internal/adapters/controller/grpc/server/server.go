@@ -4,10 +4,13 @@ import (
 	"context"
 	"fmt"
 	"go.uber.org/zap"
+	"net/http"
 
 	"log"
 	"net"
 
+	"github.com/grpc-ecosystem/go-grpc-prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
@@ -82,15 +85,25 @@ func (a *API) Stop(ctx context.Context) error {
 
 // run starts and runs GRPCServer server.
 func (a *API) run() error {
-	a.server = grpc.NewServer()
+	a.server = grpc.NewServer(
+		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor))
 
 	// Register services
-	quesvc.RegisterQuestionServiceServer(a.server, frontend.NewQuestion(a.QuestionUseCase))
+	quesvc.RegisterQuestionServiceServer(a.server, frontend.NewQuestion(a.QuestionUseCase, a.log))
 	quizsvc.RegisterQuizServiceServer(a.server, frontend.NewQuiz(a.QuizUseCase, a.log))
-	ressvc.RegisterResultServiceServer(a.server, frontend.NewResult(a.ResultUseCase))
+	ressvc.RegisterResultServiceServer(a.server, frontend.NewResult(a.ResultUseCase, a.log))
+
+	grpc_prometheus.Register(a.server)
+	grpc_prometheus.EnableHandlingTimeHistogram()
 
 	// Register reflection service
 	reflection.Register(a.server)
+
+	go func() {
+		http.Handle("/metrics", promhttp.Handler())
+		http.ListenAndServe(":3002", nil)
+	}()
 
 	listener, err := net.Listen("tcp", a.addr)
 	if err != nil {

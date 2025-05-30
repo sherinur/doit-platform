@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"go.uber.org/zap"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -13,8 +12,10 @@ import (
 	grpcserver "github.com/sherinur/doit-platform/quiz-service/internal/adapters/controller/grpc/server"
 	httpservice "github.com/sherinur/doit-platform/quiz-service/internal/adapters/controller/http/service"
 	mongorepo "github.com/sherinur/doit-platform/quiz-service/internal/adapters/repo/mongo"
+	"github.com/sherinur/doit-platform/quiz-service/internal/adapters/repo/redis"
 	"github.com/sherinur/doit-platform/quiz-service/internal/usecase"
 	mongocon "github.com/sherinur/doit-platform/quiz-service/pkg/mongo"
+	rediscon "github.com/sherinur/doit-platform/quiz-service/pkg/redis"
 )
 
 const serviceName = "quiz-service"
@@ -29,17 +30,28 @@ type App struct {
 }
 
 func New(ctx context.Context, cfg *config.Config) (*App, error) {
-	log.Println(fmt.Sprintf("starting %v server", serviceName))
-
 	logger, err := NewLogger(cfg)
 	if err != nil {
 		return nil, err
 	}
 
-	log.Println("connecting to mongo", "database", cfg.Mongo.Database)
+	logger.Info(fmt.Sprintf("starting %v server", serviceName))
+	fmt.Println(fmt.Sprintf("starting %v server", serviceName))
+
+	logger.Info("connecting to mongo database", zap.String("db_name", cfg.Mongo.Database))
+	fmt.Println("connecting to mongo database", cfg.Mongo.Database)
 	mongoDB, err := mongocon.NewDB(ctx, cfg.Mongo)
 	if err != nil {
 		return nil, fmt.Errorf("mongo: %w", err)
+	}
+
+	logger.Info("connecting to Redis", zap.String("redis_uri", cfg.Redis.URI))
+	fmt.Println("connecting to Redis", cfg.Redis.URI)
+	red := rediscon.NewRedis(cfg.Redis)
+	err = red.PingRedis(ctx)
+	if err != nil {
+		logger.Error("failed to connect to redis", zap.Error(err))
+		return nil, fmt.Errorf("redis: %w", err)
 	}
 
 	// Repository
@@ -47,26 +59,31 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	quizRepo := mongorepo.NewQuizRepository(mongoDB.Conn)
 	questionRepo := mongorepo.NewQuestionRepository(mongoDB.Conn)
 
+	// Redis
+	resultRedis := redis.NewResultRedis(red.Conn)
+	quizRedis := redis.NewQuizRedis(red.Conn)
+	questionRedis := redis.NewQuestionRedis(red.Conn)
+
 	// UseCase
-	ResultUseCase := usecase.NewResultUsecase(resultRepo, quizRepo, questionRepo)
-	QuizUseCase := usecase.NewQuizUsecase(quizRepo, questionRepo)
-	QuestionUseCase := usecase.NewQuestionUsecase(quizRepo, questionRepo)
+	ResultUseCase := usecase.NewResultUsecase(resultRepo, quizRepo, questionRepo, resultRedis)
+	QuizUseCase := usecase.NewQuizUsecase(quizRepo, questionRepo, quizRedis)
+	QuestionUseCase := usecase.NewQuestionUsecase(quizRepo, questionRepo, questionRedis)
 
 	// Servers
 	httpServer := httpservice.New(cfg.Server, ResultUseCase, QuizUseCase, QuestionUseCase)
 	grpcServer := grpcserver.New(cfg.Server, logger, ResultUseCase, QuizUseCase, QuestionUseCase)
 
 	// Telemetry
-	telemetry, err := InitTelemetry(ctx, cfg.Telemetry, logger)
-	if err != nil {
-		return nil, err
-	}
+	//telemetry, err := InitTelemetry(ctx, cfg.Telemetry, logger)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	app := &App{
 		log:        logger,
 		httpServer: httpServer,
 		grpcServer: grpcServer,
-		telemetry:  telemetry,
+		//telemetry:  telemetry,
 	}
 
 	return app, nil
@@ -75,7 +92,7 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 func (a *App) Close() {
 	err := a.grpcServer.Stop(context.Background())
 	if err != nil {
-		log.Println("failed to shutdown server", err)
+		a.log.Error("failed to shutdown server", zap.Error(err))
 	}
 }
 
@@ -84,7 +101,7 @@ func (a *App) Run() error {
 
 	a.grpcServer.Run(errCh)
 
-	log.Println(fmt.Sprintf("server %v started", serviceName))
+	a.log.Info(fmt.Sprintf("server %v started", serviceName))
 
 	// Waiting signal
 	shutdownCh := make(chan os.Signal, 1)
@@ -95,10 +112,10 @@ func (a *App) Run() error {
 		return errRun
 
 	case s := <-shutdownCh:
-		log.Println(fmt.Sprintf("received signal: %v. Running graceful shutdown...", s))
+		a.log.Info(fmt.Sprintf("received signal: %v. Running graceful shutdown...", s))
 
 		a.Close()
-		log.Println("graceful shutdown completed!")
+		a.log.Info("graceful shutdown completed!")
 	}
 
 	return nil

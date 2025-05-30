@@ -9,6 +9,7 @@ type Quiz struct {
 	CreatedBy   string
 	Status      string
 	TotalPoints float64
+	CourseID    string
 	Questions   []Question
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

@@ -10,10 +10,12 @@ type ResultUsecase struct {
 	resultRepo   ResultRepo
 	quizRepo     QuizRepo
 	questionRepo QuestionRepo
+
+	redis ResultRedis
 }
 
-func NewResultUsecase(rrepo ResultRepo, qrepo QuizRepo, querepo QuestionRepo) *ResultUsecase {
-	return &ResultUsecase{resultRepo: rrepo, quizRepo: qrepo, questionRepo: querepo}
+func NewResultUsecase(rrepo ResultRepo, qrepo QuizRepo, querepo QuestionRepo, redis ResultRedis) *ResultUsecase {
+	return &ResultUsecase{resultRepo: rrepo, quizRepo: qrepo, questionRepo: querepo, redis: redis}
 }
 
 func (uc ResultUsecase) CreateResult(ctx context.Context, request model.Result) (model.Result, error) {

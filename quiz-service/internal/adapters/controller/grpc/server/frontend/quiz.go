@@ -40,31 +40,38 @@ func (a *Quiz) CreateQuiz(ctx context.Context, req *svc.CreateQuizRequest) (*svc
 func (a *Quiz) GetQuizById(ctx context.Context, req *svc.GetQuizRequest) (*svc.GetQuizResponse, error) {
 	quiz, err := a.uc.GetQuizById(ctx, req.Id)
 	if err != nil {
+		a.logger.Error("failed to get quiz by id:", zap.Error(err))
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
+	a.logger.Info("Returned quiz:", zap.Any("quiz", quiz))
 	return dto.FromQuizToGetResponse(quiz)
 }
 
 func (a *Quiz) UpdateQuiz(ctx context.Context, req *svc.UpdateQuizRequest) (*svc.UpdateQuizResponse, error) {
 	result, err := dto.ToQuizFromUpdateRequest(req)
 	if err != nil {
+		a.logger.Error("failed to parse request:", zap.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	resp, err := a.uc.UpdateQuiz(ctx, result)
 	if err != nil {
+		a.logger.Error("failed to update quiz by id:", zap.Error(err))
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
+	a.logger.Info("Updated quiz:", zap.Any("updated_id", resp))
 	return dto.FromQuizToUpdateResponse(resp)
 }
 
 func (a *Quiz) DeleteQuiz(ctx context.Context, req *svc.DeleteQuizRequest) (*svc.DeleteQuizResponse, error) {
 	resp, err := a.uc.DeleteQuiz(ctx, req.Id)
 	if err != nil {
+		a.logger.Error("failed to delete quiz by id:", zap.Error(err))
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
+	a.logger.Info("Deleted quiz:", zap.Any("deleted_id", resp))
 	return dto.FromQuizToDeleteResponse(resp)
 }
