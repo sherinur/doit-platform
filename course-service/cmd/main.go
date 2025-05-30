@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"course-service/internal/app"
-
-	"google.golang.org/api/config/v1"
+	"github.com/sherinur/doit-platform/course-service/config"
+	"github.com/sherinur/doit-platform/course-service/internal/app"
 )
 
 func main() {

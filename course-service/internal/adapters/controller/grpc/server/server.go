@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"net"
 
-	svc "github.com/sherinur/doit-platform/apis/gen/content-service/service/frontend/file/v1"
 	"github.com/sherinur/doit-platform/course-service/config"
 	"github.com/sherinur/doit-platform/course-service/internal/adapters/controller/grpc/server/frontend"
 	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+
+	coursesvc "github.com/sherinur/doit-platform/apis/gen/course-service/service/frontend/course/v1"
 )
 
 const serverIPAddress = "0.0.0.0:%d"
@@ -23,16 +24,16 @@ type API struct {
 
 	log *zap.Logger
 
-	fileUsecase FileUsecase
+	courseUsecase CourseUsecase
 }
 
-func New(cfg config.Config, fileUsecase FileUsecase, log *zap.Logger) *API {
+func New(cfg config.Config, fileUsecase CourseUsecase, log *zap.Logger) *API {
 	return &API{
 		cfg:  cfg.Server.GRPCServer,
 		addr: fmt.Sprintf(serverIPAddress, cfg.Server.GRPCServer.Port),
 		log:  log,
 
-		fileUsecase: fileUsecase,
+		courseUsecase: fileUsecase,
 	}
 }
 
@@ -43,7 +44,7 @@ func (a *API) Run(ctx context.Context) error {
 func (a *API) run(ctx context.Context) error {
 	a.server = grpc.NewServer(a.setOptions(ctx)...)
 
-	svc.RegisterFileServiceServer(a.server, frontend.NewFile(a.fileUsecase, a.log))
+	coursesvc.RegisterCourseServiceServer(a.server, frontend.NewCourse(a.courseUsecase))
 
 	reflection.Register(a.server)
 

@@ -1,46 +1,109 @@
 syntax = "proto3";
 
-package course.service.frontend.course.v1;
+package course;
 
-option go_package = "github.com/sherinur/doit-platform/apis/gen/course-service/service/frontend/course/v1;coursesvc";
+option go_package = "github.com/yourusername/projectname/internal/adapters/controller/grpc/pb;pb";
+
+import "google/protobuf/empty.proto";
 
 service CourseService {
-    rpc CreateCourse (CreateCourseRequest) returns (CourseResponse);
-    rpc GetCourse (GetCourseRequest) returns (CourseResponse);
-    rpc ListCourses (ListCoursesRequest) returns (ListCoursesResponse);
+  rpc CreateCourse(CreateCourseRequest) returns (CourseResponse);
+  rpc GetCourseById(GetCourseByIdRequest) returns (CourseResponse);
+  rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
+  rpc UpdateCourse(UpdateCourseRequest) returns (CourseResponse);
+  rpc DeleteCourse(DeleteCourseRequest) returns (google.protobuf.Empty);
+
+  rpc EnrollUser(EnrollUserRequest) returns (google.protobuf.Empty);
+  rpc ListUserCourses(ListUserCoursesRequest) returns (ListUserCoursesResponse);
+
+  rpc RateCourse(RateCourseRequest) returns (google.protobuf.Empty);
+  rpc GetCourseRating(GetCourseRatingRequest) returns (CourseRatingResponse);
+
+  rpc UploadCourseMaterial(UploadCourseMaterialRequest) returns (google.protobuf.Empty);
+  rpc SearchCourses(SearchCoursesRequest) returns (ListCoursesResponse);
+  rpc GetPopularCourses(google.protobuf.Empty) returns (ListCoursesResponse);
 }
 
 message Course {
-    string id = 1;
-    string title = 2;
-    string description = 3;
-    string category_id = 4;
-    string instructor_id = 5;
-    repeated string tags = 6;
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string instructor = 4;
+  repeated string tags = 5;
+  float average_rating = 6;
 }
 
 message CreateCourseRequest {
-    string title = 1;
-    string description = 2;
-    string category_id = 3;
-    string instructor_id = 4;
-    repeated string tags = 5;
+  string title = 1;
+  string description = 2;
+  string instructor = 3;
+  repeated string tags = 4;
 }
 
-message GetCourseRequest {
-    string id = 1;
+message UpdateCourseRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string instructor = 4;
+  repeated string tags = 5;
 }
 
-message CourseResponse {
-    Course course = 1;
+message DeleteCourseRequest {
+  string id = 1;
+}
+
+message GetCourseByIdRequest {
+  string id = 1;
 }
 
 message ListCoursesRequest {
-    string search = 1;
-    int32 page = 2;
-    int32 page_size = 3;
+  int32 page = 1;
+  int32 limit = 2;
 }
 
 message ListCoursesResponse {
-    repeated Course courses = 1;
+  repeated Course courses = 1;
+}
+
+message CourseResponse {
+  Course course = 1;
+}
+
+message EnrollUserRequest {
+  string user_id = 1;
+  string course_id = 2;
+}
+
+message ListUserCoursesRequest {
+  string user_id = 1;
+}
+
+message ListUserCoursesResponse {
+  repeated Course courses = 1;
+}
+
+message RateCourseRequest {
+  string course_id = 1;
+  string user_id = 2;
+  int32 rating = 3;
+  string comment = 4;
+}
+
+message GetCourseRatingRequest {
+  string course_id = 1;
+}
+
+message CourseRatingResponse {
+  float average_rating = 1;
+  int32 rating_count = 2;
+}
+
+message UploadCourseMaterialRequest {
+  string course_id = 1;
+  string material_url = 2;
+}
+
+message SearchCoursesRequest {
+  string keyword = 1;
+  repeated string tags = 2;
 }
