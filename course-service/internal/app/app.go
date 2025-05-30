@@ -2,6 +2,8 @@ package app
 
 import (
 	"context"
+	"fmt"
+	"log"
 
 	"github.com/sherinur/doit-platform/course-service/config"
 	grpcserver "github.com/sherinur/doit-platform/course-service/internal/adapters/controller/grpc/server"
@@ -29,9 +31,13 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 		return nil, err
 	}
 
-	// TODO : Initialize database connection here
-	mongoClient := mongocon.Connect(cfg.Mongo.URI)
-	courseRepo := mongoRepo.NewCourseRepository(mongoCliet.)
+	// Initialize database connection here
+	log.Println("connecting to mongo", "database", cfg.Mongo.Database)
+	mongoDB, err := mongocon.NewDB(ctx, cfg.Mongo)
+	if err != nil {
+		return nil, fmt.Errorf("mongo: %w", err)
+	}
+	courseRepo := mongoRepo.NewCourseRepository(mongoDB.Conn)
 	courseUsecase := usecase.NewCourseUsecase(courseRepo)
 	// controllers
 	grpcServer := grpcserver.New(*cfg, courseUsecase, logger)

@@ -5,6 +5,7 @@ import (
 
 	"github.com/caarlos0/env/v7"
 	"github.com/joho/godotenv"
+	"github.com/sherinur/doit-platform/course-service/pkg/mongo"
 )
 
 type (
@@ -12,6 +13,7 @@ type (
 		Server    Server `envPrefix:"SERVER_"`
 		ZapLogger ZapLogger
 		Telemetry Telemetry
+		Mongo     mongo.Config
 	}
 
 	Server struct {
