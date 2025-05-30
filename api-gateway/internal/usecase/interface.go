@@ -17,10 +17,10 @@ type UserPresenter interface {
 	LoginUser(ctx context.Context, request *model.User) (model.Token, error)
 	Logout(ctx context.Context, req string) error
 	RefreshToken(ctx context.Context, refreshToken string) (model.Token, error)
-	GetUserById(ctx context.Context, userID int64) (*model.User, error)
+	GetUserById(ctx context.Context) (*model.User, error)
 	UpdateUserInfo(ctx context.Context, req *model.UserUpdateData) error
 	UpdateUserPassword(ctx context.Context, req *model.UserUpdateData) error
-	DeleteUser(ctx context.Context, userID int64) error
+	DeleteUser(ctx context.Context) error
 	GetAllUsers(ctx context.Context) ([]*model.User, error)
 	ChangeUserRole(ctx context.Context, userID int64, newRole string) error
 	SendVerificationCode(ctx context.Context, email string) error

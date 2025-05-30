@@ -7,6 +7,7 @@ import (
 	"github.com/sherinur/doit-platform/api-gateway/config"
 	"github.com/sherinur/doit-platform/api-gateway/internal/adapter/http/server/handler"
 	"go.uber.org/zap"
+	"google.golang.org/grpc/metadata"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,6 +28,7 @@ func New(cfg config.HTTPServer, logger *zap.Logger, fileUsecase FileUsecase, use
 	gin.SetMode(cfg.Mode)
 	server := gin.New()
 	server.Use(gin.Recovery())
+	server.Use(AuthHeaderToContextMiddleware())
 
 	// Binding presenter
 	userHandler := handler.NewUser(userUsecase)
@@ -61,11 +63,14 @@ func (a *API) setupRoutes() {
 		{
 			user.POST("/register", a.userHandler.Register)
 			user.POST("/login", a.userHandler.Login)
+			user.GET("/profile", a.userHandler.Profile)
 			user.POST("/refresh-token", a.userHandler.RefreshToken)
 			user.POST("/logout", a.userHandler.Logout)
 			user.PUT("/update-profile", a.userHandler.UpdateUserInfo)
 			user.PUT("/update-password", a.userHandler.UpdateUserPassword)
+			user.DELETE("/delete", a.userHandler.DeleteAccount)
 			user.GET("getallusers", a.userHandler.GetAllUsers)
+			user.PUT("/change-role", a.userHandler.ChangeUserRole)
 			user.POST("/send-verify-code", a.userHandler.SendVerificationCode)
 			user.POST("/verify-email", a.userHandler.VerifyEmail)
 		}
@@ -75,4 +80,19 @@ func (a *API) setupRoutes() {
 func (a *API) Run() error {
 	a.log.Info("Running http server", zap.String("addr", a.addr), zap.String("gin mode", a.cfg.Mode))
 	return a.server.Run(a.addr)
+}
+
+func AuthHeaderToContextMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("authorization")
+		if authHeader != "" {
+			// Создаём новый context с metadata для gRPC
+			md := metadata.New(map[string]string{
+				"authorization": authHeader,
+			})
+			ctx := metadata.NewOutgoingContext(c.Request.Context(), md)
+			c.Request = c.Request.WithContext(ctx)
+		}
+		c.Next()
+	}
 }

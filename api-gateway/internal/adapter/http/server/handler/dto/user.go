@@ -7,23 +7,6 @@ import (
 	"github.com/sherinur/doit-platform/api-gateway/internal/model"
 )
 
-// type User struct {
-// 	ID              int64
-// 	Name            string
-// 	Phone           string
-// 	Email           string
-// 	Role            string
-// 	CurrentPassword string
-// 	NewPassword     string
-// 	PasswordHash    string
-// 	NewPasswordHash string
-// 	CreatedAt       time.Time
-// 	UpdatedAt       time.Time
-
-// 	ISemailVerified bool
-// 	IsDeleted       bool
-// }
-
 type RegisterRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`

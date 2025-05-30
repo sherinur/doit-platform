@@ -93,24 +93,16 @@ func (c *User) Logout(ctx *gin.Context) {
 	ctx.Status(http.StatusNoContent)
 }
 
-// func (c *User) Profile(ctx *gin.Context) {
-// 	userID, err := dto.ToGetUserByIdRequest(ctx)
-// 	if err != nil {
-// 		errCtx := dto.FromError(err)
-// 		ctx.JSON(errCtx.Code, gin.H{"error": errCtx.Message})
+func (c *User) Profile(ctx *gin.Context) {
+	user, err := c.uc.GetUserById(ctx.Request.Context())
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 
-// 		return
-// 	}
+		return
+	}
 
-// 	user, err := c.uc.GetUserById(ctx.Request.Context(), )
-// 	if err != nil {
-// 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-
-// 		return
-// 	}
-
-// 	ctx.JSON(http.StatusOK, dto.FromUserToGetResponse(*user))
-// }
+	ctx.JSON(http.StatusOK, dto.FromUserToProfileResponse(*user))
+}
 
 func (c *User) UpdateUserInfo(ctx *gin.Context) {
 	userUpdateData, err := dto.ToUserUpdateProfileRequest(ctx)
@@ -146,24 +138,16 @@ func (c *User) UpdateUserPassword(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, dto.FromUserToUpdateProfileResponse())
 }
 
-// func (c *User) DeleteUser(ctx *gin.Context) {
-// 	userID, err := dto.ToDeleteAccountRequest(ctx)
-// 	if err != nil {
-// 		errCtx := dto.FromError(err)
-// 		ctx.JSON(errCtx.Code, gin.H{"error": errCtx.Message})
+func (c *User) DeleteAccount(ctx *gin.Context) {
+	err := c.uc.DeleteUser(ctx.Request.Context())
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 
-// 		return
-// 	}
+		return
+	}
 
-// 	err = c.uc.DeleteUser(ctx.Request.Context(), userID)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-
-// 		return
-// 	}
-
-// 	ctx.Status(http.StatusNoContent)
-// }
+	ctx.Status(http.StatusNoContent)
+}
 
 func (c *User) GetAllUsers(ctx *gin.Context) {
 	users, err := c.uc.GetAllUsers(ctx.Request.Context())
@@ -175,22 +159,22 @@ func (c *User) GetAllUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, dto.FromUsersToGetAllUsersResponse(users))
 }
 
-// func (c *User) ChangeUserRole(ctx *gin.Context) {
-// 	userRoleChangeRequest, err := dto.ToChangeUserRoleRequest(ctx)
-// 	if err != nil {
-// 		errCtx := dto.FromError(err)
-// 		ctx.JSON(errCtx.Code, gin.H{"error": errCtx.Message})
-// 		return
-// 	}
+func (c *User) ChangeUserRole(ctx *gin.Context) {
+	userID, newRole, err := dto.ToChangeUserRoleRequest(ctx)
+	if err != nil {
+		errCtx := dto.FromError(err)
+		ctx.JSON(errCtx.Code, gin.H{"error": errCtx.Message})
+		return
+	}
 
-// 	err = c.uc.ChangeUserRole(ctx.Request.Context(), userRoleChangeRequest.UserID, userRoleChangeRequest.NewRole)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-// 		return
-// 	}
+	err = c.uc.ChangeUserRole(ctx.Request.Context(), userID, newRole)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	ctx.JSON(http.StatusOK, gin.H{"message": "User role updated successfully"})
-// }
+	ctx.JSON(http.StatusOK, gin.H{"message": "User role updated successfully"})
+}
 
 func (c *User) SendVerificationCode(ctx *gin.Context) {
 	email, err := dto.ToSendVerificationCodeRequest(ctx)

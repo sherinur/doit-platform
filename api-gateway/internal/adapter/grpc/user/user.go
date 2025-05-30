@@ -81,7 +81,7 @@ func (c *User) RefreshToken(ctx context.Context, refreshToken string) (model.Tok
 	return token, nil
 }
 
-func (c *User) GetUserById(ctx context.Context, userID int64) (*model.User, error) {
+func (c *User) GetUserById(ctx context.Context) (*model.User, error) {
 	resp, err := c.user.Profile(ctx, &svc.ProfileRequest{})
 
 	if err != nil {
@@ -93,6 +93,7 @@ func (c *User) GetUserById(ctx context.Context, userID int64) (*model.User, erro
 		Name:  resp.Name,
 		Email: resp.Email,
 		Phone: resp.Phone,
+		Role:  resp.Role,
 	}
 
 	return user, nil
@@ -125,7 +126,7 @@ func (c *User) UpdateUserPassword(ctx context.Context, req *model.UserUpdateData
 	return nil
 }
 
-func (c *User) DeleteUser(ctx context.Context, userID int64) error {
+func (c *User) DeleteUser(ctx context.Context) error {
 	_, err := c.user.DeleteAccount(ctx, &svc.DeleteAccountRequest{})
 
 	if err != nil {
