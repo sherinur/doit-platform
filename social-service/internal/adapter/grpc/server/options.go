@@ -16,10 +16,10 @@ func (a *API) setOptions(ctx context.Context) []grpc.ServerOption {
 	opts := []grpc.ServerOption{
 		// Params
 		grpc.KeepaliveParams(keepalive.ServerParameters{
-			MaxConnectionAge:      a.cfg.MaxConnectionAge,
-			MaxConnectionAgeGrace: a.cfg.MaxConnectionAgeGrace,
+			MaxConnectionAge:      a.cfg.Server.GRPCServer.MaxConnectionAge,
+			MaxConnectionAgeGrace: a.cfg.Server.GRPCServer.MaxConnectionAgeGrace,
 		}),
-		grpc.MaxRecvMsgSize(a.cfg.MaxRecvMsgSizeMiB * (1024 * 1024) /*MB*/),
+		grpc.MaxRecvMsgSize(a.cfg.Server.GRPCServer.MaxRecvMsgSizeMiB * (1024 * 1024) /*MB*/),
 
 		grpc.StatsHandler(otelgrpc.NewServerHandler(
 			otelgrpc.WithTracerProvider(tracerProvider),
@@ -28,6 +28,7 @@ func (a *API) setOptions(ctx context.Context) []grpc.ServerOption {
 
 		// Interceptors
 		grpc.ChainUnaryInterceptor(
+			AuthInterceptor(a.cfg.Jwt.JwtRefreshSecret),
 			loggingInterceptor(a.log),
 			errorInterceptor(a.log),
 			recoveryInterceptor(a.log),

@@ -4,7 +4,7 @@ import (
 	"context"
 	"course-service/internal/model"
 
-	coursesvc "github.com/sherinur/apis/gen/course-service/service/frontend/course/v1"
+	coursesvc "github.com/sherinur/doit-platform/apis/gen/course-service/service/frontend/course/v1"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

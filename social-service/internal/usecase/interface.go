@@ -14,3 +14,10 @@ type FeedbackRepo interface {
 	Delete(ctx context.Context, feedbackId string) error
 	ListFeedbacks(ctx context.Context) ([]model.Feedback, error)
 }
+
+type FeedbackCache interface {
+	Set(feedback model.Feedback)
+	SetMany(feedbacks []model.Feedback)
+	Get(feedbackID string) (model.Feedback, bool)
+	Delete(feedbackID string)
+}
