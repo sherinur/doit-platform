@@ -3,29 +3,40 @@ package usecase
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"log"
+	"math/rand"
 	"time"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
+	"github.com/sherinur/doit-platform/user-service/pkg/emailsender"
 	"github.com/sherinur/doit-platform/user-service/pkg/security"
 	"github.com/sherinur/doit-platform/user-service/pkg/utils"
 )
 
 type userUsecase struct {
 	userRepo        UserRepo
-	tokenRepo       RefreshTokenRepo
+	cache           UserCache
+	sessioncache    SessionCache
+	producer        UserEventStorage
 	jwtManager      *security.JWTManager
 	passwordManager *security.PasswordManager
 }
 
 func NewUserUsecase(
 	userRepo UserRepo,
-	tokenRepo RefreshTokenRepo,
+	cache UserCache,
+	sessioncache SessionCache,
+	producer UserEventStorage,
 	jwtManager *security.JWTManager,
 	passwordManager *security.PasswordManager,
 ) *userUsecase {
 	return &userUsecase{
 		userRepo:        userRepo,
-		tokenRepo:       tokenRepo,
+		cache:           cache,
+		sessioncache:    sessioncache,
+		producer:        producer,
 		jwtManager:      jwtManager,
 		passwordManager: passwordManager,
 	}
@@ -61,6 +72,11 @@ func (uc *userUsecase) RegisterUser(ctx context.Context, request *model.User) (*
 		return nil, err
 	}
 
+	err = uc.producer.Push(ctx, *newUser)
+	if err != nil {
+		log.Println("uc.producer.Push: %w", err)
+	}
+
 	return newUser, nil
 }
 
@@ -89,13 +105,10 @@ func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (mode
 	}
 
 	session := model.Session{
-		UserID:       user.ID,
 		RefreshToken: refreshToken,
-		ExpiresAt:    time.Now().Add(7 * 24 * time.Hour),
-		CreatedAt:    time.Now(),
 	}
 
-	err = uc.tokenRepo.Create(ctx, &session)
+	err = uc.sessioncache.SetSession(ctx, refreshToken, session)
 	if err != nil {
 		return model.Token{}, err
 	}
@@ -106,16 +119,28 @@ func (uc *userUsecase) LoginUser(ctx context.Context, request *model.User) (mode
 	}, nil
 }
 
+func (uc *userUsecase) Logout(ctx context.Context, req string) error {
+	err := uc.sessioncache.InvalidateSession(ctx, req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (uc *userUsecase) RefreshToken(ctx context.Context, refreshToken string) (model.Token, error) {
-	session, err := uc.tokenRepo.GetByRefreshToken(ctx, refreshToken)
+	userID, _, err := uc.jwtManager.ExtractUserIDAndRole(refreshToken, true)
 	if err != nil {
 		return model.Token{}, err
 	}
-	if session.ExpiresAt.Before(time.Now().UTC()) {
-		return model.Token{}, model.ErrRefreshTokenExpired
+
+	_, err = uc.sessioncache.GetSession(ctx, ctx.Value("token").(string))
+	if err != nil && err == redis.Nil {
+		return model.Token{}, fmt.Errorf("session not found, please login again")
+	} else if err != nil {
+		return model.Token{}, err
 	}
 
-	user, err := uc.userRepo.GetById(ctx, session.UserID)
+	user, err := uc.userRepo.GetById(ctx, userID)
 	if err != nil {
 		return model.Token{}, err
 	}
@@ -128,36 +153,46 @@ func (uc *userUsecase) RefreshToken(ctx context.Context, refreshToken string) (m
 		return model.Token{}, err
 	}
 
-	// delete old refresh and insert new one (rotation)
-	err = uc.tokenRepo.DeleteByRefreshToken(ctx, refreshToken)
+	err = uc.sessioncache.InvalidateSession(ctx, refreshToken)
 	if err != nil {
 		return model.Token{}, err
 	}
 
 	newSession := model.Session{
-		UserID:       user.ID,
 		RefreshToken: newRefreshToken,
-		ExpiresAt:    time.Now().Add(7 * 24 * time.Hour),
-		CreatedAt:    time.Now(),
 	}
 
-	err = uc.tokenRepo.Create(ctx, &newSession)
+	err = uc.sessioncache.SetSession(ctx, newRefreshToken, newSession)
 	if err != nil {
 		return model.Token{}, err
 	}
 
 	return model.Token{
 		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
+		RefreshToken: newRefreshToken,
 	}, nil
 }
 
 func (uc *userUsecase) GetUserById(ctx context.Context, userID int64) (*model.User, error) {
+	_, err := uc.sessioncache.GetSession(ctx, ctx.Value("token").(string))
+	if err != nil && err == redis.Nil {
+		return nil, fmt.Errorf("session not found, please login again")
+	} else if err != nil {
+		return nil, err
+	}
+
 	return uc.userRepo.GetById(ctx, userID)
 }
 
 func (uc *userUsecase) UpdateUserInfo(ctx context.Context, req *model.UserUpdateData) error {
-	err := req.Validate()
+	_, err := uc.sessioncache.GetSession(ctx, ctx.Value("token").(string))
+	if err != nil && err == redis.Nil {
+		return fmt.Errorf("session not found, please login again")
+	} else if err != nil {
+		return err
+	}
+
+	err = req.Validate()
 	if err != nil {
 		return err
 	}
@@ -177,15 +212,37 @@ func (uc *userUsecase) UpdateUserInfo(ctx context.Context, req *model.UserUpdate
 		return err
 	}
 
+	user := model.User{
+		ID:        req.ID,
+		Name:      req.Name,
+		Email:     req.Email,
+		Phone:     req.Phone,
+		Role:      req.Role,
+		UpdatedAt: req.UpdatedAt,
+	}
+
+	err = uc.producer.Push(ctx, user)
+	if err != nil {
+		log.Println("uc.producer.Push: %w", err)
+	}
+
+	_ = uc.cache.InvalidateUser(ctx, req.ID)
 	return nil
 }
 
 func (uc *userUsecase) UpdateUserPassword(ctx context.Context, req *model.UserUpdateData) error {
+	_, err := uc.sessioncache.GetSession(ctx, ctx.Value("token").(string))
+	if err != nil && err == redis.Nil {
+		return fmt.Errorf("session not found, please login again")
+	} else if err != nil {
+		return err
+	}
+
 	if !utils.ValidatePassword(req.NewPassword) {
 		return model.ErrInvalidPassword
 	}
 
-	_, err := uc.userRepo.GetById(ctx, req.ID)
+	_, err = uc.userRepo.GetById(ctx, req.ID)
 	if err == sql.ErrNoRows {
 		return model.ErrUserNotFound
 	} else if err != nil {
@@ -203,9 +260,82 @@ func (uc *userUsecase) UpdateUserPassword(ctx context.Context, req *model.UserUp
 		return err
 	}
 
+	_ = uc.cache.InvalidateUser(ctx, req.ID)
 	return nil
 }
 
 func (uc *userUsecase) DeleteUser(ctx context.Context, userID int64) error {
-	return uc.userRepo.Delete(ctx, userID)
+	_, err := uc.sessioncache.GetSession(ctx, ctx.Value("token").(string))
+	if err != nil && err == redis.Nil {
+		return fmt.Errorf("session not found, please login again")
+	} else if err != nil {
+		return err
+	}
+
+	err = uc.userRepo.Delete(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	_ = uc.cache.InvalidateUser(ctx, userID)
+	return nil
+}
+func (uc *userUsecase) GetAllUsers(ctx context.Context) ([]*model.User, error) {
+	users, err := uc.userRepo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
+func (uc *userUsecase) ChangeUserRole(ctx context.Context, userID int64, newRole string) error {
+	user, err := uc.userRepo.GetById(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	user.Role = newRole
+	user.UpdatedAt = time.Now().UTC()
+	return uc.userRepo.UpdateInfo(ctx, &model.UserUpdateData{
+		ID:        userID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Phone:     user.Phone,
+		Role:      newRole,
+		UpdatedAt: user.UpdatedAt,
+	})
+}
+
+func (uc *userUsecase) SendVerificationCode(ctx context.Context, email string) error {
+	code := fmt.Sprintf("%06d", rand.Intn(1000000))
+
+	err := uc.cache.SaveVerificationCode(ctx, email, code)
+	if err != nil {
+		return err
+	}
+
+	err = emailsender.SendEmail(email, "Verification Code", "Your verification code is: "+code)
+	if err != nil {
+		return fmt.Errorf("failed to send verification email: %w", err)
+	}
+
+	return nil
+}
+
+func (uc *userUsecase) VerifyEmail(ctx context.Context, email, code string) error {
+	storedCode, err := uc.cache.GetVerificationCode(ctx, email)
+	if err != nil {
+		return err
+	}
+	if storedCode != code {
+		return fmt.Errorf("invalid verification code")
+	}
+
+	err = uc.userRepo.VerifyEmail(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

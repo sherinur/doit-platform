@@ -6,12 +6,16 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/sherinur/doit-platform/user-service/config"
+	cache "github.com/sherinur/doit-platform/user-service/internal/adapter/cahce"
 	grpcserver "github.com/sherinur/doit-platform/user-service/internal/adapter/controller/grpc/server"
+	"github.com/sherinur/doit-platform/user-service/internal/adapter/nats/producer"
 	repo "github.com/sherinur/doit-platform/user-service/internal/adapter/repo/postgres"
 	"github.com/sherinur/doit-platform/user-service/internal/usecase"
+	natsconn "github.com/sherinur/doit-platform/user-service/pkg/nats"
 	postgresconn "github.com/sherinur/doit-platform/user-service/pkg/postgres"
 	"github.com/sherinur/doit-platform/user-service/pkg/security"
 	"go.uber.org/zap"
@@ -22,7 +26,7 @@ const serviceName = "user-service"
 type App struct {
 	cfg *config.Config
 	log *zap.Logger
-	// httpServer *httpserver.API
+
 	grpcServer *grpcserver.API
 }
 
@@ -42,14 +46,32 @@ func New(ctx context.Context, cfg *config.Config) (*App, error) {
 	}
 	log.Println("Connected to PostgreSQL successfully.")
 
+	// Connect to NATS
+	log.Println("connecting to NATS", "hosts", strings.Join(cfg.Nats.Hosts, ","))
+	natsClient, err := natsconn.NewClient(ctx, cfg.Nats.Hosts, cfg.Nats.NKey, cfg.Nats.IsTest)
+	if err != nil {
+		return nil, fmt.Errorf("nats.NewClient: %w", err)
+	}
+	log.Println("NATS connection status is", natsClient.Conn.Status().String())
+
+	UserProducer := producer.NewUserProducer(natsClient)
+
+	// Initialize Redis
+	redisCache, err := cache.NewRedisCache(cfg.Redis.RedisAddr, cfg.Redis.RedisPass, cfg.Redis.RedisDB)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize redis cache: %w", err)
+	}
+	log.Println("Connecting to redis cahce")
+	UserCache := cache.NewUserCache(redisCache)
+	SessionCahce := cache.NewSessionCache(redisCache)
+
 	// Initialize Repositories
 	userRepo := repo.NewUserRepo(db)
-	tokenRepo := repo.NewSessionRepo(db)
 	jwtManager := security.NewJWTManager(cfg.Jwt.JwtAccessSecret, cfg.Jwt.JwtRefreshSecret, cfg.Jwt.JwtAccessExpiration, cfg.Jwt.JwtRefreshExpiration)
 	passwordManager := security.NewPasswordManager()
 
 	// Initialize UseCases
-	userUsecase := usecase.NewUserUsecase(userRepo, tokenRepo, jwtManager, passwordManager)
+	userUsecase := usecase.NewUserUsecase(userRepo, UserCache, SessionCahce, UserProducer, jwtManager, passwordManager)
 
 	// Initialize HTTP Server
 	grpcServer := grpcserver.New(cfg.Server, userUsecase, cfg.Jwt, logger)

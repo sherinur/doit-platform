@@ -7,11 +7,18 @@ option go_package = "github.com/sherinur/doit-platform/apis/gen/user-service/ser
 service UserService {
     rpc Register (RegisterRequest) returns (RegisterResponse);
     rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Logout(LogoutRequest) returns (LogoutResponse);
     rpc Profile (ProfileRequest) returns (ProfileResponse);
     rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse);
     rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse);
     rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
     rpc DeleteAccount (DeleteAccountRequest) returns (DeleteAccountResponse);
+
+    rpc SendVerificationCode(SendVerificationCodeRequest) returns (SendVerificationCodeResponse);
+    rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse);
+
+    rpc GetAllUsers (GetAllUsersRequest) returns (GetAllUsersResponse);
+    rpc ChangeUserRole (ChangeUserRoleRequest) returns (ChangeUserRoleResponse);
 }
 
 message RegisterRequest {
@@ -48,7 +55,6 @@ message UpdateProfileRequest {
     string name = 1;
     string phone = 2;
     string email = 3;
-    string role = 4;
 }
 
 message UpdateProfileResponse {
@@ -76,5 +82,52 @@ message RefreshTokenResponse {
 message DeleteAccountRequest {
 }
 message DeleteAccountResponse {
+    string status = 1;
+}
+
+message GetAllUsersRequest {
+}
+
+message GetAllUsersResponse {
+    repeated User users = 1;
+}
+
+message User {
+    int64 id = 1;
+    string name = 2;
+    string phone = 3;
+    string email = 4;
+    string role = 5;
+}
+
+message ChangeUserRoleRequest {
+    int64 user_id = 1;
+    string new_role = 2;
+}
+message ChangeUserRoleResponse {
+    string status = 1;
+}
+
+message VerifyEmailRequest {
+    string email = 1;
+    string code = 2;
+}
+
+message VerifyEmailResponse {
+    string status = 1;
+}
+
+message SendVerificationCodeRequest {
+    string email = 1;
+}
+
+message SendVerificationCodeResponse {
+    string status = 1;
+}
+
+message LogoutRequest {
+    string refreshToken = 1;
+}
+message LogoutResponse {
     string status = 1;
 }

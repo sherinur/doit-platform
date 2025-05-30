@@ -23,7 +23,9 @@ func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 		// Skip auth for these methods
 		if strings.Contains(info.FullMethod, "Login") ||
 			strings.Contains(info.FullMethod, "Register") ||
-			strings.Contains(info.FullMethod, "RefreshToken") {
+			strings.Contains(info.FullMethod, "RefreshToken") ||
+			strings.Contains(info.FullMethod, "GetAllUsers") ||
+			strings.Contains(info.FullMethod, "ChangeUserRole") {
 			return handler(ctx, req)
 		}
 
@@ -62,6 +64,7 @@ func AuthInterceptor(secretKey string) grpc.UnaryServerInterceptor {
 
 		ctx = context.WithValue(ctx, "user_id", int64(userID))
 		ctx = context.WithValue(ctx, "role", role)
+		ctx = context.WithValue(ctx, "token", tokenStr)
 
 		return handler(ctx, req)
 	}

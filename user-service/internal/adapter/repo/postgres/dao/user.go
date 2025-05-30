@@ -16,34 +16,37 @@ type User struct {
 	CreatedAt    time.Time `db:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at"`
 
-	IsDeleted bool `db:"is_deleted"`
+	IsemailVerified bool `db:"is_email_verified"`
+	IsDeleted       bool `db:"is_deleted"`
 }
 
 func FromDomain(user *model.User) User {
 	return User{
-		ID:           user.ID,
-		Name:         user.Name,
-		Phone:        user.Phone,
-		Email:        user.Email,
-		Role:         user.Role,
-		PasswordHash: user.PasswordHash,
-		CreatedAt:    user.CreatedAt,
-		UpdatedAt:    user.UpdatedAt,
-		IsDeleted:    user.IsDeleted,
+		ID:              user.ID,
+		Name:            user.Name,
+		Phone:           user.Phone,
+		Email:           user.Email,
+		Role:            user.Role,
+		PasswordHash:    user.PasswordHash,
+		CreatedAt:       user.CreatedAt,
+		UpdatedAt:       user.UpdatedAt,
+		IsemailVerified: user.ISemailVerified,
+		IsDeleted:       user.IsDeleted,
 	}
 }
 
 func ToDomain(user User) *model.User {
 	return &model.User{
-		ID:           user.ID,
-		Name:         user.Name,
-		Phone:        user.Phone,
-		Email:        user.Email,
-		Role:         user.Role,
-		PasswordHash: user.PasswordHash,
-		CreatedAt:    user.CreatedAt,
-		UpdatedAt:    user.UpdatedAt,
-		IsDeleted:    user.IsDeleted,
+		ID:              user.ID,
+		Name:            user.Name,
+		Phone:           user.Phone,
+		Email:           user.Email,
+		Role:            user.Role,
+		PasswordHash:    user.PasswordHash,
+		CreatedAt:       user.CreatedAt,
+		UpdatedAt:       user.UpdatedAt,
+		ISemailVerified: user.IsemailVerified,
+		IsDeleted:       user.IsDeleted,
 	}
 }
 

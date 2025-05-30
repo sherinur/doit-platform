@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/sherinur/doit-platform/user-service/internal/adapter/repo/postgres/dao"
 	"github.com/sherinur/doit-platform/user-service/internal/domain/model"
@@ -152,14 +153,13 @@ func (r *userRepo) UpdateInfo(ctx context.Context, user *model.UserUpdateData) e
 	object := dao.FromUserUpdateData(user)
 	query := `
         UPDATE ` + r.table + `
-        SET name = $1, phone = $2, email = $3, role = $4, updated_at = $5
-        WHERE id = $6 AND is_deleted = false
+        SET name = $1, phone = $2, email = $3, updated_at = $4
+        WHERE id = $5 AND is_deleted = false
     `
 	_, err := r.db.ExecContext(ctx, query,
 		object.Name,
 		object.Phone,
 		object.Email,
-		object.Role,
 		object.UpdatedAt,
 		object.ID,
 	)
@@ -190,6 +190,29 @@ func (r *userRepo) Delete(ctx context.Context, userID int64) error {
         WHERE id = $1
     `
 	_, err := r.db.ExecContext(ctx, query, userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *userRepo) ChangeUserRole(ctx context.Context, userID int64, newRole string) error {
+	query := `
+        UPDATE ` + r.table + `
+        SET role = $1, updated_at = $2
+        WHERE id = $3 AND is_deleted = false
+    `
+	_, err := r.db.ExecContext(ctx, query, newRole, time.Now().UTC(), userID)
+	return err
+}
+
+func (r *userRepo) VerifyEmail(ctx context.Context, email string) error {
+	query := `
+		UPDATE ` + r.table + `
+		SET is_email_verified = true, updated_at = CURRENT_TIMESTAMP
+		WHERE email = $1 AND is_deleted = false
+	`
+	_, err := r.db.ExecContext(ctx, query, email)
 	if err != nil {
 		return err
 	}

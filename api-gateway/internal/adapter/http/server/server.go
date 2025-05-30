@@ -19,23 +19,24 @@ type API struct {
 	addr   string
 	log    *zap.Logger
 
+	userHandler *handler.User
 	fileHandler *handler.File
 }
 
-func New(cfg config.HTTPServer, logger *zap.Logger, fileUsecase FileUsecase) *API {
+func New(cfg config.HTTPServer, logger *zap.Logger, fileUsecase FileUsecase, userUsecase UserUsecase) *API {
 	gin.SetMode(cfg.Mode)
 	server := gin.New()
 	server.Use(gin.Recovery())
 
-	fileHandler := handler.NewFile(fileUsecase)
+	// Binding presenter
+	userHandler := handler.NewUser(userUsecase)
 
 	api := &API{
-		server: server,
-		cfg:    cfg,
-		addr:   fmt.Sprintf(serverIPAddress, cfg.Port),
-		log:    logger,
-
-		fileHandler: fileHandler,
+		server:      server,
+		cfg:         cfg,
+		addr:        fmt.Sprintf(serverIPAddress, cfg.Port),
+		userHandler: userHandler,
+		log:         logger,
 	}
 
 	api.setupRoutes()
@@ -55,6 +56,18 @@ func (a *API) setupRoutes() {
 			file.PUT("/", a.fileHandler.Create)
 			file.GET("/:key", a.fileHandler.Get)
 			file.DELETE("/:key", a.fileHandler.Delete)
+		}
+		user := v1.Group("/user-service")
+		{
+			user.POST("/register", a.userHandler.Register)
+			user.POST("/login", a.userHandler.Login)
+			user.POST("/refresh-token", a.userHandler.RefreshToken)
+			user.POST("/logout", a.userHandler.Logout)
+			user.PUT("/update-profile", a.userHandler.UpdateUserInfo)
+			user.PUT("/update-password", a.userHandler.UpdateUserPassword)
+			user.GET("getallusers", a.userHandler.GetAllUsers)
+			user.POST("/send-verify-code", a.userHandler.SendVerificationCode)
+			user.POST("/verify-email", a.userHandler.VerifyEmail)
 		}
 	}
 }

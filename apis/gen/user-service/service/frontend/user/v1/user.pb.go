@@ -338,7 +338,6 @@ type UpdateProfileRequest struct {
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Phone         string                 `protobuf:"bytes,2,opt,name=phone,proto3" json:"phone,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -390,13 +389,6 @@ func (x *UpdateProfileRequest) GetPhone() string {
 func (x *UpdateProfileRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
-	}
-	return ""
-}
-
-func (x *UpdateProfileRequest) GetRole() string {
-	if x != nil {
-		return x.Role
 	}
 	return ""
 }
@@ -717,6 +709,530 @@ func (x *DeleteAccountResponse) GetStatus() string {
 	return ""
 }
 
+type GetAllUsersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAllUsersRequest) Reset() {
+	*x = GetAllUsersRequest{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAllUsersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllUsersRequest) ProtoMessage() {}
+
+func (x *GetAllUsersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllUsersRequest.ProtoReflect.Descriptor instead.
+func (*GetAllUsersRequest) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{14}
+}
+
+type GetAllUsersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*User                `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAllUsersResponse) Reset() {
+	*x = GetAllUsersResponse{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAllUsersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllUsersResponse) ProtoMessage() {}
+
+func (x *GetAllUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllUsersResponse.ProtoReflect.Descriptor instead.
+func (*GetAllUsersResponse) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *GetAllUsersResponse) GetUsers() []*User {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+type User struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Phone         string                 `protobuf:"bytes,3,opt,name=phone,proto3" json:"phone,omitempty"`
+	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
+	Role          string                 `protobuf:"bytes,5,opt,name=role,proto3" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *User) Reset() {
+	*x = User{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *User) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *User) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *User) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *User) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *User) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+type ChangeUserRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	NewRole       string                 `protobuf:"bytes,2,opt,name=new_role,json=newRole,proto3" json:"new_role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangeUserRoleRequest) Reset() {
+	*x = ChangeUserRoleRequest{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeUserRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeUserRoleRequest) ProtoMessage() {}
+
+func (x *ChangeUserRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeUserRoleRequest.ProtoReflect.Descriptor instead.
+func (*ChangeUserRoleRequest) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ChangeUserRoleRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ChangeUserRoleRequest) GetNewRole() string {
+	if x != nil {
+		return x.NewRole
+	}
+	return ""
+}
+
+type ChangeUserRoleResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangeUserRoleResponse) Reset() {
+	*x = ChangeUserRoleResponse{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeUserRoleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeUserRoleResponse) ProtoMessage() {}
+
+func (x *ChangeUserRoleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeUserRoleResponse.ProtoReflect.Descriptor instead.
+func (*ChangeUserRoleResponse) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ChangeUserRoleResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+type VerifyEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyEmailRequest) Reset() {
+	*x = VerifyEmailRequest{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyEmailRequest) ProtoMessage() {}
+
+func (x *VerifyEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyEmailRequest.ProtoReflect.Descriptor instead.
+func (*VerifyEmailRequest) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *VerifyEmailRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *VerifyEmailRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type VerifyEmailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyEmailResponse) Reset() {
+	*x = VerifyEmailResponse{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyEmailResponse) ProtoMessage() {}
+
+func (x *VerifyEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyEmailResponse.ProtoReflect.Descriptor instead.
+func (*VerifyEmailResponse) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *VerifyEmailResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+type SendVerificationCodeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendVerificationCodeRequest) Reset() {
+	*x = SendVerificationCodeRequest{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendVerificationCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendVerificationCodeRequest) ProtoMessage() {}
+
+func (x *SendVerificationCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendVerificationCodeRequest.ProtoReflect.Descriptor instead.
+func (*SendVerificationCodeRequest) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *SendVerificationCodeRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+type SendVerificationCodeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendVerificationCodeResponse) Reset() {
+	*x = SendVerificationCodeResponse{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendVerificationCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendVerificationCodeResponse) ProtoMessage() {}
+
+func (x *SendVerificationCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendVerificationCodeResponse.ProtoReflect.Descriptor instead.
+func (*SendVerificationCodeResponse) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *SendVerificationCodeResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+type LogoutRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogoutRequest) Reset() {
+	*x = LogoutRequest{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogoutRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogoutRequest) ProtoMessage() {}
+
+func (x *LogoutRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogoutRequest.ProtoReflect.Descriptor instead.
+func (*LogoutRequest) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *LogoutRequest) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+type LogoutResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogoutResponse) Reset() {
+	*x = LogoutResponse{}
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogoutResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogoutResponse) ProtoMessage() {}
+
+func (x *LogoutResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_service_service_frontend_user_v1_user_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogoutResponse.ProtoReflect.Descriptor instead.
+func (*LogoutResponse) Descriptor() ([]byte, []int) {
+	return file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *LogoutResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 var File_user_service_service_frontend_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
@@ -739,12 +1255,11 @@ const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05phone\x18\x03 \x01(\tR\x05phone\x12\x14\n" +
 	"\x05email\x18\x04 \x01(\tR\x05email\x12\x12\n" +
-	"\x04role\x18\x05 \x01(\tR\x04role\"j\n" +
+	"\x04role\x18\x05 \x01(\tR\x04role\"V\n" +
 	"\x14UpdateProfileRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05phone\x18\x02 \x01(\tR\x05phone\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
-	"\x04role\x18\x04 \x01(\tR\x04role\"/\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\"/\n" +
 	"\x15UpdateProfileResponse\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\"e\n" +
 	"\x15UpdatePasswordRequest\x12)\n" +
@@ -759,15 +1274,47 @@ const file_user_service_service_frontend_user_v1_user_proto_rawDesc = "" +
 	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\"\x16\n" +
 	"\x14DeleteAccountRequest\"/\n" +
 	"\x15DeleteAccountResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\tR\x06status2\xb8\x06\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\"\x14\n" +
+	"\x12GetAllUsersRequest\"P\n" +
+	"\x13GetAllUsersResponse\x129\n" +
+	"\x05users\x18\x01 \x03(\v2#.user.service.frontend.user.v1.UserR\x05users\"j\n" +
+	"\x04User\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05phone\x18\x03 \x01(\tR\x05phone\x12\x14\n" +
+	"\x05email\x18\x04 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x05 \x01(\tR\x04role\"K\n" +
+	"\x15ChangeUserRoleRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x19\n" +
+	"\bnew_role\x18\x02 \x01(\tR\anewRole\"0\n" +
+	"\x16ChangeUserRoleResponse\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\">\n" +
+	"\x12VerifyEmailRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\"-\n" +
+	"\x13VerifyEmailResponse\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\"3\n" +
+	"\x1bSendVerificationCodeRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"6\n" +
+	"\x1cSendVerificationCodeResponse\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\"3\n" +
+	"\rLogoutRequest\x12\"\n" +
+	"\frefreshToken\x18\x01 \x01(\tR\frefreshToken\"(\n" +
+	"\x0eLogoutResponse\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status2\x9c\v\n" +
 	"\vUserService\x12k\n" +
 	"\bRegister\x12..user.service.frontend.user.v1.RegisterRequest\x1a/.user.service.frontend.user.v1.RegisterResponse\x12b\n" +
-	"\x05Login\x12+.user.service.frontend.user.v1.LoginRequest\x1a,.user.service.frontend.user.v1.LoginResponse\x12h\n" +
+	"\x05Login\x12+.user.service.frontend.user.v1.LoginRequest\x1a,.user.service.frontend.user.v1.LoginResponse\x12e\n" +
+	"\x06Logout\x12,.user.service.frontend.user.v1.LogoutRequest\x1a-.user.service.frontend.user.v1.LogoutResponse\x12h\n" +
 	"\aProfile\x12-.user.service.frontend.user.v1.ProfileRequest\x1a..user.service.frontend.user.v1.ProfileResponse\x12z\n" +
 	"\rUpdateProfile\x123.user.service.frontend.user.v1.UpdateProfileRequest\x1a4.user.service.frontend.user.v1.UpdateProfileResponse\x12}\n" +
 	"\x0eUpdatePassword\x124.user.service.frontend.user.v1.UpdatePasswordRequest\x1a5.user.service.frontend.user.v1.UpdatePasswordResponse\x12w\n" +
 	"\fRefreshToken\x122.user.service.frontend.user.v1.RefreshTokenRequest\x1a3.user.service.frontend.user.v1.RefreshTokenResponse\x12z\n" +
-	"\rDeleteAccount\x123.user.service.frontend.user.v1.DeleteAccountRequest\x1a4.user.service.frontend.user.v1.DeleteAccountResponseBZZXgithub.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvcb\x06proto3"
+	"\rDeleteAccount\x123.user.service.frontend.user.v1.DeleteAccountRequest\x1a4.user.service.frontend.user.v1.DeleteAccountResponse\x12\x8f\x01\n" +
+	"\x14SendVerificationCode\x12:.user.service.frontend.user.v1.SendVerificationCodeRequest\x1a;.user.service.frontend.user.v1.SendVerificationCodeResponse\x12t\n" +
+	"\vVerifyEmail\x121.user.service.frontend.user.v1.VerifyEmailRequest\x1a2.user.service.frontend.user.v1.VerifyEmailResponse\x12t\n" +
+	"\vGetAllUsers\x121.user.service.frontend.user.v1.GetAllUsersRequest\x1a2.user.service.frontend.user.v1.GetAllUsersResponse\x12}\n" +
+	"\x0eChangeUserRole\x124.user.service.frontend.user.v1.ChangeUserRoleRequest\x1a5.user.service.frontend.user.v1.ChangeUserRoleResponseBZZXgithub.com/sherinur/doit-platform/apis/gen/user-service/service/frontend/user/v1;usersvcb\x06proto3"
 
 var (
 	file_user_service_service_frontend_user_v1_user_proto_rawDescOnce sync.Once
@@ -781,43 +1328,65 @@ func file_user_service_service_frontend_user_v1_user_proto_rawDescGZIP() []byte 
 	return file_user_service_service_frontend_user_v1_user_proto_rawDescData
 }
 
-var file_user_service_service_frontend_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_user_service_service_frontend_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_user_service_service_frontend_user_v1_user_proto_goTypes = []any{
-	(*RegisterRequest)(nil),        // 0: user.service.frontend.user.v1.RegisterRequest
-	(*RegisterResponse)(nil),       // 1: user.service.frontend.user.v1.RegisterResponse
-	(*LoginRequest)(nil),           // 2: user.service.frontend.user.v1.LoginRequest
-	(*LoginResponse)(nil),          // 3: user.service.frontend.user.v1.LoginResponse
-	(*ProfileRequest)(nil),         // 4: user.service.frontend.user.v1.ProfileRequest
-	(*ProfileResponse)(nil),        // 5: user.service.frontend.user.v1.ProfileResponse
-	(*UpdateProfileRequest)(nil),   // 6: user.service.frontend.user.v1.UpdateProfileRequest
-	(*UpdateProfileResponse)(nil),  // 7: user.service.frontend.user.v1.UpdateProfileResponse
-	(*UpdatePasswordRequest)(nil),  // 8: user.service.frontend.user.v1.UpdatePasswordRequest
-	(*UpdatePasswordResponse)(nil), // 9: user.service.frontend.user.v1.UpdatePasswordResponse
-	(*RefreshTokenRequest)(nil),    // 10: user.service.frontend.user.v1.RefreshTokenRequest
-	(*RefreshTokenResponse)(nil),   // 11: user.service.frontend.user.v1.RefreshTokenResponse
-	(*DeleteAccountRequest)(nil),   // 12: user.service.frontend.user.v1.DeleteAccountRequest
-	(*DeleteAccountResponse)(nil),  // 13: user.service.frontend.user.v1.DeleteAccountResponse
+	(*RegisterRequest)(nil),              // 0: user.service.frontend.user.v1.RegisterRequest
+	(*RegisterResponse)(nil),             // 1: user.service.frontend.user.v1.RegisterResponse
+	(*LoginRequest)(nil),                 // 2: user.service.frontend.user.v1.LoginRequest
+	(*LoginResponse)(nil),                // 3: user.service.frontend.user.v1.LoginResponse
+	(*ProfileRequest)(nil),               // 4: user.service.frontend.user.v1.ProfileRequest
+	(*ProfileResponse)(nil),              // 5: user.service.frontend.user.v1.ProfileResponse
+	(*UpdateProfileRequest)(nil),         // 6: user.service.frontend.user.v1.UpdateProfileRequest
+	(*UpdateProfileResponse)(nil),        // 7: user.service.frontend.user.v1.UpdateProfileResponse
+	(*UpdatePasswordRequest)(nil),        // 8: user.service.frontend.user.v1.UpdatePasswordRequest
+	(*UpdatePasswordResponse)(nil),       // 9: user.service.frontend.user.v1.UpdatePasswordResponse
+	(*RefreshTokenRequest)(nil),          // 10: user.service.frontend.user.v1.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil),         // 11: user.service.frontend.user.v1.RefreshTokenResponse
+	(*DeleteAccountRequest)(nil),         // 12: user.service.frontend.user.v1.DeleteAccountRequest
+	(*DeleteAccountResponse)(nil),        // 13: user.service.frontend.user.v1.DeleteAccountResponse
+	(*GetAllUsersRequest)(nil),           // 14: user.service.frontend.user.v1.GetAllUsersRequest
+	(*GetAllUsersResponse)(nil),          // 15: user.service.frontend.user.v1.GetAllUsersResponse
+	(*User)(nil),                         // 16: user.service.frontend.user.v1.User
+	(*ChangeUserRoleRequest)(nil),        // 17: user.service.frontend.user.v1.ChangeUserRoleRequest
+	(*ChangeUserRoleResponse)(nil),       // 18: user.service.frontend.user.v1.ChangeUserRoleResponse
+	(*VerifyEmailRequest)(nil),           // 19: user.service.frontend.user.v1.VerifyEmailRequest
+	(*VerifyEmailResponse)(nil),          // 20: user.service.frontend.user.v1.VerifyEmailResponse
+	(*SendVerificationCodeRequest)(nil),  // 21: user.service.frontend.user.v1.SendVerificationCodeRequest
+	(*SendVerificationCodeResponse)(nil), // 22: user.service.frontend.user.v1.SendVerificationCodeResponse
+	(*LogoutRequest)(nil),                // 23: user.service.frontend.user.v1.LogoutRequest
+	(*LogoutResponse)(nil),               // 24: user.service.frontend.user.v1.LogoutResponse
 }
 var file_user_service_service_frontend_user_v1_user_proto_depIdxs = []int32{
-	0,  // 0: user.service.frontend.user.v1.UserService.Register:input_type -> user.service.frontend.user.v1.RegisterRequest
-	2,  // 1: user.service.frontend.user.v1.UserService.Login:input_type -> user.service.frontend.user.v1.LoginRequest
-	4,  // 2: user.service.frontend.user.v1.UserService.Profile:input_type -> user.service.frontend.user.v1.ProfileRequest
-	6,  // 3: user.service.frontend.user.v1.UserService.UpdateProfile:input_type -> user.service.frontend.user.v1.UpdateProfileRequest
-	8,  // 4: user.service.frontend.user.v1.UserService.UpdatePassword:input_type -> user.service.frontend.user.v1.UpdatePasswordRequest
-	10, // 5: user.service.frontend.user.v1.UserService.RefreshToken:input_type -> user.service.frontend.user.v1.RefreshTokenRequest
-	12, // 6: user.service.frontend.user.v1.UserService.DeleteAccount:input_type -> user.service.frontend.user.v1.DeleteAccountRequest
-	1,  // 7: user.service.frontend.user.v1.UserService.Register:output_type -> user.service.frontend.user.v1.RegisterResponse
-	3,  // 8: user.service.frontend.user.v1.UserService.Login:output_type -> user.service.frontend.user.v1.LoginResponse
-	5,  // 9: user.service.frontend.user.v1.UserService.Profile:output_type -> user.service.frontend.user.v1.ProfileResponse
-	7,  // 10: user.service.frontend.user.v1.UserService.UpdateProfile:output_type -> user.service.frontend.user.v1.UpdateProfileResponse
-	9,  // 11: user.service.frontend.user.v1.UserService.UpdatePassword:output_type -> user.service.frontend.user.v1.UpdatePasswordResponse
-	11, // 12: user.service.frontend.user.v1.UserService.RefreshToken:output_type -> user.service.frontend.user.v1.RefreshTokenResponse
-	13, // 13: user.service.frontend.user.v1.UserService.DeleteAccount:output_type -> user.service.frontend.user.v1.DeleteAccountResponse
-	7,  // [7:14] is the sub-list for method output_type
-	0,  // [0:7] is the sub-list for method input_type
-	0,  // [0:0] is the sub-list for extension type_name
-	0,  // [0:0] is the sub-list for extension extendee
-	0,  // [0:0] is the sub-list for field type_name
+	16, // 0: user.service.frontend.user.v1.GetAllUsersResponse.users:type_name -> user.service.frontend.user.v1.User
+	0,  // 1: user.service.frontend.user.v1.UserService.Register:input_type -> user.service.frontend.user.v1.RegisterRequest
+	2,  // 2: user.service.frontend.user.v1.UserService.Login:input_type -> user.service.frontend.user.v1.LoginRequest
+	23, // 3: user.service.frontend.user.v1.UserService.Logout:input_type -> user.service.frontend.user.v1.LogoutRequest
+	4,  // 4: user.service.frontend.user.v1.UserService.Profile:input_type -> user.service.frontend.user.v1.ProfileRequest
+	6,  // 5: user.service.frontend.user.v1.UserService.UpdateProfile:input_type -> user.service.frontend.user.v1.UpdateProfileRequest
+	8,  // 6: user.service.frontend.user.v1.UserService.UpdatePassword:input_type -> user.service.frontend.user.v1.UpdatePasswordRequest
+	10, // 7: user.service.frontend.user.v1.UserService.RefreshToken:input_type -> user.service.frontend.user.v1.RefreshTokenRequest
+	12, // 8: user.service.frontend.user.v1.UserService.DeleteAccount:input_type -> user.service.frontend.user.v1.DeleteAccountRequest
+	21, // 9: user.service.frontend.user.v1.UserService.SendVerificationCode:input_type -> user.service.frontend.user.v1.SendVerificationCodeRequest
+	19, // 10: user.service.frontend.user.v1.UserService.VerifyEmail:input_type -> user.service.frontend.user.v1.VerifyEmailRequest
+	14, // 11: user.service.frontend.user.v1.UserService.GetAllUsers:input_type -> user.service.frontend.user.v1.GetAllUsersRequest
+	17, // 12: user.service.frontend.user.v1.UserService.ChangeUserRole:input_type -> user.service.frontend.user.v1.ChangeUserRoleRequest
+	1,  // 13: user.service.frontend.user.v1.UserService.Register:output_type -> user.service.frontend.user.v1.RegisterResponse
+	3,  // 14: user.service.frontend.user.v1.UserService.Login:output_type -> user.service.frontend.user.v1.LoginResponse
+	24, // 15: user.service.frontend.user.v1.UserService.Logout:output_type -> user.service.frontend.user.v1.LogoutResponse
+	5,  // 16: user.service.frontend.user.v1.UserService.Profile:output_type -> user.service.frontend.user.v1.ProfileResponse
+	7,  // 17: user.service.frontend.user.v1.UserService.UpdateProfile:output_type -> user.service.frontend.user.v1.UpdateProfileResponse
+	9,  // 18: user.service.frontend.user.v1.UserService.UpdatePassword:output_type -> user.service.frontend.user.v1.UpdatePasswordResponse
+	11, // 19: user.service.frontend.user.v1.UserService.RefreshToken:output_type -> user.service.frontend.user.v1.RefreshTokenResponse
+	13, // 20: user.service.frontend.user.v1.UserService.DeleteAccount:output_type -> user.service.frontend.user.v1.DeleteAccountResponse
+	22, // 21: user.service.frontend.user.v1.UserService.SendVerificationCode:output_type -> user.service.frontend.user.v1.SendVerificationCodeResponse
+	20, // 22: user.service.frontend.user.v1.UserService.VerifyEmail:output_type -> user.service.frontend.user.v1.VerifyEmailResponse
+	15, // 23: user.service.frontend.user.v1.UserService.GetAllUsers:output_type -> user.service.frontend.user.v1.GetAllUsersResponse
+	18, // 24: user.service.frontend.user.v1.UserService.ChangeUserRole:output_type -> user.service.frontend.user.v1.ChangeUserRoleResponse
+	13, // [13:25] is the sub-list for method output_type
+	1,  // [1:13] is the sub-list for method input_type
+	1,  // [1:1] is the sub-list for extension type_name
+	1,  // [1:1] is the sub-list for extension extendee
+	0,  // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_user_service_service_frontend_user_v1_user_proto_init() }
@@ -831,7 +1400,7 @@ func file_user_service_service_frontend_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_service_service_frontend_user_v1_user_proto_rawDesc), len(file_user_service_service_frontend_user_v1_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
