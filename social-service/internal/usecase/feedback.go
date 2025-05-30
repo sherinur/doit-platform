@@ -7,12 +7,18 @@ import (
 )
 
 type Feedback struct {
-	feedbackRepo FeedbackRepo
+	feedbackRepo  FeedbackRepo
+	inmemoryCache FeedbackCache
 }
 
-func NewFeedback(feedbackRepo FeedbackRepo) *Feedback {
+func (f *Feedback) ListFeedbacks(context context.Context) (any, any) {
+	panic("unimplemented")
+}
+
+func NewFeedback(feedbackRepo FeedbackRepo, cache FeedbackCache) *Feedback {
 	return &Feedback{
-		feedbackRepo: feedbackRepo,
+		feedbackRepo:  feedbackRepo,
+		inmemoryCache: cache,
 	}
 }
 
@@ -20,33 +26,63 @@ func (f *Feedback) CreateFeedback(ctx context.Context, feedback *model.Feedback)
 	if err := feedback.Validate(); err != nil {
 		return nil, err
 	}
-	return f.feedbackRepo.Create(ctx, feedback.UserID, feedback.CourseID, feedback.Comment, feedback.Rating)
+	created, err := f.feedbackRepo.Create(ctx, feedback.UserID, feedback.CourseID, feedback.Comment, feedback.Rating)
+	if err != nil {
+		return nil, err
+	}
+	f.inmemoryCache.Set(*created)
+	return created, nil
 }
 
 func (f *Feedback) GetCourseFeedbacks(ctx context.Context, courseID string) ([]model.Feedback, error) {
 	if courseID == "" {
 		return nil, model.ErrInvalidCourse
 	}
-	return f.feedbackRepo.GetCourseFeedbacks(ctx, courseID)
+	feedbacks, err := f.feedbackRepo.GetCourseFeedbacks(ctx, courseID)
+	if err != nil {
+		return nil, err
+	}
+	f.inmemoryCache.SetMany(feedbacks)
+	return feedbacks, nil
 }
 
 func (f *Feedback) Get(ctx context.Context, id string) (*model.Feedback, error) {
 	if id == "" {
 		return nil, model.ErrInvalidID
 	}
-	return f.feedbackRepo.Get(ctx, id)
+
+	if cached, ok := f.inmemoryCache.Get(id); ok {
+		return &cached, nil
+	}
+
+	fb, err := f.feedbackRepo.Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	f.inmemoryCache.Set(*fb)
+	return fb, nil
 }
 
 func (f *Feedback) Delete(ctx context.Context, id string) error {
 	if id == "" {
 		return model.ErrInvalidID
 	}
-	return f.feedbackRepo.Delete(ctx, id)
+	err := f.feedbackRepo.Delete(ctx, id)
+	if err != nil {
+		return err
+	}
+	f.inmemoryCache.Delete(id)
+	return nil
 }
 
 func (f *Feedback) Update(ctx context.Context, id string, feedback *model.Feedback) error {
-	// TODO
-	return f.feedbackRepo.Update(ctx, id)
+	err := f.feedbackRepo.Update(ctx, id)
+	if err != nil {
+		return err
+	}
+	f.inmemoryCache.Delete(id)
+	return nil
 }
 
 func (f *Feedback) GetCourseRating(ctx context.Context, courseID string) (int32, error) {

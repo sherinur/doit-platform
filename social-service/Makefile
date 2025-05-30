@@ -21,3 +21,9 @@ upgrade:
 	go clean -modcache
 	@echo "Upgrading the dependencies..."
 	go get -u ./...
+
+unit-test:
+	@echo "Starting unit testing..."
+	@go test ./internal/adapter/mongo/.
+	@go test ./internal/adapter/grpc/server/frontend/.
+	@go test ./internal/usecase/.

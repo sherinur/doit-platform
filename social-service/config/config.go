@@ -14,6 +14,7 @@ type (
 		ZapLogger ZapLogger
 		Telemetry Telemetry
 		Mongo     mongo.Config
+		Jwt       Jwt
 	}
 
 	Server struct {
@@ -40,6 +41,13 @@ type (
 	ZapLogger struct {
 		Directory string `env:"ZAP_LOGGING_DIRECTORY" envDefault:"./logs"`
 		Mode      string `env:"ZAP_LOGGING_MODE" envDefault:"debug"` // release, debug, test
+	}
+
+	Jwt struct {
+		JwtAccessSecret      string `env:"JWT_ACCESS_SECRET"`
+		JwtRefreshSecret     string `env:"JWT_REFRESH_SECRET"`
+		JwtAccessExpiration  int    `env:"JWT_ACCESS_EXPIRATION"`
+		JwtRefreshExpiration int    `env:"JWT_REFRESH_EXPIRATION"`
 	}
 
 	Telemetry struct {

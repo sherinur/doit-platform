@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/sherinur/doit-platform/social-service/internal/adapter/mongo/dao"
@@ -26,6 +27,19 @@ func NewFeedback(connection *mongo.Database) *Feedback {
 }
 
 func (f *Feedback) Create(ctx context.Context, userId int64, courseId string, comment string, rating int32) (*model.Feedback, error) {
+	filter := bson.M{
+		"user_id":   userId,
+		"course_id": courseId,
+	}
+
+	var existing dao.Feedback
+	err := f.conn.Collection(f.collection).FindOne(ctx, filter).Decode(&existing)
+	if err == nil {
+		return nil, fmt.Errorf("feedback from user %d for course %s already exists", userId, courseId)
+	} else if err != mongo.ErrNoDocuments {
+		return nil, err
+	}
+
 	now := time.Now()
 	daoFeedback := &dao.Feedback{
 		ID:        primitive.NewObjectID(),
@@ -36,7 +50,7 @@ func (f *Feedback) Create(ctx context.Context, userId int64, courseId string, co
 		CreatedAt: now,
 	}
 
-	_, err := f.conn.Collection(f.collection).InsertOne(ctx, daoFeedback)
+	_, err = f.conn.Collection(f.collection).InsertOne(ctx, daoFeedback)
 	if err != nil {
 		return nil, err
 	}

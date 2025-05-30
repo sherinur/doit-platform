@@ -34,3 +34,216 @@ github.com/sherinur/doit-platform/social-service/internal/app.serveMetrics
 2025-05-01 17:04:15	[34mINFO[0m	app/app.go:61	Starting the service
 2025-05-01 17:04:15	[34mINFO[0m	server/server.go:50	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50054"}
 2025-05-01 17:04:15	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3003/metrics"}
+2025-05-30 05:09:39	[34mINFO[0m	app/app.go:47	Starting the service
+2025-05-30 05:22:08	[34mINFO[0m	app/app.go:65	Starting the service
+2025-05-30 05:22:08	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3003/metrics"}
+2025-05-30 05:22:08	[34mINFO[0m	server/server.go:49	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50058"}
+2025-05-30 05:22:08	[31mERROR[0m	app/otel.go:87	Metrics server error	{"error": "listen tcp 0.0.0.0:3003: bind: address already in use"}
+github.com/sherinur/doit-platform/social-service/internal/app.serveMetrics
+	/home/sherinur/git/doit-platform/social-service/internal/app/otel.go:87
+2025-05-30 05:22:35	[34mINFO[0m	app/app.go:65	Starting the service
+2025-05-30 05:22:35	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3008/metrics"}
+2025-05-30 05:22:35	[34mINFO[0m	server/server.go:49	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50058"}
+2025-05-30 05:26:08	[31mERROR[0m	frontend/feedback.go:29	failed to create feedback	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server/frontend.(*Feedback).AddFeedback
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/frontend/feedback.go:29
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler.func1
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:182
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.recoveryInterceptor.func5
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:52
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:29
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:26:08	[31mERROR[0m	server/interceptor.go:31	gRPC request error	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:31
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:26:08	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "373.571µs"}
+2025-05-30 05:26:08	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:5"}
+2025-05-30 05:26:29	[31mERROR[0m	frontend/feedback.go:29	failed to create feedback	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server/frontend.(*Feedback).AddFeedback
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/frontend/feedback.go:29
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler.func1
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:182
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.recoveryInterceptor.func5
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:52
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:29
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:26:29	[31mERROR[0m	server/interceptor.go:31	gRPC request error	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:31
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:26:29	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "315.831µs"}
+2025-05-30 05:26:29	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:5"}
+2025-05-30 05:26:32	[31mERROR[0m	frontend/feedback.go:29	failed to create feedback	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server/frontend.(*Feedback).AddFeedback
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/frontend/feedback.go:29
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler.func1
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:182
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.recoveryInterceptor.func5
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:52
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:29
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:26:32	[31mERROR[0m	server/interceptor.go:31	gRPC request error	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:31
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:26:32	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "305.447µs"}
+2025-05-30 05:26:32	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:5"}
+2025-05-30 05:27:15	[31mERROR[0m	frontend/feedback.go:29	failed to create feedback	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server/frontend.(*Feedback).AddFeedback
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/frontend/feedback.go:29
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler.func1
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:182
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.recoveryInterceptor.func5
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:52
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:29
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:27:15	[31mERROR[0m	server/interceptor.go:31	gRPC request error	{"error": "ID must be a non-empty string"}
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.errorInterceptor.func4
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:31
+google.golang.org/grpc.getChainUnaryHandler.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1217
+github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server.(*API).setOptions.loggingInterceptor.func3
+	/home/sherinur/git/doit-platform/social-service/internal/adapter/grpc/server/interceptor.go:14
+google.golang.org/grpc.NewServer.chainUnaryServerInterceptors.chainUnaryInterceptors.func1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1208
+github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1._FeedbackService_AddFeedback_Handler
+	/home/sherinur/go/pkg/mod/github.com/sherinur/doit-platform@v0.0.0-20250529215630-01275797d6e0/apis/gen/social-service/service/frontend/feedback/v1/feedback_grpc.pb.go:184
+google.golang.org/grpc.(*Server).processUnaryRPC
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1405
+google.golang.org/grpc.(*Server).handleStream
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1815
+google.golang.org/grpc.(*Server).serveStreams.func2.1
+	/home/sherinur/go/pkg/mod/google.golang.org/grpc@v1.72.0/server.go:1035
+2025-05-30 05:27:15	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "321.061µs"}
+2025-05-30 05:27:15	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:5"}
+2025-05-30 05:28:42	[34mINFO[0m	app/app.go:65	Starting the service
+2025-05-30 05:28:42	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3008/metrics"}
+2025-05-30 05:28:42	[34mINFO[0m	server/server.go:49	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50058"}
+2025-05-30 05:28:52	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "28.737627ms"}
+2025-05-30 05:28:52	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:5"}
+2025-05-30 05:28:58	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "1.964997ms"}
+2025-05-30 05:28:58	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:5"}
+2025-05-30 05:29:02	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "1.84573ms"}
+2025-05-30 05:29:02	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:5"}
+2025-05-30 05:29:58	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/ListFeedbacks", "duration": "2.59535ms"}
+2025-05-30 05:29:58	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "course_id:\"c1\" limit:10"}
+2025-05-30 05:30:08	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/ListFeedbacks", "duration": "2.038219ms"}
+2025-05-30 05:30:08	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "course_id:\"c1\" limit:1"}
+2025-05-30 05:30:23	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/GetAverageRating", "duration": "3.418312ms"}
+2025-05-30 05:30:23	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "course_id:\"c1\""}
+2025-05-30 05:30:43	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "2.09646ms"}
+2025-05-30 05:30:43	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:1"}
+2025-05-30 05:30:49	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/AddFeedback", "duration": "1.921376ms"}
+2025-05-30 05:30:49	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "user_id:1 course_id:\"c1\" comment:\"отличный курс\" rating:3"}
+2025-05-30 05:31:02	[34mINFO[0m	server/interceptor.go:16	gRPC request completed	{"method": "/social.service.frontend.feedback.v1.FeedbackService/GetAverageRating", "duration": "3.513584ms"}
+2025-05-30 05:31:02	[35mDEBUG[0m	server/interceptor.go:21	Request details	{"request": "course_id:\"c1\""}
+2025-05-30 06:47:30	[34mINFO[0m	app/app.go:67	Starting the service
+2025-05-30 06:47:30	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3008/metrics"}
+2025-05-30 06:47:30	[34mINFO[0m	server/server.go:49	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50058"}
+2025-05-30 07:39:04	[34mINFO[0m	app/app.go:67	Starting the service
+2025-05-30 07:39:04	[34mINFO[0m	app/otel.go:84	Starting serving metrics on http	{"addr": "0.0.0.0:3008/metrics"}
+2025-05-30 07:39:04	[34mINFO[0m	server/server.go:49	Service started	{"protocol": "gRPC", "address": "0.0.0.0:50058"}

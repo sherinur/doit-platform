@@ -24,8 +24,8 @@ type Feedback struct {
 
 func (f *Feedback) Validate() error {
 	switch {
-	case f.ID == "":
-		return ErrInvalidID
+	// case f.ID == "":
+	// 	return ErrInvalidID
 	case f.Rating < 1 || f.Rating > 6:
 		return ErrInvalidRating
 	case f.Comment == "":

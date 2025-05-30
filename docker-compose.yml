@@ -49,6 +49,13 @@ services:
       - "9090:9090"
     networks:
       - monitoring
+  
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - monitoring
 
 
 networks:

@@ -6,8 +6,10 @@ import (
 	"net"
 
 	"github.com/sherinur/doit-platform/social-service/config"
+	"github.com/sherinur/doit-platform/social-service/internal/adapter/grpc/server/frontend"
 	"go.uber.org/zap"
 
+	feedbacksvc "github.com/sherinur/doit-platform/apis/gen/social-service/service/frontend/feedback/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -16,18 +18,21 @@ const serverIPAddress = "0.0.0.0:%d"
 
 type API struct {
 	server *grpc.Server
-	cfg    config.GRPCServer
+	cfg    config.Config
 	addr   string
 
-	log *zap.Logger
+	log             *zap.Logger
+	feedbackUsecase FeedbackUsecase
 }
 
-func New(cfg config.Config, log *zap.Logger) *API {
+func New(cfg config.Config, log *zap.Logger, feedbackUsecase FeedbackUsecase) (*API, error) {
 	return &API{
-		cfg:  cfg.Server.GRPCServer,
+		cfg:  cfg,
 		addr: fmt.Sprintf(serverIPAddress, cfg.Server.GRPCServer.Port),
 		log:  log,
-	}
+
+		feedbackUsecase: feedbackUsecase,
+	}, nil
 }
 
 func (a *API) Run(ctx context.Context) error {
@@ -37,7 +42,7 @@ func (a *API) Run(ctx context.Context) error {
 func (a *API) run(ctx context.Context) error {
 	a.server = grpc.NewServer(a.setOptions(ctx)...)
 
-	// svc.RegisterFileServiceServer(a.server, frontend.NewFile(a.fileUsecase, a.log))
+	feedbacksvc.RegisterFeedbackServiceServer(a.server, frontend.NewFeedback(a.feedbackUsecase, a.log))
 
 	reflection.Register(a.server)
 
